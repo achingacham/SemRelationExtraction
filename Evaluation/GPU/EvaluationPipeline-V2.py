@@ -32,8 +32,10 @@ class RelationClassifier(nn.Module):
     def forward(self, batch_input_vector):
         
         batch_size = len(batch_input_vector)      
-        batch_output = autograd.Variable(torch.zeros(batch_size,8))
+        batch_op = np.zeros((batch_size,8))
+        batch_output = autograd.Variable(torch.cuda.FloatTensor(batch_op))
         
+
         for index,input_vector in enumerate(batch_input_vector):
         
             hidden_layer = self.linear_input(input_vector)
@@ -51,7 +53,7 @@ class RelationClassifier(nn.Module):
 
 dict_Vectors = {}
 
-with open("preTrainedVectors_mini.txt") as inputFile:
+with open("preTrainedVectors.txt") as inputFile:
     Vectors = inputFile.readlines()
     
     for vec in Vectors:
@@ -91,7 +93,7 @@ def make_batch_input_vector(batch_target,batch_relata):
         
         batch_relation_vector.append(relation_vector)
     
-    return(torch.FloatTensor(batch_relation_vector))
+    return(torch.cuda.FloatTensor(batch_relation_vector))
 
 def make_batch_target_vector(batch_relation):
     
@@ -99,7 +101,8 @@ def make_batch_target_vector(batch_relation):
     
     for relation in batch_relation:
         batch_relation_indices.append(labels_to_ix[relation])
-    return(torch.LongTensor(batch_relation_indices))
+        #print(torch.cuda.LongTensor(batch_relation_indices))
+    return(torch.cuda.LongTensor(batch_relation_indices))
 
 
 # In[216]:
@@ -114,7 +117,7 @@ BATCH_SIZE = 8
 
 model = RelationClassifier(INPUT_DIM, HIDDEN_UNIT, OUTPUT_LABEL)
 loss = nn.NLLLoss()
-optimizer = torch.optim.SGD(model.parameters(),lr=0.09)
+optimizer = torch.optim.SGD(model.parameters(),lr=0.03)
 
 
 if torch.cuda.is_available():
@@ -123,14 +126,15 @@ if torch.cuda.is_available():
 
 # In[260]:
 
+labels_to_ix = {}
+bs = 64 
 
-for epoch in range(1):
-    
-    bs = 32
+for epoch in range(5):
+
     
     #SPlit dataset to avoid lexical memorization
     print("Epoch :", epoch)
-    with open("UniqueTuples_mini") as inputFile:
+    with open("UniqueTuples") as inputFile:
         content = inputFile.readlines()
         total_data = len(content) 
         #60% train, 10% dev, 30% test
@@ -142,7 +146,6 @@ for epoch in range(1):
 
     N = math.ceil(len(train_data)/bs)
 
-    labels_to_ix = {}
     Train_Error_cost = []
 
     for i in range(N):
@@ -164,13 +167,13 @@ for epoch in range(1):
 
         batch_input_vector = autograd.Variable(make_batch_input_vector(batch_concept,batch_relata))
         batch_target_label = autograd.Variable(make_batch_target_vector(batch_relation))
-
-        model.zero_grad()
-
-        #print(batch_input_vector.data.shape, batch_target_label.data.shape)
-
+        
+        model.zero_grad() 
+        #print(batch_input_vector)   ## CUDA tensor
+        
         batch_log_prob = model(batch_input_vector)
-        print(batch_log_prob.data.shape, batch_target_label.data.shape)
+        #print(batch_log_prob, batch_target_label)   # Batch_log_prob is not CUDA. Why?
+        
         batch_cost = loss(batch_log_prob,batch_target_label)
         
         batch_cost.backward()
@@ -179,7 +182,11 @@ for epoch in range(1):
 
         Train_Error_cost.append(batch_cost.data.tolist())
 
-    print(Train_Error_cost)
+    #with open("Output_statistics","a") as outputFile:
+
+        #outputFile.write("Epoch : "+str(epoch)+"\n")
+        #outputFile.write(Train_Error_cost)
+    
     #matpy.plot(Train_Error_cost)
     #matpy.ylabel("error")
     #matpy.xlabel("train batches")
@@ -235,7 +242,7 @@ for i in range(N):
 
 #Validation error
 
-print(Dev_Error_cost)
+#print("Cost for dev set",Dev_Error_cost)
 #matpy.plot(Dev_Error_cost)
 #matpy.ylabel("error")
 #matpy.xlabel("dev batches")
