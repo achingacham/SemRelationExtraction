@@ -44,7 +44,7 @@ class RelationClassifier(nn.Module):
 #Vectors = np.loadtxt("preTrainedVectors.txt",str,comments=None)
 
 dict_Vectors = {}
-with open("preTrainedVectors.txt") as inputFile:
+with open("/home/achingacham/Model/GRID_data/Evaluation_Datasets/BLESS/preTrainedVectors.txt") as inputFile:
     content = inputFile.readlines()
     for index,line in enumerate(content):
         values = line.split()
@@ -55,7 +55,9 @@ with open("preTrainedVectors.txt") as inputFile:
             else:
                 dict_Vectors[values[0]] =  np.array(values[1:],float)
         else:
-            print(index,len(values),values[0])
+            pass
+            #print(index,len(values),values[0])
+            
 #print(type(dict_Vectors['radio'][0]))
 
 
@@ -87,7 +89,7 @@ def make_input_vector(target,relata):
 
 #SPlit dataset to avoid lexical memorization
 
-with open("UniqueTuples") as inputFile:
+with open("/home/achingacham/Model/GRID_data/Evaluation_Datasets/BLESS/UniqueTuples") as inputFile:
     content = inputFile.readlines()
     total_data = len(content) 
     #60% train, 10% dev, 30% test
@@ -153,11 +155,11 @@ for entry in train_data:
 #VALIDATION
 
 count = 0
+Dev_Error_cost = []
 
 for entry in dev_data:
     input_words = entry.split()
     
-    model.cuda()
 
     concept = input_words[0]
     relata = input_words[1]   
@@ -170,13 +172,16 @@ for entry in dev_data:
     
     predict_label = log_prob.max(1)[1]
     
+    dev_cost = loss(log_prob,target_label)
+
+    Dev_Error_cost.append(dev_cost.data.tolist())
+
     if(str(predict_label.data) == str(target_label.data)):     
         count += 1
         
-
-
 # In[79]:
 
+print("Error for Dev set", Dev_Error_cost)
 
-print("Accuracy",(count/(total_data*0.1))*100)
+print("Accuracy",(count/len(dev_data))*100)
 

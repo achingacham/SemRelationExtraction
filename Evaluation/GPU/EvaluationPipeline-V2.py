@@ -53,7 +53,7 @@ class RelationClassifier(nn.Module):
 
 dict_Vectors = {}
 
-with open("preTrainedVectors.txt") as inputFile:
+with open("/home/achingacham/Model/GRID_data/Evaluation_Datasets/BLESS/preTrainedVectors.txt") as inputFile:
     Vectors = inputFile.readlines()
     
     for vec in Vectors:
@@ -127,14 +127,14 @@ if torch.cuda.is_available():
 # In[260]:
 
 labels_to_ix = {}
-bs = 64 
+bs = 1 
 
-for epoch in range(5):
+for epoch in range(1):
 
     
     #SPlit dataset to avoid lexical memorization
     print("Epoch :", epoch)
-    with open("UniqueTuples") as inputFile:
+    with open("/home/achingacham/Model/GRID_data/Evaluation_Datasets/BLESS/UniqueTuples") as inputFile:
         content = inputFile.readlines()
         total_data = len(content) 
         #60% train, 10% dev, 30% test
@@ -242,7 +242,7 @@ for i in range(N):
 
 #Validation error
 
-#print("Cost for dev set",Dev_Error_cost)
+print("Cost for dev set",Dev_Error_cost)
 #matpy.plot(Dev_Error_cost)
 #matpy.ylabel("error")
 #matpy.xlabel("dev batches")
