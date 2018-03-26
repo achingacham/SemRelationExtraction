@@ -19,7 +19,7 @@ class Word2Vec:
                  iteration=1,
                  initial_lr=0.025,
                  min_count=2,
-                 pair_min_count = 3,
+                 pair_min_count = 2,
                  k_value = 6):
         """Initilize class parameters.
 
@@ -38,14 +38,15 @@ class Word2Vec:
         """
         self.data = InputData(input_file_name, min_count, pair_min_count, window_size)
         self.output_file_name = output_file_name
-        self.emb_size = len(self.data.pair_frequency)           #number of words above min_count Change it to pairs count
+        self.pair_emb_size = len(self.data.pair_frequency)           #number of words above min_count Change it to pairs count
+        self.emb_size = len(self.data.word_frequency)
         self.emb_dimension = emb_dimension
         self.batch_size = batch_size
         self.window_size = window_size
         self.iteration = iteration
         self.initial_lr = initial_lr
         self.k_value = k_value
-        self.skip_gram_model = SkipGramModel(self.emb_size, self.emb_dimension)
+        self.skip_gram_model = SkipGramModel(self.pair_emb_size,self.emb_size, self.emb_dimension)
         self.use_cuda = torch.cuda.is_available()
         if self.use_cuda:
             self.skip_gram_model.cuda()
@@ -72,10 +73,11 @@ class Word2Vec:
             #print("Positive pairs",pos_pairs,"\n")
             #print("Negative pairs",neg_v,"\n")
             
-            pos_v = [pair[0] for pair in pos_pairs]
-            pos_u = [pair[1] for pair in pos_pairs]
+            pos_u = [pair[0] for pair in pos_pairs]
+            pos_v = [pair[1] for pair in pos_pairs]
 
             #print("contexts :",pos_v)
+            
             
             pos_u = Variable(torch.LongTensor(pos_u))
             pos_v = Variable(torch.LongTensor(pos_v))

@@ -90,7 +90,7 @@ class InputData:
                     if w1 in self.word2id and  w2 in self.word2id:
                        
                         key = [self.word2id[w1], self.word2id[w2]]
-                        key.sort()
+                        #key.sort()
                         pair_key = str(key[0])+':'+str(key[1])
                         
                         try:
@@ -109,6 +109,8 @@ class InputData:
             self.pair2id[pair] = index
             self.id2pair[index] = [self.id2word[int(w)] for w in pair.split(":")]
         
+        
+        #print(self.pair2id)
         
     def init_sample_table(self):
         self.sample_table = []
@@ -186,8 +188,7 @@ class InputData:
                         search_key = str(l_v)+':'+str(r_v)
                         if search_key in self.pair_frequency.keys():
                             
-                            
-                            self.word_pair_batch.append((self.pair2id[search_key], u))
+                            self.word_pair_batch.append((u,self.pair2id[search_key]))
                             
                             #print('::',l_v,u,r_v)
                         
