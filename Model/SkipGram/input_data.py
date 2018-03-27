@@ -19,7 +19,7 @@ class InputData:
     def __init__(self, file_name, min_count, pair_min_count, window_size):
         self.input_file_name = file_name
         self.get_words(min_count)
-        self.get_pairs(pair_min_count, window_size)
+        #self.get_pairs(pair_min_count, window_size)
         self.get_noun_pairs(pair_min_count, window_size)  # Considering only Nouns
         ##for triplets contains tuples (indexto_pair of words, middle word)
         
@@ -49,15 +49,18 @@ class InputData:
             bar.update(self.sentence_count)
            
             self.sentence_count += 1
-            line = line.strip().split(' ')
+            line = line.strip().split()
             self.sentence_length += len(line)
                
-            for w in line:
-                try:
-                    word_frequency[w] += 1
-                except:
-                    word_frequency[w] = 1
-                    
+            for i,w in enumerate(line):
+                
+                if i % 2 == 0:
+           
+                    try:
+                        word_frequency[w] += 1
+                    except:
+                        word_frequency[w] = 1
+
             
                 
         self.word2id = dict()
@@ -75,14 +78,15 @@ class InputData:
             wid += 1
         self.word_count = len(self.word2id)
               
+        #print(self.word2id)
         
-    def get_noun_pairs(self,pair_min_count, windows_size):
+    def get_noun_pairs(self,pair_min_count, window_size):
         
         # for triplets
-        #self.pair_frequency = dict()
-        #pair_frequency = dict()
-        #self.pair2id = dict()
-        #self.id2pair = dict()
+        self.pair_frequency = dict()
+        pair_frequency = dict()
+        self.pair2id = dict()
+        self.id2pair = dict()
         
     
         self.input_file.seek(0)
@@ -99,30 +103,60 @@ class InputData:
             bar_pairs.update(sentence_count)
             sentence_count += 1
             
-            temp_arr = line.split(' ')
+            temp_arr = line.split()
             
             temp_pos2NN = dict()
         
+            #print(temp_arr)
+            
             for i,w in enumerate(temp_arr):
-                if w in ['NNS','NN']:
+                if w in ['NNS','NN','NP']:
                     temp_pos2NN[i-1] = temp_arr[i-1]
+                    #print(i,w)
         
+            
+            #print(temp_pos2NN)
+            
             temp_positions = [i for i in temp_pos2NN.keys()]
         
             temp_positions.sort()
         
             for i, items in enumerate(temp_pos2NN.items()):
                 
-                for j, pos in enumerate(positions[i:]):
+                for j, pos in enumerate(temp_positions[i:]):
                     
                     if items[0] == pos:
                         continue
                         
                     if abs(items[0]-pos) < 2 * window_size:
-                        print(i,j,'::',items[0],pos)
+                        #print(i,j,'::',temp_pos2NN[items[0]],temp_pos2NN[pos])
                         
-        
+                        w1 = temp_pos2NN[items[0]]
+                        w2 = temp_pos2NN[pos]
+                        
+                        if w1 in self.word2id and  w2 in self.word2id:
+                       
+                            key = [self.word2id[w1], self.word2id[w2]]
+                            #key.sort()
+                            pair_key = str(key[0])+':'+str(key[1])
+
+                            try:
+                                pair_frequency[pair_key] += 1
+                            except:
+                                pair_frequency[pair_key] = 1
+                            
+         
+        for key,value in pair_frequency.items():
+            if value > pair_min_count:
+                self.pair_frequency[key] = value
+                
         self.pair_count = len(self.pair_frequency)
+        
+        for index,pair in enumerate(self.pair_frequency):
+            self.pair2id[pair] = index
+            self.id2pair[index] = [self.id2word[int(w)] for w in pair.split(":")]
+                        
+                    
     
     def get_pairs(self, pair_min_count, window_size):
         
@@ -147,7 +181,7 @@ class InputData:
             bar_pairs.update(sentence_count)
             sentence_count += 1
             
-            temp_arr = line.split(' ')
+            temp_arr = line.split('\t')
             
             for i,w1 in enumerate(temp_arr):
                 
@@ -238,7 +272,7 @@ class InputData:
             
             word_ids = []
             
-            for word in sentence.strip().split(' '):
+            for word in sentence.strip().split():
                 
                 try:
                     word_ids.append(self.word2id[word])
