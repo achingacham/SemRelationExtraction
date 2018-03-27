@@ -1,6 +1,7 @@
 import numpy
 from collections import deque
-import itertools
+import time
+import progressbar
 
 numpy.random.seed(12345)
 
@@ -24,21 +25,28 @@ class InputData:
         self.word_pair_batch = deque()
         self.init_sample_table()
         
-        print('Word Count: %d' % self.word_count)
-        print('Pair Count: %d' % self.pair_count)
-        print('Sentence Length: %d' % (self.sentence_length))
+        print('\nWord Count: %d' % self.word_count)
+        print('\nPair Count: %d' % self.pair_count)
+        print('\nSentence Length: %d' % (self.sentence_length))
 
     def get_words(self, min_count):
         self.input_file = open(self.input_file_name)
+        
         self.sentence_length = 0
         self.sentence_count = 0
         word_frequency = dict()
         #for triplets
         
         pair_frequency = dict()
-        
+        print("Reading from file.. ")
+       
+        bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
+      
         for line in self.input_file:
             
+            time.sleep(0.001)
+            bar.update(self.sentence_count)
+           
             self.sentence_count += 1
             line = line.strip().split(' ')
             self.sentence_length += len(line)
@@ -48,6 +56,8 @@ class InputData:
                     word_frequency[w] += 1
                 except:
                     word_frequency[w] = 1
+                    
+            
                 
         self.word2id = dict()
         self.id2word = dict()
@@ -65,6 +75,7 @@ class InputData:
         self.word_count = len(self.word2id)
               
         
+        
     def get_pairs(self, pair_min_count, window_size):
         
         # for triplets
@@ -76,7 +87,17 @@ class InputData:
        
         self.input_file.seek(0)
         
+        bar_pairs = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
+        
+        print("\nMaking pair samples..")
+        
+        sentence_count = 0
+        
         for line in self.input_file:
+            
+            time.sleep(0.001)
+            bar_pairs.update(sentence_count)
+            sentence_count += 1
             
             temp_arr = line.split(' ')
             
@@ -118,10 +139,10 @@ class InputData:
         
         #print("Id2Word\n")
         #print(self.id2word)
-        #print("pair_frequency\n")
+        #print("word_frequency\n")
         #print(self.pair_frequency)
         
-        pow_frequency = numpy.array(list(self.pair_frequency.values()))**0.75  # 3/4 of the power of pairs
+        pow_frequency = numpy.array(list(self.word_frequency.values()))**0.75  # 3/4 of the power of pairs
         
         #print("Pow_freq\n")
         #print(pow_frequency)
@@ -142,9 +163,16 @@ class InputData:
         #print("Count\n")
         #print(count)
 
+        print("\nMaking negative samples..")
+        bar_samples = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
         
         for wid, c in enumerate(count):
             self.sample_table += [wid] * int(c)
+            
+            time.sleep(0.001)
+            bar_samples.update(wid)
+            
+            
           
         self.sample_table = numpy.array(self.sample_table)
         
@@ -171,24 +199,24 @@ class InputData:
             
             #print("word_IDS \n",word_ids)
             
-            for i, l_v in enumerate(word_ids):
+            for i, l_u in enumerate(word_ids):
                 temp_k = word_ids[i+1:i+window_size]
                 
-                for k, r_v in enumerate(temp_k[1:]): #
+                for k, r_u in enumerate(temp_k[1:]): #
                     temp_j = temp_k[0:k+1]
                     
-                    for j, u in enumerate(temp_j):
+                    for j, v in enumerate(temp_j):
                     
-                        assert l_v < self.word_count
-                        assert u < self.word_count
-                        assert r_v < self.word_count
+                        assert l_u < self.word_count
+                        assert v < self.word_count
+                        assert r_u < self.word_count
                         
                         #print(i,j,k,'::',l_v,u,r_v)
                         
-                        search_key = str(l_v)+':'+str(r_v)
+                        search_key = str(l_u)+':'+str(r_u)
                         if search_key in self.pair_frequency.keys():
                             
-                            self.word_pair_batch.append((u,self.pair2id[search_key]))
+                            self.word_pair_batch.append((self.pair2id[search_key],v))
                             
                             #print('::',l_v,u,r_v)
                         

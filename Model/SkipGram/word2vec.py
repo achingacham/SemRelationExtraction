@@ -13,12 +13,12 @@ class Word2Vec:
     def __init__(self,
                  input_file_name,
                  output_file_name,
-                 emb_dimension=10,
-                 batch_size=5,
+                 emb_dimension=100,
+                 batch_size=32,
                  window_size=5,
                  iteration=1,
                  initial_lr=0.025,
-                 min_count=2,
+                 min_count=3,
                  pair_min_count = 2,
                  k_value = 6):
         """Initilize class parameters.
@@ -89,6 +89,7 @@ class Word2Vec:
                 pos_v = pos_v.cuda()
                 neg_v = neg_v.cuda()
 
+        
             self.optimizer.zero_grad()
             loss = self.skip_gram_model.forward(pos_u, pos_v, neg_v)
             loss.backward()
@@ -103,7 +104,7 @@ class Word2Vec:
         self.skip_gram_model.save_embedding(
             self.data.id2pair, self.output_file_name, self.use_cuda)
 
-
+    
 if __name__ == '__main__':
     w2v = Word2Vec(input_file_name=sys.argv[1], output_file_name=sys.argv[2])
     w2v.train()

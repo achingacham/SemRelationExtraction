@@ -31,9 +31,9 @@ class SkipGramModel(nn.Module):
         self.emb_size = emb_size
         self.pair_emb_size = pair_emb_size
         self.emb_dimension = emb_dimension
-        self.u_embeddings = nn.Embedding(emb_size, emb_dimension, sparse=True)
+        self.u_embeddings = nn.Embedding(pair_emb_size, emb_dimension, sparse=True)
         
-        self.v_embeddings = nn.Embedding(pair_emb_size, emb_dimension, sparse=True)
+        self.v_embeddings = nn.Embedding(emb_size, emb_dimension, sparse=True)
         self.init_emb()
         
     def init_emb(self):
@@ -80,7 +80,7 @@ class SkipGramModel(nn.Module):
         neg_score = F.logsigmoid(-1 * neg_score)
         return -1 * (torch.sum(score)+torch.sum(neg_score)) #this has k values being summed up
 
-    def save_embedding(self, id2word, file_name, use_cuda):
+    def save_embedding(self, id2pair, file_name, use_cuda):
         """Save all embeddings to file.
 
         As this class only record word id, so the map from id to word has to be transfered from outside.
@@ -96,8 +96,8 @@ class SkipGramModel(nn.Module):
         else:
             embedding = self.u_embeddings.weight.data.numpy()
         fout = open(file_name, 'w')
-        fout.write('%d %d\n' % (len(id2word), self.emb_dimension))
-        for wid, w in id2word.items():
+        fout.write('%d %d\n' % (len(id2pair), self.emb_dimension))
+        for wid, w in id2pair.items():
             e = embedding[wid]
             e = ' '.join(map(lambda x: str(x), e))
             fout.write('%s %s\n' % (w, e))
