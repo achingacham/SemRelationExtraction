@@ -20,6 +20,7 @@ class InputData:
         self.input_file_name = file_name
         self.get_words(min_count)
         self.get_pairs(pair_min_count, window_size)
+        self.get_noun_pairs(pair_min_count, window_size)  # Considering only Nouns
         ##for triplets contains tuples (indexto_pair of words, middle word)
         
         self.word_pair_batch = deque()
@@ -75,7 +76,54 @@ class InputData:
         self.word_count = len(self.word2id)
               
         
+    def get_noun_pairs(self,pair_min_count, windows_size):
         
+        # for triplets
+        #self.pair_frequency = dict()
+        #pair_frequency = dict()
+        #self.pair2id = dict()
+        #self.id2pair = dict()
+        
+    
+        self.input_file.seek(0)
+        
+        bar_pairs = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
+        
+        print("\nMaking pair samples..")
+        
+        sentence_count = 0
+        
+        for line in self.input_file:
+            
+            time.sleep(0.001)
+            bar_pairs.update(sentence_count)
+            sentence_count += 1
+            
+            temp_arr = line.split(' ')
+            
+            temp_pos2NN = dict()
+        
+            for i,w in enumerate(temp_arr):
+                if w in ['NNS','NN']:
+                    temp_pos2NN[i-1] = temp_arr[i-1]
+        
+            temp_positions = [i for i in temp_pos2NN.keys()]
+        
+            temp_positions.sort()
+        
+            for i, items in enumerate(temp_pos2NN.items()):
+                
+                for j, pos in enumerate(positions[i:]):
+                    
+                    if items[0] == pos:
+                        continue
+                        
+                    if abs(items[0]-pos) < 2 * window_size:
+                        print(i,j,'::',items[0],pos)
+                        
+        
+        self.pair_count = len(self.pair_frequency)
+    
     def get_pairs(self, pair_min_count, window_size):
         
         # for triplets
