@@ -45,8 +45,10 @@ class InputData:
       
         for line in self.input_file:
             
-            time.sleep(0.001)
-            bar.update(self.sentence_count)
+            #time.sleep(0.001)
+            
+            if sentence_count % 1000 == 0:
+                bar.update(self.sentence_count)
            
             self.sentence_count += 1
             line = line.strip().split()
@@ -93,14 +95,16 @@ class InputData:
         
         bar_pairs = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
         
-        print("\nMaking pair samples..")
+        print("\nMaking noun pair samples..")
         
         sentence_count = 0
         
         for line in self.input_file:
             
-            time.sleep(0.001)
-            bar_pairs.update(sentence_count)
+            #time.sleep(0.001)
+            if sentence_count % 1000 == 0:
+                bar_pairs.update(sentence_count)
+            
             sentence_count += 1
             
             temp_arr = line.split()
@@ -146,11 +150,14 @@ class InputData:
                                 pair_frequency[pair_key] = 1
                             
          
+        #print(pair_frequency)
+
         for key,value in pair_frequency.items():
             if value > pair_min_count:
-                self.pair_frequency[key] = value
-                
+                self.pair_frequency[key] = value                
+        
         self.pair_count = len(self.pair_frequency)
+
         
         for index,pair in enumerate(self.pair_frequency):
             self.pair2id[pair] = index
@@ -177,8 +184,10 @@ class InputData:
         
         for line in self.input_file:
             
-            time.sleep(0.001)
-            bar_pairs.update(sentence_count)
+            #time.sleep(0.001)
+            if sentence_count % 1000 == 0:   
+               bar_pairs.update(sentence_count)
+
             sentence_count += 1
             
             temp_arr = line.split('\t')
@@ -251,8 +260,9 @@ class InputData:
         for wid, c in enumerate(count):
             self.sample_table += [wid] * int(c)
             
-            time.sleep(0.001)
-            bar_samples.update(wid)
+            #time.sleep(0.001)
+            if wid % 1000 == 0:
+                bar_samples.update(wid)
             
             
           
@@ -296,7 +306,7 @@ class InputData:
                         #print(i,j,k,'::',l_v,u,r_v)
                         
                         search_key = str(l_u)+':'+str(r_u)
-                        if search_key in self.pair_frequency.keys():
+                        if search_key in self.pair_frequency.keys() and v in self.word2id.values():
                             
                             self.word_pair_batch.append((self.pair2id[search_key],v))
                             

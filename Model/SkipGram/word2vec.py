@@ -18,8 +18,8 @@ class Word2Vec:
                  window_size=5,
                  iteration=1,
                  initial_lr=0.025,
-                 min_count=1,
-                 pair_min_count = 1,
+                 min_count=20,
+                 pair_min_count = 10,
                  k_value = 6):
         """Initilize class parameters.
 
@@ -107,4 +107,9 @@ class Word2Vec:
     
 if __name__ == '__main__':
     w2v = Word2Vec(input_file_name=sys.argv[1], output_file_name=sys.argv[2])
-    w2v.train()
+    
+    if w2v.pair_emb_size > 0 :
+        w2v.train()
+    else:
+        print("Unable to train, doesn't have enough pair count")
+

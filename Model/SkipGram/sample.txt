@@ -1,7 +1,100 @@
-Human vocabulary comes in free text. 
-In order to make a machine learning model understand and process the natural language, we need to transform the free-text words into numeric values.
-One of the simplest transformation approaches is to do a one-hot encoding in which each distinct word stands for one dimension of the resulting vector and a binary value indicates whether the word presents (1) or not (0).
-However, one-hot encoding is impractical computationally when dealing with the entire vocabulary, as the representation demands hundreds of thousands of dimensions.
- Word embedding represents words and phrases in vectors of (non-binary) numeric values with much lower and thus denser dimensions. 
-An intuitive assumption for good word embedding is that they can approximate the similarity between words (i.e., “cat” and “kitten” are similar words, and thus they are expected to be close in the reduced vector space) or disclose hidden semantic relationships (i.e., the relationship between “cat” and “kitten” is an analogy to the one between “dog” and “puppy”).
- Contextual information is super useful for learning word meaning and relationship, as similar words may appear in the similar context often.
+
+Hooligans	NNS ,	, unbridled	JJ passion	NN -	: and	CC no	DT executive	JJ boxes	NNS .	SENT
+Portsmouth	NP are	VBP a	DT reminder	NN of	IN how	WRB football	NN used	VVD to	TO be	VB before	IN the	DT corporate	JJ takeover	NN -	: and	CC that	DT 's	VBZ no	DT bad	JJ thing	NN ,	, say	VVP Ed	NP Vulliamy	NP and	CC Brian	NP Oliver	NP in	IN this	DT special	JJ report	NN Sunday	NP August	NP 3	CD ,	, 2003	CD The	DT Observer	NP When	WRB Roy	NP Keane	NP made	VVD his	PP$ remarks	NNS about	IN prawn	NN sandwiches	NNS ,	, and	CC those	DT who	WP eat	VVP them	PP at	IN football	NN matches	NNS ,	, three	CD years	NNS ago	RB ,	, he	PP was	VBD lifted	VVN in	IN the	DT estimation	NN of	IN hundreds	NNS of	IN thousands	NNS of	IN supporters	NNS .	SENT
+Not	RB many	JJ footballers	NNS speak	VVP out	RP against	IN the	DT corporate	JJ makeover	NN ,	, or	CC takeover	NN ,	, of	IN English	JJ football	NN .	SENT
+One	PP assumes	VVZ that	IN Keane	NP would	MD have	VH approved	VVN of	IN the	DT behaviour	NN in	IN the	DT Old	NP Trafford	NP executive	NN boxes	NNS during	IN Manchester	NP United	NP 's	POS third-round	JJ FA	NP Cup	NP tie	NN against	IN Portsmouth	NP last	JJ January	NP .	SENT
+Not	RB many	JJ prawn	NN sandwiches	NNS were	VBD eaten	VVN .	SENT
+Many	JJ of	IN United	NP 's	POS more	JJR affluent	JJ fans	NNS could	MD not	RB be	VB bothered	VVN with	IN so	RB lowly	JJ a	DT fixture	NN ,	, which	WDT meant	VVD that	IN there	EX was	VBD plenty	RB of	IN corporate	JJ space	NN for	IN the	DT visitors	NNS .	SENT
+'	'' So	RB ,	, '	'' says	VVZ Shaun	NP Hearn	NP ,	, one	CD of	IN the	DT 9,000	CD Portsmouth	NP fans	NNS who	WP had	VHD left	VVN home	NN at	IN dawn	NN for	IN the	DT noon	NN kick-off	NN ,	, '	'' we	PP had	VHD a	DT five-course	NN meal	NN ,	, half	PDT a	DT bottle	NN of	IN wine	NN each	DT guaranteed	JJ -	: of	IN course	NN that	WDT did	VVD n't	RB last	JJ ,	, but	CC they	PP kept	VVD bringing	VVG more	RBR ,	, credit	NN where	WRB it	PP 's	VBZ due	JJ .	SENT
+By	IN the	DT end	NN ,	, in	IN our	PP$ bit	NN ,	, there	EX was	VBD 20	CD tables	NNS ,	, only	RB two	CD of	IN them	PP United	NP and	CC the	DT other	JJ 18	CD all	RB Pompey	NP ,	, standing	VVG on	IN the	DT chairs	NNS and	CC tables	NNS ,	, completely	RB pissed	VVN ,	, all	RB in	IN suits	NNS ,	, singing.	NP '	POS Portsmouth	NP lost	VVD 4-1	CD ,	, but	CC it	PP was	VBD a	DT great	JJ day	NN out	RP .	SENT
+Vince	NP Hilaire	NP ,	, one	CD of	IN the	DT first	JJ established	JJ black	JJ players	NNS in	IN English	JJ football	NN ,	, has	VHZ seen	VVN it	PP several	JJ times	NNS over	IN .	SENT
+Hilaire	NP ,	, who	WP works	VVZ on	IN the	DT club	NN 's	POS hospitality	NN staff	NN ,	, says	VVZ :	: '	'' I	PP travel	VVP with	IN corporate	JJ guests	NNS to	TO executive	JJ boxes	NNS at	IN away	RB grounds	NNS .	SENT
+And	CC it	PP does	VVZ n't	RB matter	VV that	IN they	PP 're	VBP drinking	VVG Dom	NP Perignon	NP and	CC wearing	VVG ties	NNS -	: they	PP 're	VBP still	RB standing	VVG on	IN tables	NNS ,	, giving	VVG it	PP some	DT .	SENT
+Only	RB Pompey	NP .	SENT
+We	PP 're	VBP the	DT only	JJ ones	NNS who	WP behave	VV like	IN that	DT at	IN that	WDT level.	NP '	POS Hilaire	NP played	VVD for	IN Portsmouth	NP during	IN their	PP$ last	JJ brief	JJ visit	NN to	TO the	DT top	JJ division	NN ,	, in	IN 1987-88	CD .	SENT
+He	PP decided	VVD to	TO settle	VV in	IN the	DT city	NN in	IN preference	NN to	TO other	JJ places	NNS he	PP played	VVD in	RP :	: his	PP$ native	JJ London	NP (	( Crystal	NP Palace	NP )	) or	CC Leeds	NP (	( '	'' no	DT way	NN '	POS )	) .	SENT
+'	'' There	EX 's	VBZ a	DT special	JJ Portsmouth	NP thing	NN ,	, '	'' he	PP says	VVZ .	SENT
+'	'' I	PP stayed	VVD here	RB because	IN I	PP 've	VHP never	RB known	VVN a	DT place	NN as	IN mad	JJ about	IN their	PP$ club	NN .	SENT
+There	EX are	VBP people	NNS in	IN this	DT town	NN who	WP 've	VHP never	RB seen	VVN the	DT team	NN and	CC do	VVP n't	RB even	RB follow	VV the	DT results	NNS ,	, but	CC they	PP 'll	MD still	RB say	VV :	: "	`` I	PP 'm	VBP a	DT Pompey	NP fan	NN ,	, through	IN and	CC through".	JJ '	'' Those	DT who	WP can	MD afford	VV it	PP will	MD be	VB back	RB on	IN the	DT tables	NNS at	IN Old	NP Trafford	NP again	RB this	DT season	NN ,	, even	RB if	IN there	EX wo	MD n't	RB be	VB so	RB many	JJ places	NNS for	IN visiting	VVG fans	NNS .	SENT
+Hearn	NP and	CC his	PP$ old	JJ friend	NN Simon	NP Guy	NP have	VHP decided	VVN to	TO watch	VV all	DT away	RB games	NNS from	IN hospitality	NN seats	NNS (	( and	CC tables	NNS )	) .	SENT
+'	'' It	PP 'll	MD cost	VV 200	CD quid	NN a	DT game	NN to	TO get	VV in	IN ,	, but	CC it	PP 's	VBZ the	DT only	JJ way	NN to	TO get	VV a	DT ticket	NN and	CC have	VH a	DT good	JJ day	NN out	IN on	IN the	DT piss	NN ,	, '	'' Hearn	NP says	VVZ .	SENT
+And	CC they	PP 'll	MD be	VB up	RB on	IN the	DT tables	NNS in	IN executive	JJ boxes	NNS at	IN all	PDT the	DT Premiership	NP grounds	NNS except	IN one	CD :	: their	PP$ own	JJ .	SENT
+Fratton	NP Park	NP has	VHZ never	RB had	VHN a	DT single	JJ executive	NN box	NN ,	, and	CC if	IN Pompey	NP go	VVP straight	RB back	RB down	RB ,	, as	IN they	PP did	VVD last	JJ time	NN ,	, maybe	RB it	PP never	RB will	MD .	SENT
+But	CC will	MD the	DT fans	NNS care	VVP about	RB that	IN ?	SENT
+They	PP 're	VBP Pompey	NP .	SENT
+They	PP like	IN being	VBG different	JJ .	SENT
+Chelsea	NP 's	POS millions	NNS ,	, United	NP 's	POS executive	JJ boxes	NNS ,	, Arsenal	NP 's	POS Frenchification	NN ,	, the	DT Champions	NP League	NP ,	, the	DT collapse	NN of	IN Leeds	NP ,	, £	$ 30m	JJ transfer	NN fees	NNS -	: that	WDT 's	VBZ all	DT football	NN 's	POS present	JJ and	CC near	JJ future	NN .	SENT
+Portsmouth	NP bring	VVP something	NN entirely	RB different	JJ to	TO the	DT Premiership	NP :	: football	NN 's	POS past	NN .	SENT
+This	DT is	VBZ one	CD of	IN Britain	NP 's	POS most	RBS ardent	JJ football	NN cities	NNS :	: think	VVP Liverpool	NP or	CC Newcastle	NP in	IN miniature	NN ,	, wound	VVD back	RB three	CD decades	NNS .	SENT
+Think	VV back	RB to	TO what	WP the	DT corporate	JJ makeover	NN people	NNS ,	, and	CC many	JJ of	IN today	NN 's	POS fans	NNS ,	, would	MD regard	VV as	IN the	DT bad	JJ old	JJ days.	NN Promotion	NP will	MD bring	VV to	TO the	DT world	NN 's	POS most	RBS glamorous	JJ football	NN league	NN those	DT such	JJ as	IN Mark	NP Dewing	NP ,	, cabbie	NN and	CC co-organiser	NN of	IN the	DT Pompey	NP independent	JJ supporters	NNS club	NN ,	, who	WP says	VVZ :	: '	'' Portsmouth	NP proudly	RB presents	VVZ to	TO the	DT Premier	NP League	NP a	DT ground	NN where	WRB away	RB fans	NNS get	VVP pissed	VVN on	IN in	IN the	DT rain	NN and	CC yuppies	NNS from	IN Man	NP United	NP will	MD be	VB sitting	VVG in	IN the	DT worst	JJS seats	NNS they	PP 've	VHP ever	RB sat	VVN in	IN .	SENT
+Go	VV to	TO Old	NP Trafford	NP now	RB ,	, it	PP 's	VBZ like	IN going	VVG to	TO the	DT fucking	VVG opera	NN .	SENT
+Football	NP is	VBZ not	RB opera.	JJ '	'' His	PP$ brother	NN ,	, Barry	NP ,	, says	VVZ :	: '	'' We	PP have	VHP more	JJR affinity	NN with	IN Rochdale	NP than	IN with	IN Man	NP United	NP .	SENT
+If	IN they	PP make	VVP Fratton	NP Park	NP too	RB swanky	JJ there	RB 's	VBZ going	VVG to	TO be	VB something	NN of	IN the	DT passion	NN of	IN Pompey	NP that	WDT 's	VBZ lost	VVN in	IN the	DT Premier	NP .	SENT
+Ca	MD n't	RB stand	VV up	RP ,	, ca	MD n't	RB smoke	VV ,	, ca	MD n't	RB fart	VV because	IN we	PP 're	VBP in	IN the	DT Premier	NP League	NP .	SENT
+What	WP is	VBZ this	DT bollocks	NN ?	SENT
+'	'' If	IN Pompey	NP are	VBP a	DT singular	JJ team	NN withsingular	JJ fans	NNS ,	, it	PP is	VBZ because	IN they	PP come	VVP from	IN a	DT singular	JJ place	NN .	SENT
+Portsmouth	NP is	VBZ one	CD of	IN the	DT most	RBS anomalous	JJ cities	NNS in	IN Britain	NP .	SENT
+Packed	VVN as	IN it	PP is	VBZ on	IN to	TO Portsea	NP Island	NP ,	, one	CD of	IN the	DT most	RBS densely	RB populated	VVN urban	JJ areas	NNS of	IN Europe	NP ,	, it	PP is	VBZ also	RB one	CD of	IN the	DT most	RBS pugnacious	JJ .	SENT
+And	CC that	DT 's	VBZ being	VBG kind	NN .	SENT
+'	'' This	DT is	VBZ a	DT city	NN ,	, '	'' says	VVZ local	JJ newspaper	NN columnist	NN and	CC crime	NN writer	NN Graham	NP Hurley	NP ,	, '	'' whose	WP$ fortunes	NNS are	VBP inextricably	RB connected	VVN to	TO war	NN .	SENT
+For	IN centuries	NNS ,	, Portsmouth	NP 's	POS life	NN has	VHZ been	VBN that	IN of	IN the	DT Royal	NP Navy	NP and	CC a	DT dockyard	NN that	IN once	RB employed	VVN 28,000	CD but	CC now	RB has	VHZ 1,800	CD on	IN the	DT payroll	NN .	SENT
+It	PP is	VBZ a	DT city	NN that	WDT needs	VVZ war	NN ,	, a	DT martial	JJ city	NN .	SENT
+It	PP 's	VBZ the	DT fighting	VVG city	NN it	PP always	RB was	VBD -	: "	`` If	IN in	IN doubt	NN ,	, have	VHP a	DT fight	NN "	'' .	SENT
+And	CC you	PP can	MD see	VV this	DT in	IN the	DT football	NN culture	NN ,	, the	DT 6.57	CD [	SYM a	DT notorious	JJ hooligan	NN firm	NN ]	SYM and	CC the	DT raw	JJ pleasure	NN of	IN reckless	JJ anarchy	NN .	SENT
+These	DT were	VBD mad	JJ guys	NNS from	IN the	DT South	NP Coast	NP who	WP took	VVD on	IN impossible	JJ odds	NNS .	SENT
+To	TO what	WP end	NN ?	SENT
+To	TO Pompey	NP 's	POS end.	NN '	'' It	PP has	VHZ apparently	RB been	VBN thus	RB for	IN 250	CD years	NNS .	SENT
+'	'' The	DT necessity	NN of	IN living	VVG in	IN the	DT midst	NN of	IN the	DT diabolical	JJ citizens	NNS of	IN Portsmouth	NP ,	, '	'' wrote	VVD General	NP James	NP Wolfe	NP in	IN 1758	CD ,	, '	'' is	VBZ a	DT real	JJ and	CC unavoidable	JJ calamity	NN .	SENT
+It	PP is	VBZ a	DT doubt	NN to	TO me	PP if	IN there	EX is	VBZ such	PDT another	DT collection	NN of	IN demons	NNS upon	IN the	DT whole	JJ earth.	NN '	'' The	DT quotation	NN is	VBZ selected	VVN with	IN relish	NN in	IN a	DT new	JJ book	NN ,	, Rolling	NP with	IN the	DT 6.57	CD ,	, about	IN the	DT gang	NN who	WP take	VVP their	PP$ name	NN from	IN the	DT time	NN of	IN the	DT first	JJ train	NN up	RB to	TO London	NP on	IN a	DT Saturday	NP ,	, with	IN connections	NNS north	RB in	IN time	NN for	IN a	DT drink	NN and	CC a	DT punch-up	NN .	SENT
+It	PP is	VBZ co-written	VVN by	IN one	CD of	IN the	DT 6.57's	JJ core	NN members	NNS ,	, Rob	NP Silvester	NP ,	, who	WP would	MD probably	RB be	VB proud	JJ to	TO be	VB described	VVN as	IN a	DT '	'' diabolical	JJ citizen	NN '	POS ,	, though	RB perhaps	RB not	RB by	IN a	DT general	NN of	IN the	DT armed	JJ forces	NNS .	SENT
+'	'' Britain	NP is	VBZ an	DT island	NN on	IN its	PP$ own	JJ ,	, and	CC we	PP 're	VBP an	DT island	NN on	IN the	DT island	NN ,	, '	'' says	VVZ Silvester	NP .	SENT
+'	'' We	PP 're	VBP coming	VVG off	RP an	DT island	NN when	WRB we	PP go	VVP to	TO London	NP ,	, just	RB like	IN England	NP come	VV off	RP an	DT island	NN to	TO kick	VV it	PP off	RP in	IN Europe	NP .	SENT
+We	PP 're	VBP on	IN our	PP$ own.	NN '	POS Silvester	NP is	VBZ a	DT builder	NN further	RBR qualified	JJ by	IN borstal	NN and	CC five	CD prison	NN sentences	NNS ,	, '	'' all	DT for	IN violence	NN '	POS .	SENT
+The	DT volume	NN has	VHZ sold	VVN well	RB ,	, aided	VVN by	IN a	DT campaign	NN in	IN the	DT local	JJ paper	NN headlined	VVD :	: '	'' We	PP Do	VVP n't	RB Want	NP Thug	NP Book	NN Here	RB '	POS .	SENT
+'	'' What	WP better	JJR advertising	NN ?	SENT
+'	'' says	VVZ Silvester	NP ,	, who	WP had	VHD returned	VVN the	DT previous	JJ night	NN from	IN a	DT weekend	NN marching	VVG in	IN Belfast	NP on	IN the	DT Twelfth	NP of	IN July	NP -	: '	POS British	JJ behaviour	NN at	IN its	PP$ best	RBS '	POS .	SENT
+He	PP carefully	RB hangs	VVZ up	RP his	PP$ jacket	NN and	CC orange	NN sash	NN marked	VVD '	'' LOL	NP '	'' -	: Loyal	NP Orange	NP Lodge	NP .	SENT
+'	'' We	PP were	VBD always	RB right	JJ wing	NN ,	, '	'' he	PP says	VVZ of	IN the	DT 6.57	CD ,	, '	'' giving	VVG it	PP that	IN "	`` Sieg	NP Heil	NP "	'' bollocks	NN for	IN a	DT lark	NN ,	, not	RB knowing	VVG what	WP it	PP was	VBD about	RB .	SENT
+Now	RB I	PP 'm	VBP a	DT true	JJ Orangeman	NN .	SENT
+It	PP 's	VBZ a	DT strong	JJ tradition	NN here	RB ,	, since	IN loyalist	NN sailors	NNS were	VBD stationed	VVN from	IN Glasgow	NP ,	, Belfast	NP or	CC Liverpool	NP ,	, and	CC settled	VVN .	SENT
+During	IN World	NP War	NP II	NP there	RB were	VBD 14	CD Orange	NP Lodges	NP in	IN Portsmouth	NP .	SENT
+What	WP else	RB is	VBZ there	RB if	IN you	PP do	VVP n't	RB want	VV to	TO be	VB in	IN the	DT BNP	NP ?	SENT
+I	PP 'm	VBP not	RB one	CD of	IN those	DT .	SENT
+I	PP 'm	VBP a	DT patriot	NN who	WP loves	VVZ my	PP$ Queen	NP and	CC country.	NP '	POS For	IN the	DT general	JJ election	NN of	IN 1987	CD ,	, the	DT 6.57	CD even	RB had	VHD its	PP$ own	JJ candidate	NN in	IN Portsmouth	NP South	NP ,	, Marty	NP '	POS Docker	NP '	POS Hughes	NP .	SENT
+He	PP stood	VVD on	IN a	DT hybrid	JJ platform	NN blending	VVG militant	JJ Ulster	NP loyalism	NN with	IN demands	NNS for	IN magistrates	NNS qualified	VVN by	IN prison	NN terms	NNS ,	, and	CC duty-free	JJ booze	NN on	IN the	DT Gosport	NP ferry	NN .	SENT
+Some	DT of	IN the	DT 6.57's	JJ antics	NNS are	VBP renowned	VVN in	IN hooligan	NN lore	NN .	SENT
+For	IN a	DT game	NN at	IN Cambridge	NP ,	, they	PP took	VVD bicycles	NNS in	IN order	NN to	TO mock	JJ the	DT local	JJ students	NNS .	SENT
+Eddie	NP Crispin	NP recalls	VVZ :	: '	'' We	PP piled	VVD the	DT bikes	NNS up	RB outside	IN a	DT pub	NN and	CC told	VVD a	DT load	NN of	IN Japanese	JJ and	CC American	JJ tourists	NNS it	PP was	VBD our	PP$ art	NN project	NN .	SENT
+So	RB they	PP all	RB starts	VVZ taking	VVG photographs	NNS ...	: '	'' Police	NP forces	VVZ around	IN the	DT country	NN will	MD be	VB relieved	VVN to	TO hear	VV that	IN Silvester	NP is	VBZ pessimistic	JJ about	IN the	DT 6.57's	JJ prospects	NNS for	IN causing	VVG mayhem	NN in	IN the	DT Premiership	NP .	SENT
+'	'' Nowadays	RB it	PP 's	VBZ all	DT CCTV	NP ,	, helicopters	NNS and	CC police	NN intelligence	NN networks	NNS ,	, '	'' he	PP complains	VVZ .	SENT
+Then	RB ,	, there	EX 's	VBZ the	DT ticket	NN problem	NN .	SENT
+'	'' We	PP used	VVD to	TO take	VV 10,000	CD to	TO an	DT away	RB game	NN ,	, of	IN which	WDT you	PP 'd	MD have	VH a	DT thousand	CD willing	JJ to	TO start	VV off	RP .	SENT
+Now	RB ,	, it	PP 'll	MD be	VB 3,000	CD ,	, which	WDT 'll	MD cut	VV the	DT ratio	NN of	IN thugs	NNS to	TO non-thugs	NNS .	SENT
+Your	PP$ hooligan-per-fan	NN ratio	NN is	VBZ going	VVG to	TO be	VB lower.	JJ '	'' He	PP laughs	VVZ .	SENT
+'	'' Things	NNS really	RB are	VBP going	VVG downhill	RB ,	, are	VBP n't	RB they	PP ?	SENT
+'	'' Portsmouth	NP counts	VVZ 186,000	CD people	NNS in	IN a	DT landscape	NN that	WDT belongs	VVZ between	IN Merseyside	NN and	CC Manchester	NP ,	, but	CC sits	VVZ on	IN the	DT resort-strewn	VVN Channel	NP coast	NN .	SENT
+Behind	IN it	PP ,	, the	DT South	NP Downs	NPS tumble	NN gently	RB towards	IN the	DT sea	NN ,	, only	RB to	TO bump	VV into	IN the	DT city	NN suburbs	NNS of	IN Paulsgrove	NP ,	, scene	NN of	IN the	DT anti-paedophile	JJ riots	NNS two	CD years	NNS ago	RB ,	, and	CC Leigh	NP Park	NP ,	, where	WRB street	NN children	NNS terrorise	VV residents	NNS .	SENT
+'	'' A	DT very	RB unusual	JJ place	NN ,	, and	CC not	RB always	RB for	IN the	DT better	RBR ;	: cut-off	NN ,	, mulish	JJ and	CC inward-looking	JJ ,	, '	'' is	VBZ the	DT description	NN of	IN Hurley	NP ,	, who	WP has	VHZ lived	VVN for	IN 25	CD years	NNS in	IN the	DT city	NN .	SENT
+His	PP$ books	NNS are	VBP a	DT key	NN with	IN which	WDT to	TO unlock	VV and	CC enter	VV Portsmouth	NP .	SENT
+'	'' If	IN I	PP say	VVP it	PP 's	VBZ one	CD of	IN the	DT toughest	JJS places	NNS in	IN Britain	NP ,	, I	PP mean	VVP that	IN as	IN a	DT compliment	NN ,	, '	'' he	PP continues	VVZ .	SENT
+'	'' I	PP love	VVP the	DT place	NN because	IN of	IN its	PP$ refusal	NN to	TO kow-tow	VV to	TO the	DT style	NN gurus	NNS ,	, because	IN it	PP does	VVZ n't	RB care	VV a	DT toss	VV for	IN the	DT likes	NN of	IN Peter	NP Mandelson	NP .	SENT
+Tony	NP Blair	NP 's	POS rebranded	JJ Britain	NP has	VHZ n't	RB got	VVD this	DT far	RB ,	, and	CC thank	VVP God	NP for	IN that	DT .	SENT
+It	PP 's	VBZ a	DT city	NN uncursed	VVN by	IN money	NN ,	, with	IN a	DT problem	NN moving	VVG into	IN the	DT twenty-first	JJ century.	NN '	'' How	WRB tough	JJ is	VBZ it	PP ?	SENT
+One	CD man	NN who	WP knows	VVZ ,	, says	VVZ Hurley	NP ,	, is	VBZ a	DT friend	NN of	IN his	PP$ ,	, an	DT ex-policeman	NN called	VVD John	NP Roberts	NP .	SENT
+The	DT RMA	NP (	( Royal	NP Marine	NP Academy	NP )	) Tavern	NP is	VBZ full	JJ on	IN a	DT Tuesday	NP to	TO watch	VV a	DT nine-piece	NN jig-'n'-reel	NN band	NN .	SENT
+The	DT singer	NN with	IN long	JJ hair	NN and	CC beard	NN is	VBZ Roberts	NP ,	, or	CC '	POS JR	NP '	'' -	: 31	CD years	NNS a	DT cop	NN ,	, and	CC most	JJS of	IN those	DT at	IN the	DT sharp	JJ end	NN of	IN Portsmouth	NP 's	POS drug	NN squad	NN .	SENT
+He	PP is	VBZ also	RB the	DT only	JJ police	NN officer	NN to	TO be	VB banned	VVN from	IN Fratton	NP Park	NP .	SENT
+'	'' It	PP was	VBD Millwall	NP ,	, I	PP was	VBD on	IN uniform	JJ duty	NN .	SENT
+They	PP were	VBD chucking	VVG everything	NN they	PP had	VHD ,	, the	DT money	NN in	IN their	PP$ pockets	NNS ,	, which	WDT I	PP picked	VVD up	RP and	CC said	VVD "	`` Thanks	NNS lads	NNS ,	, two	CD pound	NN thirty	CD ,	, enough	RB for	IN a	DT couple	NN of	IN pints	NNS "	'' .	SENT
+The	DT Super	NP threw	VVD me	PP out	RP .	SENT
+I	PP was	VBD never	RB allowed	VVN on	IN match	NN duty	NN again.	NN '	'' There	EX were	VBD always	RB quirks	NNS to	TO the	DT job	NN in	IN Pompey	NP .	SENT
+'	'' I	PP had	VHD my	PP$ fortieth	JJ birthday	NN party	NN in	IN a	DT rough	JJ pub	NN ,	, and	CC quite	RB a	DT few	JJ people	NNS turned	VVD up	RP who	WP I	PP 'd	VHD nicked	VVN or	CC put	VVN in	IN prison	NN .	SENT
+I	PP went	VVD to	TO the	DT bar	NN and	CC the	DT manager	NN told	VVD me	PP I	PP had	VHD 18	CD pints	NNS ,	, paid	VVN for	IN ,	, from	IN people	NNS who	WP ,	, shall	MD we	PP say	VVP ,	, did	VVD n't	RB want	VV to	TO be	VB seen	VVN hanging	VVG around	RP .	SENT
+I	PP may	MD have	VH been	VBN a	DT copper	NN ,	, but	CC I	PP was	VBD their	PP$ copper	NN .	SENT
+Very	RB Portsmouth	NP ,	, that	RB .	SENT
+'	'' There	EX 's	VBZ parts	NNS of	IN this	DT city	NN running	VVG hot-and-cold	NN with	IN junk	NN [	SYM heroin	NN ]	SYM ,	, and	CC shocking	JJ poverty	NN round	NN here	RB .	SENT
+But	CC there	EX 's	VBZ no	DT basic	JJ thought	NN goes	VVZ into	IN doing	VVG anything	NN about	IN it	PP .	SENT
+You	PP 'll	MD have	VH a	DT dog	NN shitting	VVG all	DT over	IN the	DT floor	NN ,	, and	CC no	DT furniture	NN ,	, but	CC there	EX 's	VBZ a	DT 26-inch	JJ telly	NN and	CC they	PP 're	VBP off	RB to	TO Sainsbury	NP 's	POS in	IN a	DT taxi	NN .	SENT
+And	CC as	RB for	IN domestic	JJ violence	NN :	: all	PDT the	DT signs	NNS are	VBP there	RB ,	, but	CC they	PP 'll	MD accept	VV it	PP -	: never	RB report	VV it	PP .	SENT
+Either	CC too	RB scared	VVN or	CC just	RB think	VVP that	DT 's	VBZ how	WRB life	NN is	VBZ ;	: these	DT women	NNS 's	POS mothers	NNS were	VBD going	VVG through	IN the	DT same.	NP '	'' There	EX have	VHP been	VBN surveys	NNS ,	, says	VVZ Hurley	NP ,	, in	IN which	WDT citizens	NNS described	VVD their	PP$ birthplace	NN as	RB '	POS aggressive	JJ and	CC tribal	JJ '	'' ,	, while	IN a	DT group	NN of	IN young	JJ people	NNS were	VBD asked	VVN what	WP frightened	VVD them	PP most	RBS .	SENT
+First	NP came	VVD paedophiles	NNS ;	: second	JJ ,	, street	NN drunks	NNS ,	, and	CC third	JJ :	: '	'' the	DT French	NP '	POS .	SENT
