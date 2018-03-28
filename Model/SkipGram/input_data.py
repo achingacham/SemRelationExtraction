@@ -290,6 +290,7 @@ class InputData:
                     continue
             
             #print("word_IDS \n",word_ids)
+            print("\n ", sentence)
             
             for i, l_u in enumerate(word_ids):
                 temp_k = word_ids[i+1:i+window_size]
@@ -303,14 +304,14 @@ class InputData:
                         assert v < self.word_count
                         assert r_u < self.word_count
                         
-                        #print(i,j,k,'::',l_v,u,r_v)
+                        #print(i,j,k,'::',l_u,v,r_u)
                         
                         search_key = str(l_u)+':'+str(r_u)
                         if search_key in self.pair_frequency.keys() and v in self.word2id.values():
                             
                             self.word_pair_batch.append((self.pair2id[search_key],v))
                             
-                            #print('::',l_v,u,r_v)
+                            print('::',self.word2id(l_u),self.word2id(v),self.word2id(r_u))
                         
                         
                     
