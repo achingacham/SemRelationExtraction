@@ -17,39 +17,43 @@ class InputData:
     """
 
     def __init__(self, file_name, min_count, pair_min_count, window_size):
+        
         self.input_file_name = file_name
-        self.get_words(min_count)
-        #self.get_pairs(pair_min_count, window_size)
-        
-        self.get_noun_pairs(pair_min_count, window_size)  # Considering only Nouns
-        
-        ##for triplets contains tuples (indexto_pair of words, middle word)
-        
-        self.word_pair_batch = deque()
-        self.init_sample_table()
+        self.get_words(min_count, window_size)
+        #self.get_noun_pairs(pair_min_count, window_size)  # Considering only Nouns        
+        #self.word_pair_batch = deque()
+        #self.init_sample_table()
         
         print('\nWord Count: %d' % self.word_count)
-        print('\nPair Count: %d' % self.pair_count)
-        print('\nSentence Length: %d' % (self.sentence_length))
+        #print('\nPair Count: %d' % self.pair_count)
+        #print('\nSentence Length: %d' % (self.sentence_length))
 
-    def get_words(self, min_count):
-        
-        
+    def get_words(self, min_count, window_size):
+
         word_frequency = dict()
         self.word2id = dict()
         self.id2word = dict()
         self.word_frequency = dict()
         
+        # for triplets
+        pair_frequency = dict()
+        self.pair2id = dict()
+        self.id2pair = dict()
+        self.pair_frequency = dict()
+        
         self.input_file = open(self.input_file_name)
+        
         self.sentence_length = 0
         self.sentence_count = 0
+        self.word_count = 0
+        self.pair_count = 0
+        
         
         print("Reading from file.. ")
         bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
       
         for line in self.input_file:
             
-            #time.sleep(0.001)
             
             if self.sentence_count % 1000 == 0:
                 bar.update(self.sentence_count)
@@ -60,21 +64,51 @@ class InputData:
             self.sentence_length += len(line)
                
             for i,w in enumerate(line):
-                
+            
                 if i % 2 == 0:                          #ignore all POS tags
            
                     try:
                         word_frequency[w] += 1
                     except:
                         word_frequency[w] = 1
-              
             
-        
+            Noun_positions = numpy.array([], dtype = int)
+            
+            for pos in ['NNS','NN','NP']:
+                if pos in line:
+                    line_numpy_arr = numpy.array(line)
+                    Noun_positions = numpy.append(Noun_positions,(numpy.where(line_numpy_arr == pos)[0]-1))
+                    
+                    
+            Noun_positions.sort()
+            print(Noun_positions)
+            
+            
+            for index_1, n1_position in enumerate(Noun_positions):
+                for index_2, n2_position in enumerate(Noun_positions[index_1+1:]):
+                    if abs(n1_position - n2_position) > 2*window_size:
+                        break
+                    else:
+                        print("\n WW",n1_position,n2_position,"::",line[n1_position],line[n2_position])
+                        n1 = line[n1_position]
+                        n2 = line[n2_position]
+                        
+                        
+                        try:
+                            
+                            pair_frequency[n1][n2] += 1
+                        except:
+                            
+                            pair_frequency[n1] = {n2:1}
+                        
+     
         wid = 0
         
         for w, c in word_frequency.items():
             if c < min_count:
                 self.sentence_length -= c
+                
+                
                 continue
             self.word2id[w] = wid
             self.id2word[wid] = w
@@ -180,64 +214,6 @@ class InputData:
                         
                     
     
-    def get_pairs(self, pair_min_count, window_size):
-        
-        # for triplets
-        self.pair_frequency = dict()
-        pair_frequency = dict()
-        self.pair2id = dict()
-        self.id2pair = dict()
-        
-       
-        self.input_file.seek(0)
-        
-        bar_pairs = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
-        
-        print("\nMaking pair samples..")
-        
-        sentence_count = 0
-        
-        for line in self.input_file:
-            
-            #time.sleep(0.001)
-            if sentence_count % 1000 == 0:   
-                bar_pairs.update(sentence_count)
-
-            sentence_count += 1
-            
-            temp_arr = line.split('\t')
-            
-            for i,w1 in enumerate(temp_arr):
-                
-                for j,w2 in enumerate(temp_arr[max(i-window_size,0):i+window_size]):
-                    
-                    if w1 == w2:
-                        continue
-                    
-                    if w1 in self.word2id and  w2 in self.word2id:
-                       
-                        key = [self.word2id[w1], self.word2id[w2]]
-                        #key.sort()
-                        pair_key = str(key[0])+':'+str(key[1])
-                        
-                        try:
-                            pair_frequency[pair_key] += 1
-                        except:
-                            pair_frequency[pair_key] = 1
-                        
-        
-        for key,value in pair_frequency.items():
-            if value > pair_min_count:
-                self.pair_frequency[key] = value
-                
-        self.pair_count = len(self.pair_frequency)
-        
-        for index,pair in enumerate(self.pair_frequency):
-            self.pair2id[pair] = index
-            self.id2pair[index] = [self.id2word[int(w)] for w in pair.split(":")]
-        
-        
-        #print(self.pair2id)
         
     def init_sample_table(self):
         self.sample_table = []
@@ -281,7 +257,7 @@ class InputData:
                 except:
                     continue
             
-            print("word_IDS \n",word_ids)
+            #print("word_IDS \n",word_ids)
         
             
             for i, l_u in enumerate(word_ids):
@@ -297,7 +273,7 @@ class InputData:
                         assert v < self.word_count
                         assert r_u < self.word_count
                         
-                        print(i,j,k,'::',l_u,v,r_u)
+                        #print(i,j,k,'::',l_u,v,r_u)
                         
                         search_key = str(l_u)+':'+str(r_u)
                         if search_key in self.pair_frequency.keys() and v in self.word2id.values():

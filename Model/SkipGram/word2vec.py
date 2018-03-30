@@ -1,4 +1,4 @@
-from input_data import InputData
+from new_input_data import InputData
 import numpy
 from model import SkipGramModel
 from torch.autograd import Variable
@@ -18,8 +18,8 @@ class Word2Vec:
                  window_size=5,
                  iteration=1,
                  initial_lr=0.025,
-                 min_count=20,
-                 pair_min_count = 10,
+                 min_count=3,
+                 pair_min_count = 1,
                  k_value = 6):
         """Initilize class parameters.
 
@@ -48,6 +48,7 @@ class Word2Vec:
         self.k_value = k_value
         self.skip_gram_model = SkipGramModel(self.pair_emb_size,self.emb_size, self.emb_dimension)
         self.use_cuda = torch.cuda.is_available()
+        
         if self.use_cuda:
             self.skip_gram_model.cuda()
         self.optimizer = optim.SGD(
@@ -62,27 +63,23 @@ class Word2Vec:
         pair_count = self.data.evaluate_pair_count(self.window_size) 
         batch_count = self.iteration * pair_count / self.batch_size
         process_bar = tqdm(range(int(batch_count)))
+        
         # self.skip_gram_model.save_embedding(
         #     self.data.id2word, 'begin_embedding.txt', self.use_cuda)
+        
         for i in process_bar:
             
-            pos_pairs = self.data.get_batch_pairs(self.batch_size,
-                                                  self.window_size)
-            neg_v = self.data.get_neg_v_neg_sampling(pos_pairs, self.k_value)   #k values here?s
-            
-            #print("Positive pairs",pos_pairs,"\n")
-            #print("Negative pairs",neg_v,"\n")
-            
-            pos_u = [pair[0] for pair in pos_pairs]
-            pos_v = [pair[1] for pair in pos_pairs]
-
-            #print("contexts :",pos_v)
+            pos_pairs = self.data.get_batch_pairs(self.batch_size, self.window_size)
+            neg_v = self.data.get_neg_v_neg_sampling(pos_pairs, self.k_value)  
             
             
+            pos_u = [pair[0] for pair in pos_pairs]   #index to the pair of Nouns
+            pos_v = [pair[1] for pair in pos_pairs]   #a context word (for instance, inbetween word)
+   
             pos_u = Variable(torch.LongTensor(pos_u))
             pos_v = Variable(torch.LongTensor(pos_v))
             
-            neg_v = Variable(torch.LongTensor(neg_v))
+            neg_v = Variable(torch.LongTensor(neg_v)) #a negative context word from unigram distribution
             
             if self.use_cuda:
                 pos_u = pos_u.cuda()
@@ -109,7 +106,8 @@ if __name__ == '__main__':
     w2v = Word2Vec(input_file_name=sys.argv[1], output_file_name=sys.argv[2])
     
     if w2v.pair_emb_size > 0 :
-        w2v.train()
+        #w2v.train()
+        pass
     else:
         print("Unable to train, doesn't have enough pair count")
 
