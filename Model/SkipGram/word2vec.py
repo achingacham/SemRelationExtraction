@@ -60,7 +60,7 @@ class Word2Vec:
         Returns:
             None.
         """
-        pair_count = self.data.evaluate_pair_count(self.window_size) 
+        pair_count = self.data.evaluate_pair_count() 
         batch_count = self.iteration * pair_count / self.batch_size
         process_bar = tqdm(range(int(batch_count)))
         
@@ -69,9 +69,9 @@ class Word2Vec:
         
         for i in process_bar:
             
+           
             pos_pairs = self.data.get_batch_pairs(self.batch_size, self.window_size)
             neg_v = self.data.get_neg_v_neg_sampling(pos_pairs, self.k_value)  
-            
             
             pos_u = [pair[0] for pair in pos_pairs]   #index to the pair of Nouns
             pos_v = [pair[1] for pair in pos_pairs]   #a context word (for instance, inbetween word)
@@ -101,12 +101,13 @@ class Word2Vec:
         self.skip_gram_model.save_embedding(
             self.data.id2pair, self.output_file_name, self.use_cuda)
 
-    
+            
+
 if __name__ == '__main__':
     w2v = Word2Vec(input_file_name=sys.argv[1], output_file_name=sys.argv[2])
     
     if w2v.pair_emb_size > 0 :
-        #w2v.train()
+        w2v.train()
         pass
     else:
         print("Unable to train, doesn't have enough pair count")
