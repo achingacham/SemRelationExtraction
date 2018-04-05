@@ -95,21 +95,22 @@ class InputData:
                         
                         n1 = line[n1_position].lower()
                         n2 = line[n2_position].lower()
-                        
-                        try:
+
+                        if n1 != n2:
+                            try:
                             
-                            pair_frequency[n1,n2] += 1
-                            paired_nouns[n1][0].update([n2])
-                            paired_nouns[n2][0].update([n1])
-                            self.between_words[n1,n2].append(line[n1_position+2:n2_position:2])
+                                pair_frequency[n1,n2] += 1
+                                paired_nouns[n1][0].update([n2])
+                                paired_nouns[n2][0].update([n1])
+                                self.between_words[n1,n2].append(line[n1_position+2:n2_position:2])
                             
                             
-                        except:
+                            except:
                             
-                            pair_frequency[n1,n2] = 1
-                            paired_nouns[n1] = [set([n2]),1]
-                            paired_nouns[n2] = [set([n1]),2]
-                            self.between_words[n1,n2] = [line[n1_position+2:n2_position:2]]
+                                pair_frequency[n1,n2] = 1
+                                paired_nouns[n1] = [set([n2]),1]
+                                paired_nouns[n2] = [set([n1]),2]
+                                self.between_words[n1,n2] = [line[n1_position+2:n2_position:2]]
                             
                             
         self.input_file.close()
@@ -151,7 +152,7 @@ class InputData:
             
             if value >= pair_min_count:
                 self.pair2id[key] = pid
-                self.id2pair[pid] = key
+                self.id2pair[pid] = [":".join(key)]
                 self.pair_frequency[key] = value
                 
                 

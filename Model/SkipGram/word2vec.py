@@ -14,12 +14,12 @@ class Word2Vec:
                  input_file_name,
                  output_file_name,
                  emb_dimension=100,
-                 batch_size=5,
+                 batch_size=64,
                  window_size=5,
                  iteration=1,
                  initial_lr=0.025,
-                 min_count=3,
-                 pair_min_count = 1,
+                 min_count=10,
+                 pair_min_count = 10,
                  k_value = 6):
         """Initilize class parameters.
 
