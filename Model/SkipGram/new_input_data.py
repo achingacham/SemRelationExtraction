@@ -2,6 +2,8 @@ import numpy
 from collections import deque
 import time
 import progressbar
+import os
+import re
 
 numpy.random.seed(12345)
 
@@ -52,6 +54,7 @@ class InputData:
         self.word_count = 0
         self.pair_count = 0
         
+        self.word_pair_batch_count = dict()
         
         print("Reading from file.. ")
         bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
@@ -75,6 +78,7 @@ class InputData:
                     except:
                         word_frequency[w.lower()] = 1
             
+                
             Noun_positions = numpy.array([], dtype = int)
             
             for pos in ['NNS','NN','NP']:
@@ -97,6 +101,7 @@ class InputData:
                         n2 = line[n2_position].lower()
 
                         if n1 != n2:
+                           
                             try:
                             
                                 pair_frequency[n1,n2] += 1
@@ -111,8 +116,9 @@ class InputData:
                                 paired_nouns[n1] = [set([n2]),1]
                                 paired_nouns[n2] = [set([n1]),2]
                                 self.between_words[n1,n2] = [line[n1_position+2:n2_position:2]]
-                            
-                            
+                                
+                    
+
         self.input_file.close()
     
         wid = 0
@@ -147,31 +153,99 @@ class InputData:
         
         
         pid = 0
+       
+        # Use pair_count file for testing only; display each Noun pairs with frequency, and the inbetween words
         
-        for key,value in pair_frequency.items():
+        try:
+            os.remove("pair_count")
+        except:
+            print("\n No previous pair_count file existed")
+
+        testFile = open("pair_count","w")
+
+        
+        
+        for item in sorted(pair_frequency, key= pair_frequency.get, reverse=True):
             
+            key = item
+            value = pair_frequency[item]
+
             if value >= pair_min_count:
+                
+                testFile.write("\n"+str(pid)+"\t"+":".join(key)+"\t"+str(value)+"\t")
+                
+                testCounter = dict()
+
                 self.pair2id[key] = pid
                 self.id2pair[pid] = [":".join(key)]
                 self.pair_frequency[key] = value
                 
                 
                 for inbetween_words in self.between_words[key]:
+                    
+                    
+                    if inbetween_words == -1:
+
+                        print("Unexpected Entry, Check pair sampling!")
+
+                    # generate a dictionary of pairs and inbetween words with their individual count
+                    
                     for words in inbetween_words:
+                        
+                        # To avoid samples with inbetween word same as one of the pair words
+                        if words in key:
+                            continue
+
                         words = words.lower()
                         l = len(self.word_pair_batch)
+                        
+                        
                         try:
-                            self.word_pair_batch.append((pid,self.word2id[words]))
-                            
+                            wid = self.word2id[words]
+                             
+                            #self.word_pair_batch.append((pid,wid))  #Old method in push in Deque
+               
+                            if pid in self.word_pair_batch_count.keys():
+                                if wid in self.word_pair_batch_count[pid].keys():
+                                    self.word_pair_batch_count[pid][wid] += 1
+                                else:
+                                    self.word_pair_batch_count[pid].update({wid:1}) 
+                            else:
+                                
+                                self.word_pair_batch_count[pid] = {wid:1}
+                                
                         except:
-                            
-                            pass
+                            pass    
+                
+                # Push items to Deque, only those inbetween words which are top most frequent for any pair
+                
+                if pid in self.word_pair_batch_count.keys():
+                        
+                    #testFile.write(str(self.word_pair_batch_count[pid]))
+                    
+                    pid_dict = self.word_pair_batch_count[pid]
+                    sorted_wid = sorted(pid_dict, key=pid_dict.get, reverse=True)
+                    top_50 = int((len(sorted_wid))/2)
+                    top_wid = sorted_wid[:top_50]
+                    
+                    for wid in top_wid:
+                      
+                        count = self.word_pair_batch_count[pid][wid]
+                        testFile.write("'"+str(self.id2word[wid])+"' : "+str(count)+"/"+str(self.word_frequency[wid])+", ")
+                        
+                        for _ in range(count):
+                            self.word_pair_batch.append((pid,wid))
+                    
+
                 pid += 1
                 
+        self.cross_verification()
                 
         self.pair_count = len(self.pair_frequency)
+
+        testFile.close()
         
-        
+
     def init_sample_table(self):
         self.sample_table = []
         sample_table_size = 1e8
@@ -204,10 +278,34 @@ class InputData:
         if self.word_pair_batch:
             
             for _ in range(batch_size):
-                batch_pairs.append(self.word_pair_batch.popleft())
+                key = self.word_pair_batch.popleft()
+                batch_pairs.append(key)
         
         return batch_pairs
     
+    def cross_verification(self):
+    
+        with open("/home/achingacham/Model/GRID_data/Evaluation_Datasets/BLESS/UniqueTuples") as evalFile:
+            
+            testDataset = evalFile.readlines()
+            
+            for items in testDataset:
+                
+                nouns = items.split()
+                
+                search_key = (nouns[0],nouns[1])
+                
+                if search_key in self.pair2id:
+                    
+                    print(nouns)
+                    
+                rev_search_key = (nouns[1],nouns[0])
+                
+                if rev_search_key in self.pair2id:
+                    
+                    print("Reverse:",nouns)
+                    
+                
     
     def get_neg_v_neg_sampling(self, pos_word_pair, count):
         neg_v = numpy.random.choice(

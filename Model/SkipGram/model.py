@@ -30,10 +30,10 @@ class SkipGramModel(nn.Module):
         super(SkipGramModel, self).__init__()
         self.emb_size = emb_size
         self.pair_emb_size = pair_emb_size
-        self.emb_dimension = emb_dimension
-        self.u_embeddings = nn.Embedding(pair_emb_size, emb_dimension, sparse=True)
+        self.emb_dimension = pair_emb_size + 100
+        self.u_embeddings = nn.Embedding(self.pair_emb_size, self.emb_dimension, sparse=True)
         
-        self.v_embeddings = nn.Embedding(emb_size, emb_dimension, sparse=True)
+        self.v_embeddings = nn.Embedding(self.emb_size, self.emb_dimension, sparse=True)
         self.init_emb()
         
     def init_emb(self):
@@ -83,10 +83,10 @@ class SkipGramModel(nn.Module):
     def save_embedding(self, id2pair, file_name, use_cuda):
         """Save all embeddings to file.
 
-        As this class only record word id, so the map from id to word has to be transfered from outside.
+        As this class only record pair id, so the map from id to pair has to be transfered from outside.
 
         Args:
-            id2word: map from word id to word.
+            id2pair: map from pair id to pair.
             file_name: file name.
         Returns:
             None.
@@ -105,10 +105,10 @@ class SkipGramModel(nn.Module):
 
 def test():
     model = SkipGramModel(100, 100)
-    id2word = dict()
+    id2pair = dict()
     for i in range(100):
-        id2word[i] = str(i)
-    model.save_embedding(id2word)
+        id2pair[i] = str(i)
+    model.save_embedding(id2pair)
 
 
 if __name__ == '__main__':

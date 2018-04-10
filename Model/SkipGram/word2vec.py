@@ -13,12 +13,12 @@ class Word2Vec:
     def __init__(self,
                  input_file_name,
                  output_file_name,
-                 emb_dimension=100,
+                 emb_dimension=300,
                  batch_size=64,
                  window_size=5,
                  iteration=1,
                  initial_lr=0.025,
-                 min_count=10,
+                 min_count=20,
                  pair_min_count = 10,
                  k_value = 6):
         """Initilize class parameters.
@@ -40,7 +40,7 @@ class Word2Vec:
         self.output_file_name = output_file_name
         self.pair_emb_size = len(self.data.pair_frequency)           #number of words above min_count Change it to pairs count
         self.emb_size = len(self.data.word_frequency)
-        self.emb_dimension = emb_dimension
+        self.emb_dimension = self.pair_emb_size + 100
         self.batch_size = batch_size
         self.window_size = window_size
         self.iteration = iteration
