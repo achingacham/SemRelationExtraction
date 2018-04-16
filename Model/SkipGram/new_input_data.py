@@ -22,65 +22,158 @@ class InputData:
         
         self.input_file_name = file_name
         self.word_pair_batch = deque()
-        self.get_words_pairs(min_count, window_size, pair_min_count)
+        self.window_size = window_size
+        self.min_count = min_count
+        self.pair_min_count = pair_min_count
+        self.get_words_pairs()
         self.init_sample_table()
         
         print('\nWord Count: %d' % self.word_count)
         print('\nPair Count: %d' % self.pair_count)
         print('\nSentence Length: %d' % (self.sentence_length))
 
-    def get_words_pairs(self, min_count, window_size, pair_min_count):
+    
+    def track_pairs(self, line, Noun_positions):
+
+        #find the possible Nouns pairs in the sentence, with in the window. Ignore Noun pairs apprearing adjascent
+        for index_1, n1_position in enumerate(Noun_positions):
+            for index_2, n2_position in enumerate(Noun_positions[index_1+1:]):
+
+                if (abs(n1_position - n2_position) > (2*self.window_size)) or (abs(n1_position - n2_position) < 3):
+                    break
+
+                #track the possible inbetween words for any pair of Nouns
+                else:
+
+                    n1 = line[n1_position].lower()
+                    n2 = line[n2_position].lower()
+
+                    #avoid all pairs of same noun eg: ('school','school')
+                    if n1 == n2:
+                        continue
+
+                    if (n1,n2) in self.initial_pair_frequency:
+
+                        self.initial_pair_frequency[n1,n2] += 1
+
+                        for items in line[n1_position+2:n2_position:2]:
+                            if items in self.between_words[n1,n2]:
+                                self.between_words[n1,n2][items] += 1
+                            else:
+                                self.between_words[n1,n2].update({items:1})
+
+                    else:
+                        #track pair frequency for each Noun pair
+                        #store all words inbetween the Noun pairs with their individual count.
+
+                        self.initial_pair_frequency[n1,n2] = 1
+                        self.between_words[n1,n2] = {}
+
+                        for items in line[n1_position+2:n2_position:2]:
+                            self.between_words[n1,n2].update({items:1})
+    
+    def make_word_dictionaries(self):
+        
+        wid = 0
+        
+        for word,wCount in self.initial_word_frequency.items():
+            
+            if wCount < self.min_count:
+                self.sentence_length -= wCount
+                continue
+                
+            if not (word in self.word2id):
+                self.word2id[word] = wid
+                self.id2word[wid] = word
+                self.word_frequency[wid] = wCount
+                wid += 1
+        
+        self.word_count = len(self.word2id)
+        
+        #Check for any error is parsing
+        [print("\n",item,value) for (item,value) in self.initial_word_frequency.items() if item in ['NNS','NN','NP','POS','CD','ADV','ADJ']]
+        
+        #Release memory associated with this dictionary
+        self.initial_word_frequency = dict()
+    
+    def remove_infrequent_pairs(self):
+        
+        for pair, count in self.initial_pair_frequency.items():
+            
+            word_1 = pair[0]
+            word_2 = pair[1]
+            
+            try:
+                wid_1 = self.word2id[word_1]
+            except:
+                #print(word_1,":",self.initial_word_frequency[word_1])
+                self.initial_pair_frequency[pair] = -1
+                self.between_words[pair] = -1
+                
+            try:
+                wid_2 = self.word2id[word_2]
+            except:
+                #print(word_2,":",self.initial_word_frequency[word_2])
+                self.initial_pair_frequency[pair] = -1
+                self.between_words[pair] = -1
+                
+    
+    
+    def get_words_pairs(self):
 
         # must include tokenization, lower cased words
         
-        word_frequency = dict()
+        #for words
+        self.initial_word_frequency = dict()
         self.word2id = dict()
         self.id2word = dict()
         self.word_frequency = dict()
         
-        # for triplets
-        pair_frequency = dict()
-        paired_nouns = dict()
+        #for pairs
+        self.initial_pair_frequency = dict()
         self.pair2id = dict()
         self.id2pair = dict()
-        self.pair_frequency = dict()
         
+        #context for pairs
         self.between_words = dict()
+        self.word_pair_batch_count = dict()
         
         self.input_file = open(self.input_file_name)
         
+        #counters
         self.sentence_length = 0
         self.sentence_count = 0
         self.word_count = 0
         self.pair_count = 0
         
-        self.word_pair_batch_count = dict()
         
         print("Reading from file.. ")
         bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
       
         for line in self.input_file:
             
-            if self.sentence_count % 1000 == 0:
+            if self.sentence_count % 100000 == 0:
                 bar.update(self.sentence_count)
            
             self.sentence_count += 1
             line = line.strip().split()
             
-            self.sentence_length += len(line)
+            #every sentence include POS for each token
+            self.sentence_length += (len(line)/2) 
                
             for i,w in enumerate(line):
             
-                if i % 2 == 0:                          #ignore all POS tags
-           
+                #ignore all POS tags, skip alternate words
+                if i % 2 == 0:                          
+                    
                     try:
-                        word_frequency[w.lower()] += 1
+                        self.initial_word_frequency[w.lower()] += 1
                     except:
-                        word_frequency[w.lower()] = 1
-            
-                
+                        self.initial_word_frequency[w.lower()] = 1
+                    
             Noun_positions = numpy.array([], dtype = int)
             
+            #track the position of Nouns in the sentences
             for pos in ['NNS','NN','NP']:
                 if pos in line:
                     line_numpy_arr = numpy.array(line)
@@ -88,164 +181,113 @@ class InputData:
                     
             Noun_positions.sort()
             
-            
-            for index_1, n1_position in enumerate(Noun_positions):
-                for index_2, n2_position in enumerate(Noun_positions[index_1+1:]):
-                    if (abs(n1_position - n2_position) > (2*window_size)) or (abs(n1_position - n2_position) < 3):
-                        break
-                    
-                    else:
-                        
-                        
-                        n1 = line[n1_position].lower()
-                        n2 = line[n2_position].lower()
-
-                        if n1 != n2:
-                           
-                            try:
-                            
-                                pair_frequency[n1,n2] += 1
-                                paired_nouns[n1][0].update([n2])
-                                paired_nouns[n2][0].update([n1])
-                                self.between_words[n1,n2].append(line[n1_position+2:n2_position:2])
-                            
-                            
-                            except:
-                            
-                                pair_frequency[n1,n2] = 1
-                                paired_nouns[n1] = [set([n2]),1]
-                                paired_nouns[n2] = [set([n1]),2]
-                                self.between_words[n1,n2] = [line[n1_position+2:n2_position:2]]
-                                
-                    
-
+            self.track_pairs(line, Noun_positions)
+        
+        
+        # First parse of input file is done
         self.input_file.close()
-    
-        wid = 0
+        print("\nFirst parsing Done!")
         
-        for w, c in word_frequency.items():
-            if c < min_count:
-                self.sentence_length -= c
-                
-                if w in paired_nouns:
-                    
-                    if paired_nouns[w][1] == 1:
-                        for wTemp in paired_nouns[w][0]:
-                            pair_frequency[w,wTemp] = -1
-                            self.between_words[w,wTemp] = -1
-                        
-                        
-                    if paired_nouns[w][1] == 2:
-                        for wTemp in paired_nouns[w][0]:
-                            pair_frequency[wTemp,w] = -1
-                            self.between_words[wTemp,w] = -1
-                        
-                continue
-             
-            
-            self.word2id[w] = wid
-            self.id2word[wid] = w
-            self.word_frequency[wid] = c
-            wid += 1
-            
+        self.make_word_dictionaries()
+        print("\n Made word dictionaries")
+        self.remove_infrequent_pairs()
+        print("\n Removed infrequent pairs")
+        self.make_pair_dictionaries()
+        print("\n Made pair dictionarieste")
         
-        self.word_count = len(self.word2id)
+    def make_pair_dictionaries(self):
         
+        # Use pair_count file for testing only; display each Noun pairs with frequency, and the inbetween words
+        #try:
+        #    os.remove("pair_count")
+        #except:
+        #    print("\n No previous pair_count file existed")
+        #testFile = open("pair_count","w")
         
         pid = 0
-       
-        # Use pair_count file for testing only; display each Noun pairs with frequency, and the inbetween words
-        
-        try:
-            os.remove("pair_count")
-        except:
-            print("\n No previous pair_count file existed")
-
-        testFile = open("pair_count","w")
-
-        
-        
-        for item in sorted(pair_frequency, key= pair_frequency.get, reverse=True):
+        for item in sorted(self.initial_pair_frequency, key = self.initial_pair_frequency.get, reverse=True):
             
             key = item
-            value = pair_frequency[item]
-
-            if value >= pair_min_count:
+            value = self.initial_pair_frequency[item]
+           
+            if value >= self.pair_min_count:
                 
-                testFile.write("\n"+str(pid)+"\t"+":".join(key)+"\t"+str(value)+"\t")
+                #testFile.write("\n"+str(pid)+"\t"+":".join(key)+"\t"+str(value)+"\t"+str(self.between_words[key]))
                 
-                testCounter = dict()
-
                 self.pair2id[key] = pid
                 self.id2pair[pid] = [":".join(key)]
-                self.pair_frequency[key] = value
                 
                 
-                for inbetween_words in self.between_words[key]:
-                    
-                    
-                    if inbetween_words == -1:
-
+                # generate a dictionary of pairs and inbetween words with their individual count
+                for words,wCount in self.between_words[key].items():
+                
+                    if words == -1:
                         print("Unexpected Entry, Check pair sampling!")
+        
+                    # To avoid samples with inbetween word same as one of those in pair
+                    if words in key:
+                        continue
 
-                    # generate a dictionary of pairs and inbetween words with their individual count
+                    words = words.lower()
                     
-                    for words in inbetween_words:
-                        
-                        # To avoid samples with inbetween word same as one of the pair words
-                        if words in key:
-                            continue
+                    try:
+                        wid = self.word2id[words]
 
-                        words = words.lower()
-                        l = len(self.word_pair_batch)
+                        #self.word_pair_batch.append((pid,wid))  #Old method to push items to Deque
+
+                        if pid in self.word_pair_batch_count:
                         
-                        
-                        try:
-                            wid = self.word2id[words]
-                             
-                            #self.word_pair_batch.append((pid,wid))  #Old method in push in Deque
-               
-                            if pid in self.word_pair_batch_count.keys():
-                                if wid in self.word_pair_batch_count[pid].keys():
-                                    self.word_pair_batch_count[pid][wid] += 1
-                                else:
-                                    self.word_pair_batch_count[pid].update({wid:1}) 
+                            if wid in self.word_pair_batch_count[pid]:
+                                self.word_pair_batch_count[pid][wid] += wCount
                             else:
+                                self.word_pair_batch_count[pid].update({wid:wCount}) 
                                 
-                                self.word_pair_batch_count[pid] = {wid:1}
-                                
-                        except:
-                            pass    
-                
-                # Push items to Deque, only those inbetween words which are top most frequent for any pair
-                
-                if pid in self.word_pair_batch_count.keys():
-                        
-                    #testFile.write(str(self.word_pair_batch_count[pid]))
-                    
-                    pid_dict = self.word_pair_batch_count[pid]
-                    sorted_wid = sorted(pid_dict, key=pid_dict.get, reverse=True)
-                    top_50 = int((len(sorted_wid))/2)
-                    top_wid = sorted_wid[:top_50]
-                    
-                    for wid in top_wid:
-                      
-                        count = self.word_pair_batch_count[pid][wid]
-                        testFile.write("'"+str(self.id2word[wid])+"' : "+str(count)+"/"+str(self.word_frequency[wid])+", ")
-                        
-                        for _ in range(count):
-                            self.word_pair_batch.append((pid,wid))
-                    
+                        else:
 
+                            self.word_pair_batch_count[pid] = {wid:wCount}
+                            
+                    except:
+                        #print("\n Inbetween word count is too less",words,self.initial_word_frequency[words])
+                        pass    
+                
+                
+                self.push_into_deque(pid)
                 pid += 1
                 
-        self.cross_verification()
-                
-        self.pair_count = len(self.pair_frequency)
-
-        testFile.close()
         
+        print("\n Pushed into Deque")
+        
+        #Release memory with obselete dictionaries
+        self.between_words = dict()
+        self.initial_pair_frequency = dict()
+        
+        #testFile.close()
 
+        self.cross_verification()
+        print("\n Completed BLESS set verification")
+        
+        self.pair_count = len(self.pair2id)
+        
+    # New method to push items to Deque, ie; only those inbetween words which are top most frequent for any pair
+    def push_into_deque(self,pid):
+            
+        if pid in self.word_pair_batch_count:
+
+            pid_dict = self.word_pair_batch_count[pid]
+            sorted_wid = sorted(pid_dict, key=pid_dict.get, reverse=True)
+            top_50 = int((len(sorted_wid))/2)
+
+            #mention the limit for consideration
+            top_wid = sorted_wid[:] 
+
+            for wid in top_wid:
+
+                count = self.word_pair_batch_count[pid][wid]
+
+                for _ in range(count):
+                    self.word_pair_batch.append((pid,wid))
+
+                    
     def init_sample_table(self):
         self.sample_table = []
         sample_table_size = 1e8
@@ -284,29 +326,24 @@ class InputData:
         return batch_pairs
     
     def cross_verification(self):
+
+        blessFile = open("BlessSet.txt","w")
     
         with open("/home/achingacham/Model/GRID_data/Evaluation_Datasets/BLESS/UniqueTuples") as evalFile:
-            
             testDataset = evalFile.readlines()
             
             for items in testDataset:
-                
                 nouns = items.split()
-                
                 search_key = (nouns[0],nouns[1])
-                
-                if search_key in self.pair2id:
-                    
-                    print(nouns)
-                    
                 rev_search_key = (nouns[1],nouns[0])
-                
-                if rev_search_key in self.pair2id:
+                if (search_key in self.pair2id) or  (rev_search_key in self.pair2id):
+                    blessFile.write("\n"+str(nouns))
+                                
                     
-                    print("Reverse:",nouns)
-                    
                 
-    
+        evalFile.close()
+        blessFile.close()
+        
     def get_neg_v_neg_sampling(self, pos_word_pair, count):
         neg_v = numpy.random.choice(
             self.sample_table, size=(len(pos_word_pair), count)).tolist()

@@ -30,9 +30,8 @@ class SkipGramModel(nn.Module):
         super(SkipGramModel, self).__init__()
         self.emb_size = emb_size
         self.pair_emb_size = pair_emb_size
-        self.emb_dimension = pair_emb_size + 100
+        self.emb_dimension = emb_dimension
         self.u_embeddings = nn.Embedding(self.pair_emb_size, self.emb_dimension, sparse=True)
-        
         self.v_embeddings = nn.Embedding(self.emb_size, self.emb_dimension, sparse=True)
         self.init_emb()
         
@@ -63,10 +62,11 @@ class SkipGramModel(nn.Module):
             Loss of this process, a pytorch variable.
         """
         
-       
+        
         emb_u = self.u_embeddings(pos_u)
         emb_v = self.v_embeddings(pos_v)                 #context vector is for a pair of words.
         neg_emb_v = self.v_embeddings(neg_v)
+        
         
         #print("Positive U embed :",emb_u.data.shape,"\n")
         #print("Positive V embed:",emb_v.data.shape,"\n")
@@ -76,10 +76,12 @@ class SkipGramModel(nn.Module):
         score = torch.sum(score, dim=1) # summed up for the dot product sum
         score = F.logsigmoid(score)
         
+        
         neg_score = torch.bmm(neg_emb_v, emb_u.unsqueeze(2)).squeeze() 
         neg_score = F.logsigmoid(-1 * neg_score)
         return -1 * (torch.sum(score)+torch.sum(neg_score)) #this has k values being summed up
 
+    
     def save_embedding(self, id2pair, file_name, use_cuda):
         """Save all embeddings to file.
 
@@ -95,6 +97,7 @@ class SkipGramModel(nn.Module):
             embedding = self.u_embeddings.weight.cpu().data.numpy()
         else:
             embedding = self.u_embeddings.weight.data.numpy()
+            
         fout = open(file_name, 'w')
         fout.write('%d %d\n' % (len(id2pair), self.emb_dimension))
         for wid, w in id2pair.items():

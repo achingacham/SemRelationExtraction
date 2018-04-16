@@ -13,13 +13,13 @@ class Word2Vec:
     def __init__(self,
                  input_file_name,
                  output_file_name,
-                 emb_dimension=300,
-                 batch_size=64,
-                 window_size=5,
+                 emb_dimension=500,
+                 batch_size=32,
+                 window_size=7,
                  iteration=1,
                  initial_lr=0.025,
-                 min_count=20,
-                 pair_min_count = 10,
+                 min_count=200,
+                 pair_min_count = 100,
                  k_value = 6):
         """Initilize class parameters.
 
@@ -38,9 +38,9 @@ class Word2Vec:
         """
         self.data = InputData(input_file_name, min_count, pair_min_count, window_size)
         self.output_file_name = output_file_name
-        self.pair_emb_size = len(self.data.pair_frequency)           #number of words above min_count Change it to pairs count
-        self.emb_size = len(self.data.word_frequency)
-        self.emb_dimension = self.pair_emb_size + 100
+        self.pair_emb_size = len(self.data.pair2id)           #number of words above min_count Change it to pairs count
+        self.emb_size = len(self.data.word2id)
+        self.emb_dimension = emb_dimension
         self.batch_size = batch_size
         self.window_size = window_size
         self.iteration = iteration
@@ -67,7 +67,10 @@ class Word2Vec:
         # self.skip_gram_model.save_embedding(
         #     self.data.id2word, 'begin_embedding.txt', self.use_cuda)
         
+        print("In training", pair_count)
+        
         for i in process_bar:
+            
             
            
             pos_pairs = self.data.get_batch_pairs(self.batch_size, self.window_size)
@@ -80,6 +83,8 @@ class Word2Vec:
             pos_v = Variable(torch.LongTensor(pos_v))
             
             neg_v = Variable(torch.LongTensor(neg_v)) #a negative context word from unigram distribution
+            
+            
             
             if self.use_cuda:
                 pos_u = pos_u.cuda()
