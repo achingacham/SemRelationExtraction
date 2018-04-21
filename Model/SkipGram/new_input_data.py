@@ -175,9 +175,9 @@ class InputData:
             
             #track the position of Nouns in the sentences
             for pos in ['NNS','NN','NP']:
-                if pos in line:
-                    line_numpy_arr = numpy.array(line)
-                    Noun_positions = numpy.append(Noun_positions,(numpy.where(line_numpy_arr == pos)[0]-1))
+                if pos in line[1::2]:
+                    line_numpy_arr = numpy.array(line[1::2])
+                    Noun_positions = numpy.append(Noun_positions,(numpy.where(line_numpy_arr == pos)[0]*2))
                     
             Noun_positions.sort()
             
