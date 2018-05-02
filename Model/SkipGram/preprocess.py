@@ -118,13 +118,13 @@ class Preprocess:
                     
                     pair_key = n1+"[}"+n2
                     
-                    if (n1,n2) in self.initial_pair_frequency:
+                    if pair_key in self.initial_pair_frequency:
 
-                        self.initial_pair_frequency[n1,n2][0] += 1
+                        self.initial_pair_frequency[pair_key][0] += 1
 
                         for items in line[n1_position+2:n2_position:2]:
                             
-                            if items in self.initial_pair_frequency[pair_key]:
+                            if items in self.initial_pair_frequency[pair_key][1]:
                                 
                                 self.initial_pair_frequency[pair_key][1][items] += 1
                             else:
@@ -138,8 +138,8 @@ class Preprocess:
                         
                         for items in line[n1_position+2:n2_position:2]:
                             self.initial_pair_frequency[pair_key][1].update({items:1})
-
-
+                
+                    
 if __name__ ==  '__main__':
     
     inputfile = sys.argv[1]

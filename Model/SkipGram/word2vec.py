@@ -70,9 +70,7 @@ class Word2Vec:
         print("In training", pair_count)
         
         for i in process_bar:
-            
-            
-           
+        
             pos_pairs = self.data.get_batch_pairs(self.batch_size, self.window_size)
             neg_v = self.data.get_neg_v_neg_sampling(pos_pairs, self.k_value)  
             
@@ -83,7 +81,6 @@ class Word2Vec:
             pos_v = Variable(torch.LongTensor(pos_v))
             
             neg_v = Variable(torch.LongTensor(neg_v)) #a negative context word from unigram distribution
-            
             
             
             if self.use_cuda:
