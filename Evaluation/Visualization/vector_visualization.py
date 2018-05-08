@@ -1,4 +1,6 @@
-mport numpy as np
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 file = pd.read_csv("sample_word_embedding.txt",names=[str(i) for i in range(101)],delimiter=' ', skiprows=1)
 features = [str(i) for i in range(1,101)]

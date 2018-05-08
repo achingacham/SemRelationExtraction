@@ -2,21 +2,19 @@ import os
 import sys
 import re
 import numpy
-import ipdb
-import cProfile
-
+from multiprocessing import Pool, Manager 
 
 class Datasets:
     
     def __init__(self, inputfolder, minWordCount, minPairCount):
         
         listfiles = os.listdir(inputfolder)
-        self.posfile = inputfolder+'Triplesets_positive_Step2'
-        self.negfile = inputfolder+'Triplesets_negative_Step2)'
-        self.statfile = inputfolder+"Statistics_Step2"
+        self.posfile = inputfolder+'Triplesets_positive_pll'
+        self.negfile = inputfolder+'Triplesets_negative_pll'
+        self.statfile = inputfolder+"Statistics_pll"
 
-        self.wdictfile = inputfolder+'Word2Id_Step2)'
-        self.pdictfile = inputfolder+'Pair2Id_Step2'
+        self.wdictfile = inputfolder+'Word2Id_pll'
+        self.pdictfile = inputfolder+'Pair2Id_pll'
         
         wordfiles = []
         pairfiles = []
@@ -32,9 +30,10 @@ class Datasets:
 
             if re.search('_out_word$',files):
                 wordfiles.append(inputfolder+files)
-
-        for wfile in wordfiles:
-            self.combineWordsFrequencies(wfile)
+        
+        
+        for i,wfile in enumerate(wordfiles):
+            self.combineWordsFrequencies(i,wfile)
             
         self.word2id = dict()
         self.id2word = dict()
@@ -44,21 +43,38 @@ class Datasets:
         
         self.init_sample_table()
         
-        #ipdb.set_trace()
         
+        #######
         
-        for i,pfile in enumerate(pairfiles):
-            function = 'self.combinePairsFrequencies('+str(i)+',"'+pfile+'")'
-            print(cProfile.runctx(function,globals(),locals()))
+        manager = Manager()
+        
+        pair_frequency_mgr = manager.dict()
+        initial_data_sets_mgr = manager.dict()
+        
+        cpus = int(os.cpu_count())
+        
+        with Pool(cpus) as pool:
             
+            for i,pfile in enumerate(pairfiles):
+                p = pool.apply_async(self.combinePairsFrequencies, args=(i, pfile, pair_frequency_mgr, initial_data_sets_mgr ))
             
+            pool.close()
+            pool.join()
+            
+        print("Inside Manager", len(initial_data_sets_mgr))
+        
+        self.pair_frequency = pair_frequency_mgr
+        
+        self.initial_data_sets = initial_data_sets_mgr
+        
         self.pair2id = dict()
         self.id2pair = dict()
+        
         
         self.pairs2Indices(minPairCount)
         
         
-    def combineWordsFrequencies(self, wfile):
+    def combineWordsFrequencies(self, i, wfile):
 
         with open(wfile) as inputFile:
 
@@ -72,8 +88,10 @@ class Datasets:
                     
         
         inputFile.close()
+        print("\n File ",i," done for words by", os.getpid())
         
-    def combinePairsFrequencies(self, i,pfile):
+    def combinePairsFrequencies(self, i, pfile, pair_frequency_mgr, initial_data_sets_mgr):
+        
         
         with open(pfile) as inputFile:
 
@@ -82,64 +100,61 @@ class Datasets:
                 
                 if len(item) != 3:
                     print("Ëxceptional items!", item)
-                    continue
                 
                 pair = item[0].split('[}')
                 
                 if len(pair) != 2:
                     print("Exceptional pairs",item[0])
-                    continue
                     
                 word1 = pair[0]
                 word2 = pair[1]
                 
-                if word1 in self.word2id:
+                try:
                     #does word1 satisfies minimum count?
                     wid1 = self.word2id[word1]
-                else:
+                except:
                     continue
                 
-                
-                if word2 in self.word2id:
+                try:
                     #does word2 satisfies minimum count?
                     wid2 = self.word2id[word2]
-                else:
+                except:
                     continue
                 
                 pairCount = int(item[1])
                 
-                if (wid1,wid2) in self.pair_frequency:
-                    self.pair_frequency[(wid1,wid2)] += pairCount
+                if (wid1,wid2) in pair_frequency_mgr:
+
+                    pair_frequency_mgr[(wid1,wid2)] += pairCount
                 else:
-                    self.pair_frequency[(wid1,wid2)] = pairCount
+                    pair_frequency_mgr[(wid1,wid2)] = pairCount
             
-                
                 words = item[2].strip().split('{]')
                 
                 for elements in words[:-1]:
                     elements = elements.strip().split('[}')
                     
                     in_word = elements[0]
+                    in_wordCount = int(elements[1])
                     
-                    
-                    if in_word in self.word2id:
+                    try:
                         in_wid = self.word2id[in_word]
-                    else:
+                    except:
                         continue
                         #in between word is too less in frequency, hence ignored from dataset.
                     
-                    in_wordCount = int(elements[1])
-                    
-                    if ((wid1,wid2),in_wid) in self.initial_data_sets:
-                        self.initial_data_sets[(wid1,wid2,in_wid)] += in_wordCount   
+                    if ((wid1,wid2),in_wid) in initial_data_sets_mgr:
+                        initial_data_sets_mgr[((wid1,wid2),in_wid)] += in_wordCount   
                     else:
-                        self.initial_data_sets[(wid1,wid2,in_wid)] = in_wordCount 
+                        initial_data_sets_mgr[((wid1,wid2),in_wid)] = in_wordCount 
                     
-                    
+                    #if self.initial_data_sets[((wid1,wid2),in_wid)] != 1:
+                    #    print(pair, in_word , self.initial_data_sets[((wid1,wid2),in_wid)])
                 
-                    
+                      
         inputFile.close()
-        print("\n ",i,"data_sets size", sys.getsizeof(self.initial_data_sets)/(1024*1024), 'count:', len(self.initial_data_sets))
+        
+        print("\n ",i,"data_sets size", sys.getsizeof(self.initial_data_sets)/(1024*1024))
     
     def words2Indices(self, wordCount=200):
         
@@ -151,7 +166,8 @@ class Datasets:
             
         wid = 0
         outputFile = open(self.wdictfile,"a")
-        for word in self.word_frequency:
+        
+        for word,count in self.word_frequency.items():
             if self.word_frequency[word] >= wordCount:
                 self.word2id[word] = wid
                 self.id2word[wid] = word
@@ -163,14 +179,14 @@ class Datasets:
         
         #Release memory
         
-        self.word_frequency = dict()
         outputFile.close()
+        self.word_frequency = dict()
         print( "\n # Words : ", len(self.word2id))
         
         
     def init_sample_table(self):
         
-        print("\n Making sample table")
+        
         
         self.sample_table = []
         sample_table_size = 1e8
@@ -185,6 +201,7 @@ class Datasets:
                 
         self.sample_table = numpy.array(self.sample_table)
 
+        print("\n Made sample table")
         
     def pairs2Indices(self, pairCount=100):
         
@@ -196,11 +213,11 @@ class Datasets:
         
         pid = 0
         outputFile = open(self.pdictfile,"a")
-        for pair in self.pair_frequency:
+        
+        for pair,count in self.pair_frequency.items():
             if self.pair_frequency[pair] >= pairCount:
                 self.pair2id[pair] = pid
                 self.id2pair[pid] = pair
-                
                 wid1 = pair[0]
                 wid2 = pair[1]
                 w1 = self.id2word[wid1]
@@ -212,8 +229,8 @@ class Datasets:
                 pid += 1
     
         #Release memory
-        self.pair_frequency = dict()
         outputFile.close()
+        self.pair_frequency = dict()
         print( "\n # Pairs : ", len(self.pair2id))  
         
         
@@ -239,20 +256,15 @@ class Datasets:
             pass
             
         dataset_size = 0
-        
-        posOutputFile = open(self.posfile, "a")
-        negOutputFile = open(self.negfile, "a")
-        
+        posOutputFile = open(self.posfile,"a")
+        negOutputFile = open(self.negfile,"a")
+                             
         for dataset in self.initial_data_sets:
             
             count = self.initial_data_sets[dataset]
             
-            
-            wid1 = dataset[0]
-            wid2 = dataset[1]
-            iwid = dataset[2]
-            
-            pair = (wid1,wid2)
+            pair = dataset[0]
+            iwid = dataset[1]
             
             if pair in self.pair2id:
                 pid = self.pair2id[pair]
@@ -268,7 +280,7 @@ class Datasets:
                     negOutputFile.write(str(output)+"\n")
                         
                     dataset_size += 1
-
+        
         posOutputFile.close()
         negOutputFile.close()
         
@@ -287,8 +299,14 @@ if __name__ ==  '__main__':
     minWordCount = 500
     minPairCount = 100
     k = 5
-
+    
     data = Datasets(inputfolder, minWordCount, minPairCount)
-    print(cProfile.runctx('data.makeTriplesets(k)',globals(),locals()))
+
+    
+    '''
+    data.makeTriplesets(k)
+    '''
+    
+    
     
     

@@ -8,10 +8,10 @@ class SkipGramModel(nn.Module):
     """Skip gram model of word2vec.
 
     Attributes:
-        emb_size: Embedding size.
+        pair_emb_size : Number of pairs
+        emb_size: Number of context words
         emb_dimention: Embedding dimention, typically from 50 to 500.
-        u_embedding: Embedding for center word.
-        v_embedding: Embedding for neibor words.
+        
     """
 
     def __init__(self, pair_emb_size, emb_size, emb_dimension):
@@ -34,6 +34,11 @@ class SkipGramModel(nn.Module):
         self.u_embeddings = nn.Embedding(self.pair_emb_size, self.emb_dimension, sparse=True)
         self.v_embeddings = nn.Embedding(self.emb_size, self.emb_dimension, sparse=True)
         self.init_emb()
+        
+        print("Model parameters")
+        print("self.pair_emb_size :\t",self.pair_emb_size)
+        print("self.emb_dimension :\t",self.emb_dimension)
+        print("self.emb_size :\t",self.emb_size)
         
     def init_emb(self):
         """Initialize embedding weight like word2vec.
