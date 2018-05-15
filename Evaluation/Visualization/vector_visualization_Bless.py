@@ -24,7 +24,7 @@ try:
 except:
     print(outfolder+ " folder exists. Will be overwritten")
 
-with open(ifolder+"EMB_All.txt") as getParam:
+with open(ifolder+"EMB_Bless.txt") as getParam:
     
     line = getParam.readline()
     
@@ -34,7 +34,7 @@ numberPairs = int(line[0])
 emb_dimension = int(line[1])
 emb_dimension += 1
 
-file = pd.read_csv(ifolder+"EMB_All.txt",names=[str(i) for i in range(emb_dimension)],delimiter=' ', skiprows=1)
+file = pd.read_csv(ifolder+"EMB_Bless.txt",names=[str(i) for i in range(emb_dimension)],delimiter=' ', skiprows=1)
 
 features = [str(i) for i in range(1,emb_dimension)]
 
@@ -80,14 +80,11 @@ def findNearestNeighbor(k,t,nPairs):
     
     distances = []
     
-    testFile = open("testfile.txt","a")
     
     for i,d in enumerate(relativeDistance):
         distances.append((d, label[i]))
         #distances[i] = (d,label[i])
-        testFile.write("\n"+str(distances[i]))
-    
-    testFile.close()
+            
     
     temp_array = np.array(distances, dtype=dtype)
     ordered_array = np.sort(temp_array, order='distance')
@@ -101,10 +98,11 @@ def findNearestNeighbor(k,t,nPairs):
 
 
 list_label = [i for i in label]
+#print(list_label)
 #print(list_label[0], list_label.index("['products',\'group\']"))
-#print(list_label.index("['dishwasher','freezer']"))
+#print(list_label.index('dishwasher:::freezer'))
 
-random = list_label.index("['phone','computer']")
+random = list_label.index('phone:::computer')
 top = 10
 nearestNeighbors = findNearestNeighbor(random,top,numberPairs)
 
@@ -166,4 +164,4 @@ for items in nearestNeighbors:
 #ax.legend(targets)
 ax.grid()
 #pca.explained_variance_ratio_ 
-fig.savefig(outfolder+"PC Analysis")
+fig.savefig(outfolder+"PC Analysis_Bless.png")
