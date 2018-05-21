@@ -84,6 +84,13 @@ class SkipGramModel(nn.Module):
         
         neg_score = torch.bmm(neg_emb_v, emb_u.unsqueeze(2)).squeeze() 
         neg_score = F.logsigmoid(-1 * neg_score)
+        
+        #print("\n emb_u", emb_u)
+        #print("\n emb_v", emb_v)
+        #print("\n score",score)
+        #print("\n Neg_emb_v", neg_emb_v)
+        #print("\n neg_score",neg_score)
+        
         return -1 * (torch.sum(score)+torch.sum(neg_score)) #this has k values being summed up
 
     

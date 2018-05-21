@@ -24,7 +24,7 @@ class Word2Vec:
         
         self.outfolder = ofolder+ifolder.rsplit('/',2)[1]+'/'
         try:
-            os.mkdir(self.outfolder)
+            os.makedirs(self.outfolder)
         except:
             print(self.outfolder+ " folder exists. Will be overwritten")
         
@@ -71,7 +71,7 @@ class Word2Vec:
         with open(wdictfile) as inputFile:
             
             for item in inputFile:
-                word,wid = item.split('\t')
+                word,wid = item.split()
                 self.id2word[int(wid)] = word
                           
         print("\n Completed reading word dictionary.")
@@ -80,14 +80,16 @@ class Word2Vec:
         with open(pdictfile) as inputFile:
             
             for item in inputFile:
-                word1,word2,pid = item.split('\t')
+                word1,word2,pid = item.split()
                
-                self.id2pair[int(pid)] = (word1,word2)
+                self.id2pair[int(pid)] = word1+':::'+word2
                 self.pair2id[(word1,word2)] = int(pid)
-                print(self.id2pair[int(pid)])
+                #print(self.id2pair[int(pid)],word1+':::'+word2)
         print("\n Completed reading pair dictionary.")
         
-        self.cross_verification()
+        self.cross_verification_BLESS()
+        self.cross_verification_EVAL()
+        
         
     def evaluate_pair_count(self):
         
@@ -146,7 +148,7 @@ class Word2Vec:
         return self.negative_pairs[(batch_count)*self.batch_size:(batch_count+1)*self.batch_size]
         
     
-    def cross_verification(self):
+    def cross_verification_BLESS(self):
 
         #Remove the file if it already exists
         try:
@@ -165,7 +167,7 @@ class Word2Vec:
         
         self.Bless_id2pair = dict()
         
-        with open("/home/achingacham/Model/GRID_data/Evaluation_Datasets/BLESS/UniqueTuples") as evalFile:
+        with open("/home/achingacham/Model/GRID_data/Evaluation_Datasets/BLESS_UniqueTuples") as evalFile:
             testDataset = evalFile.readlines()
             
             for items in testDataset:
@@ -175,33 +177,64 @@ class Word2Vec:
                 
                 if (search_key in self.pair2id):
                     temp_id = self.pair2id[search_key]
-                    self.Bless_id2pair[temp_id] = str(nouns[0])+':::'+str(nouns[1])
-                    blessFile.write(str(nouns)+"\n")
+                    self.Bless_id2pair[temp_id] = nouns[0]+':::'+nouns[1]
+                    blessFile.write(items)
                 
                 else:
-                    blessExceptFile.write(str(nouns)+"\n")
-                    
-                '''
-                elif (rev_search_key in self.pair2id):
-                    temp_id = self.pair2id[rev_search_key]
-                    self.Bless_id2pair[temp_id] = nouns[1]+':::'+nouns[0]
-                    
-                    blessFile.write("\n"+str(nouns))
-                else:
-                    pass
-                    
-                '''
+                    blessExceptFile.write(items)                
+               
         
         print("Completed cross validation with Blessset")
-        evalFile.close()
+        blessExceptFile.close()
         blessFile.close()
 
+    def cross_verification_EVAL(self):
+
+        #Remove the file if it already exists
+        try:
+            os.remove(self.outfolder+"EvalSet.txt")
+        except:
+            pass
+        
+        #Remove the file if it already exists
+        try:
+            os.remove(self.outfolder+"EvalSet_Except.txt")
+        except:
+            pass
+        
+        EVALExceptFile = open(self.outfolder+"EvalSet_Except.txt","w")
+        EVALFile = open(self.outfolder+"EvalSet.txt","w")
+        
+        self.Eval_id2pair = dict()
+        
+        with open("/home/achingacham/Model/GRID_data/Evaluation_Datasets/EVAL_UniqueTuples") as evalFile:
+            testDataset = evalFile.readlines()
+            
+            for items in testDataset:
+                nouns = items.split()
+                search_key = (nouns[0],nouns[1])
+                rev_search_key = (nouns[1],nouns[0])
+                
+                if (search_key in self.pair2id):
+                    temp_id = self.pair2id[search_key]
+                    self.Eval_id2pair[temp_id] = nouns[0]+':::'+nouns[1]
+                    EVALFile.write(items)
+                
+                else:
+                    EVALExceptFile.write(items)                
+               
+        
+        print("Completed cross validation with Blessset")
+        EVALExceptFile.close()
+        EVALFile.close()
+        
+
+        
     def train(self):
         """Multiple training.
         Returns:
             None.
         """
-        
         
         batch_count = self.pair_count / self.batch_size
             
