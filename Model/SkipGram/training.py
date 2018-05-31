@@ -43,16 +43,17 @@ class Word2Vec:
         self.read_pair_dict(ifolder+"Pair2Id")
         
         self.pair_count = self.evaluate_pair_count()
-        
-        #self.positive_pairs = [None] * self.pair_count        
-        self.positive_pairs = [[3242323, 13213121]] * self.pair_count
-       #[i for i in range(self.pair_count)]
+        #self.positive_pairs = [[3242323, 13213121]] * self.pair_count
+        self.positive_pairs = np.zeros((self.pair_count, 2), dtype=int)
+       
         # Dummy values to ensure size does not change
-        self.negative_pairs = [[3242323,3242323,3242323,3242323,3242323]] * self.pair_count
-        #self.negative_pairs = [None] * self.pair_count
-        #[i for i in range(self.pair_count)]
+        #self.negative_pairs = [[3242323,3242323,3242323,3242323,3242323]] * self.pair_count
+        self.negative_pairs = np.zeros((self.pair_count, 5), dtype=int)
         
+        print(" Size of :", sys.getsizeof(self.positive_pairs))
+        print(" Size of :", sys.getsizeof(self.negative_pairs))
         #ipdb.set_trace()
+        
         self.emb_size     = len(self.id2word)
         self.pair_emb_size = len(self.id2pair)
         
@@ -119,9 +120,7 @@ class Word2Vec:
                 #wid = line.split(',')[1].strip('( )\n')
                 pid, wid = line.strip('( )\n').split(',')
                 #self.positive_pairs.append([int(pid),int(wid)])
-                #self.positive_pairs[index] = (int(pid),int(wid))
-                self.positive_pairs[index][0] = int(pid)
-                self.positive_pairs[index][1] = int(wid)
+                self.positive_pairs[index] = [int(pid),int(wid)]
                 index += 1
         print("Size of :", sys.getsizeof(self.positive_pairs))
         
@@ -130,11 +129,8 @@ class Word2Vec:
         index = 0
         with open(negDsfile) as inputFile:
             for line in inputFile:
-                #self.negative_pairs.append([int(i.strip('[ ] \n')) for i in line.split(',')])
-                #self.negative_pairs[index] = tuple([int(i) for i in line.strip('[ ] \n').split(',')])
                 temp = [int(i) for i in line.strip('[ ] \n').split(',')]
-                for temp_index,temp_value in enumerate(temp):
-                    self.negative_pairs[index][temp_index]=temp_value
+                self.negative_pairs[index] = temp
                 index += 1
         print(" Size of :", sys.getsizeof(self.negative_pairs))
         
@@ -254,12 +250,15 @@ class Word2Vec:
                 pos_pairs = self.get_batch_pairs(i)
                 neg_v = self.get_neg_v(i) 
                 
-                pos_u = [pair[0] for pair in pos_pairs]   #index to the pair of Nouns
-                pos_v = [pair[1] for pair in pos_pairs]   #a context word (for instance, inbetween word)
-
+                
+                pos_u = np.array([pair[0] for pair in pos_pairs])   #index to the pair of Nouns
+                pos_v = np.array([pair[1] for pair in pos_pairs])   #a context word (for instance, inbetween word)
+                
+                
+                
+                #pos_u = Variable(torch.LongTensor(pos_u))
                 pos_u = Variable(torch.LongTensor(pos_u))
                 pos_v = Variable(torch.LongTensor(pos_v))
-
                 neg_v = Variable(torch.LongTensor(neg_v)) #a negative context word from unigram distribution
                 
                       

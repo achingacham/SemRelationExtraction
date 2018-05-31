@@ -11,7 +11,7 @@ import ipdb
 
 class modelTrain:
     
-    def __init__(self, inputData, model, loss, optimizer, outfolder,logfile):
+    def __init__(self, inputData, model, loss, optimizer, outfolder,logfile, tag):
        
         self.epochCostTrain = []
         self.epochCostDev = []
@@ -26,13 +26,14 @@ class modelTrain:
         self.loss = loss
         self.optimizer = optimizer
         self.outfolder = outfolder
-        
+        self.tag = tag
+
         try:
-            os.remove(outfolder+logfile)
+            os.remove(outfolder+self.tag+logfile)
         except:
             print(" Log file does n't exist. Creating now..")
 
-        self.logs = open(outfolder+logfile,"a")
+        self.logs = open(outfolder+self.tag+logfile,"a")
     
         self.logs.write("\n\nTraining : at \t" + str(time.time()))
     
@@ -48,6 +49,10 @@ class modelTrain:
         matpy.close()
     
     def train(self, batchSize, epochs):
+        
+        currentDevCost = 0
+        previousDevCost = 0
+        l2_factor = 0.1
         
         for epoch in range(epochs):
             #SPlit dataset to avoid lexical memorization
@@ -87,43 +92,33 @@ class modelTrain:
                         
                     ###
                     
-                batch_input_vector = autograd.Variable(self.inputData.make_batch_input_vector(batch_concept,batch_relata), requires_grad = True)
+                batch_input_vector = autograd.Variable(self.inputData.make_batch_input_vector(batch_concept,batch_relata, self.tag), requires_grad = True)
                 batch_target_label = autograd.Variable(self.inputData.make_batch_target_vector(batch_relation))
 
                 self.model.zero_grad()
                 
                 batch_log_prob = self.model(batch_input_vector)
                 batch_cost = self.loss(batch_log_prob,batch_target_label)
-                print(batch_target_label, batch_cost)
                 
                 '''
-                tempW = [param.data for param in self.model.parameters()]
-                temp1 = torch.tanh(batch_input_vector.data @ tempW[0]) + tempW[1]
-                temp2 = temp1 @ torch.transpose(tempW[2], 0,1) + tempW[3]
-                
-                print(batch_concept, batch_relata, batch_relation)
-                print(batch_log_prob)
-                print(batch_cost)
-                
                 ipdb.set_trace()
                 '''
                 
-                
                 ### Regularize before back propogation
-                '''
-                tempParams = autograd.Variable(torch.cuda.FloatTensor([0]))
                 
+                
+                l2_reg = None
                 for params in self.model.parameters():
-                    tempParams += torch.sum(params**2)
-                Lambda = 0.3
-                batch_cost -= Lambda *  tempParams
-                print(batch_cost)
-                '''
+                    if l2_reg is None:
+                        l2_reg = params.norm(2)
+                    else:
+                        l2_reg = l2_reg + params.norm(2)
+                    
+                batch_cost += l2_factor * l2_reg
                 ###
-                print(self.model.linear_hidden.bias)
+                
                 batch_cost.backward()
                 self.optimizer.step()
-                print(self.model.linear_hidden.bias)
                 
                 Train_Error_cost.append(batch_cost.data.tolist())
                 Average_cost += batch_cost.data.tolist().pop()
@@ -138,7 +133,18 @@ class modelTrain:
 
             self.epochCostTrain.append(temp)
 
-            #self.validate()
+            currentDevCost = self.validate()
+            
+            if previousDevCost < currentDevCost:
+                
+                temp = currentDevCost -  previousDevCost 
+                #l2_factor = l2_factor * (temp) 
+                #for param_group in self.optimizer.param_groups:
+                    #lr = param_group['lr']
+                    #lr = lr/10
+                    #param_group['lr'] = lr
+            
+            previousDevCost = currentDevCost
             
             self.test()
 
@@ -146,11 +152,12 @@ class modelTrain:
         print("Per-class Train samples", testClassDist)
         self.logs.close()    
         
-        self.plot_results(self.epochCostTrain, self.epochCostDev, self.epochCostTest,  "Epochs"," Average Cost",self.outfolder+"Cost_justRelVectors.png")
-        self.plot_results(self.accuracyTrain, self.accuracyDev, self.accuracyTest,  "Epochs", "Accuracy ",self.outfolder+"Accuracy_justRelVectors.png")
+        #self.plot_results(self.epochCostTrain, self.epochCostDev, self.epochCostTest,  "Epochs"," Average Cost",self.outfolder+"Cost_"+self.tag +"Vectors.png")
+        #self.plot_results(self.accuracyTrain, self.accuracyDev, self.accuracyTest,  "Epochs", "Accuracy ",self.outfolder+"Accuracy_"+self.tag +"Vectors.png")
         
-        #self.test() Final test
-    
+        return ([[self.epochCostTrain, self.epochCostDev, self.epochCostTest,  "Epochs"," Average Cost",self.tag], [self.accuracyTrain, self.accuracyDev, self.accuracyTest,  "Epochs", "Accuracy ",self.tag]])
+        
+       
     def validate(self):
     
         count = 0
@@ -167,9 +174,9 @@ class modelTrain:
             tempRelation = split_data[2]
 
 
-            input_vector = autograd.Variable(self.inputData.make_input_vector(tempConcept,tempRelata))
+            input_vector = autograd.Variable(self.inputData.make_input_vector(tempConcept,tempRelata,self.tag))
             target_label = autograd.Variable(torch.cuda.LongTensor([self.inputData.labelsToIndex[tempRelation]]))
-
+            
             log_prob = self.model(input_vector)
 
             predict_label = log_prob.max(0)[1]
@@ -192,9 +199,10 @@ class modelTrain:
         self.logs.write("\n Dev Accuracy : "+str(accuracyT))
         self.logs.write("\n Average Dev Cost : "+str(devAvgCost))
         
-        self.epochCostDev.append(devAvgCost)
+        self.epochCostDev.append(devAvgCost[0])
         self.accuracyDev.append(accuracyT)
 
+        return devAvgCost[0]
      
     def test(self):
 
@@ -223,7 +231,7 @@ class modelTrain:
             ###
             tempIndex = self.inputData.labelsToIndex[tempRelation]
 
-            input_vector = autograd.Variable(self.inputData.make_input_vector(tempConcept,tempRelata))
+            input_vector = autograd.Variable(self.inputData.make_input_vector(tempConcept,tempRelata,self.tag))
             target_label = autograd.Variable(torch.cuda.LongTensor([tempIndex]))
             ###
 
@@ -266,7 +274,7 @@ class modelTrain:
         matpy.title('Per class predictions and total counts')
         matpy.xticks(index, self.inputData.indexToLabels.values())
         matpy.legend()
-        matpy.savefig(self.outfolder+"PerClass_testSet.png")
+        matpy.savefig(self.outfolder+self.tag+"PerClass_testSet.png")
         fig.clear()
         
         accuracyT = np.sum(classPrediction)/np.sum(classCount)*100
@@ -277,10 +285,10 @@ class modelTrain:
         testAvgCost = epochCost/self.inputData.testCount
         
         self.accuracyTest.append(accuracyT)
-        self.epochCostTest.append(testAvgCost)
-        print("\n Prediction on Rows and Actual on Columns")
-        print(self.inputData.indexToLabels)
-        print(confusionMatrix)
+        self.epochCostTest.append(testAvgCost[0])
+        #print("\n Prediction on Rows and Actual on Columns")
+        #print(self.inputData.indexToLabels)
+        #print(confusionMatrix)
 
 
             

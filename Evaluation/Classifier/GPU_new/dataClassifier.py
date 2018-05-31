@@ -7,7 +7,7 @@ import ipdb
 
 class modelData:
     
-    def __init__(self, blessFile, tag):
+    def __init__(self, blessFile):
 
         with open(blessFile) as inputFile:
                 
@@ -30,7 +30,7 @@ class modelData:
                 
         
         inputFile.close()
-        self.tag = tag
+        #self.tag = tag
         self.devCount = len(self.devData)
         self.trainCount = len(self.trainData)
         self.testCount = len(self.testData)
@@ -72,10 +72,14 @@ class modelData:
                     vec[2]
                     if vec[0] in self.validationList:
                         self.dictRelVectors[vec[0]] = vec[1:]
+
+                    
                 except:
                     
                     input_dim = int(vec[1])
-        
+                    
+                input_dim = len(vec[1:])
+
         inputFile.close()
         return input_dim
     
@@ -98,16 +102,16 @@ class modelData:
         inputFile.close()
         
 
-    def make_batch_input_vector(self,batch_target,batch_relata):
+    def make_batch_input_vector(self,batch_target,batch_relata, tag):
 
         batch_relation_vector = []
         for (target,relata) in zip(batch_target,batch_relata):
             
-            if re.search("JustRel",self.tag):
+            if re.search("JustRel",tag):
                 key = target+':::'+relata
                 relation_vector = [float(value) for value in self.dictRelVectors[key]]
                 
-            elif re.search("JustWord",self.tag):
+            elif re.search("JustWord",tag):
                 word1 = target.lower()
                 word2 = relata.lower()
                 #collect the respective vectors for word 1 & 2
@@ -119,7 +123,7 @@ class modelData:
                 
                 relation_vector = vector_1 - vector_2
 
-            elif re.search("RelWord",self.tag):
+            elif re.search("RelWord",tag):
                 
                 word1 = target.lower()
                 word2 = relata.lower()
@@ -130,9 +134,13 @@ class modelData:
                 vector_2 = np.array(self.dictWordVectors[word2])
                 vector_2 = np.ndarray.astype(vector_2,float)
                 
+
                 key = target+':::'+relata
                 relation_vector = [float(value) for value in self.dictRelVectors[key]]
-                relation_vector += vector_1 - vector_2
+                
+                relation_vector.extend((vector_1-vector_2).tolist())
+                
+                #relation_vector += vector_1 - vector_2
                 
             else:
                 pass
@@ -151,13 +159,13 @@ class modelData:
         return(torch.cuda.LongTensor(batch_relation_indices))
 
     
-    def make_input_vector(self,target,relata):
+    def make_input_vector(self,target,relata,tag):
         
-        if re.search("JustRel",self.tag):
+        if re.search("JustRel",tag):
             key = target+':::'+relata
             relation_vector = [float(value) for value in self.dictRelVectors[key]]
 
-        elif re.search("JustWord",self.tag):
+        elif re.search("JustWord",tag):
             word1 = target.lower()
             word2 = relata.lower()
             #collect the respective vectors for word 1 & 2
@@ -169,7 +177,7 @@ class modelData:
 
             relation_vector = vector_1 - vector_2
 
-        elif re.search("RelWord",self.tag):
+        elif re.search("RelWord",tag):
 
             word1 = target.lower()
             word2 = relata.lower()
@@ -182,7 +190,8 @@ class modelData:
 
             key = target+':::'+relata
             relation_vector = [float(value) for value in self.dictRelVectors[key]]
-            relation_vector += vector_1 - vector_2
+            relation_vector.extend((vector_1-vector_2).tolist())
+            #relation_vector += vector_1 - vector_2
 
         else:
             pass
