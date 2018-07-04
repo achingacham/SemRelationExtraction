@@ -1,6 +1,6 @@
 # SemRelationExtraction
 
-A Skip-gram based model for semantic relation extraction and classification
+A Skip-gram based model for learning semantic relation embeddings and realtion classification
 
 ## Steps: ##
 
