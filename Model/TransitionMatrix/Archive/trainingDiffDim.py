@@ -13,13 +13,10 @@ import ipdb
 import numpy as np
 
 class Word2Vec:
-    """ Word2Vec class module for extracting triples and training.
     
-    """
     def __init__(self, ifolder, ofolder, 
-                 emb_dimension=400,
                  batch_size=32,
-                 iteration=int(sys.argv[3]),
+                 iteration=int(sys.argv[4]),
                  initial_lr=0.025):
         
         self.ifolder = ifolder
@@ -30,7 +27,7 @@ class Word2Vec:
         except:
             print(self.outfolder+ " folder exists. Will be overwritten")
         
-        self.emb_dimension = emb_dimension
+        #self.emb_dimension = emb_dimension
         self.initial_lr = initial_lr
         self.iteration = iteration
         self.batch_size = batch_size
@@ -45,9 +42,11 @@ class Word2Vec:
         self.read_pair_dict(ifolder+"Pair2Id")
         
         self.pair_count = self.evaluate_pair_count()
+        #self.positive_pairs = [[3242323, 13213121]] * self.pair_count
         self.positive_pairs = np.zeros((self.pair_count, 2), dtype=int)
        
         # Dummy values to ensure size does not change
+        #self.negative_pairs = [[3242323,3242323,3242323,3242323,3242323]] * self.pair_count
         self.negative_pairs = np.zeros((self.pair_count, 5), dtype=int)
         
         print(" Size of :", sys.getsizeof(self.positive_pairs))
@@ -58,15 +57,25 @@ class Word2Vec:
         self.pair_emb_size = len(self.id2pair)
         
         
-        self.skip_gram_model = SkipGramModel(self.pair_emb_size,self.emb_size, self.emb_dimension)
-        self.use_cuda = torch.cuda.is_available()
+        #self.skip_gram_model = SkipGramModel(self.pair_emb_size,self.emb_size, self.emb_dimension)
+        #self.use_cuda = torch.cuda.is_available()
         
-        if self.use_cuda:
-            self.skip_gram_model.cuda()
-        self.optimizer = optim.SGD(self.skip_gram_model.parameters(), lr=self.initial_lr)
+        #if self.use_cuda:
+        #    self.skip_gram_model.cuda()
+        #self.optimizer = optim.SGD(self.skip_gram_model.parameters(), lr=self.initial_lr)
         
         print("Start reading pairs")
         
+    def create_model(self, emb_dimension):
+
+        self.skip_gram_model = SkipGramModel(self.pair_emb_size,self.emb_size, emb_dimension)
+        self.use_cuda = torch.cuda.is_available()
+
+        if self.use_cuda:
+            self.skip_gram_model.cuda()
+        
+        self.optimizer = optim.SGD(self.skip_gram_model.parameters(), lr=self.initial_lr)
+    
     def read_word_dict(self, wdictfile ):
         
         with open(wdictfile) as inputFile:
@@ -86,7 +95,6 @@ class Word2Vec:
                 self.id2pair[int(pid)] = word1+':::'+word2
                 self.pair2id[(word1,word2)] = int(pid)
                 #print(self.id2pair[int(pid)],word1+':::'+word2)
-                
         print("\n Completed reading pair dictionary.")
         
         self.cross_verification_BLESS()
@@ -109,10 +117,7 @@ class Word2Vec:
         return int(i)
     
     def read_pairs(self, posFile, negFile):
-        """
-        Read triples from file and update self.positive_pairs & self.negative_pairs
         
-        """
         posDsfile = self.ifolder+posFile
         
         index = 0
@@ -120,7 +125,8 @@ class Word2Vec:
         with open(posDsfile) as inputFile:
             
             for line in inputFile:
-                
+                #pid = line.split(',')[0].strip('( )\n')
+                #wid = line.split(',')[1].strip('( )\n')
                 pid, wid = line.strip('( )\n').split(',')
                 #self.positive_pairs.append([int(pid),int(wid)])
                 self.positive_pairs[index] = [int(pid),int(wid)]
@@ -148,10 +154,7 @@ class Word2Vec:
         
     
     def cross_verification_BLESS(self):
-        """
-        Optional method
-        To verify how many BLESS dataset elements are mapped with model pairs 
-        """
+
         #Remove the file if it already exists
         try:
             os.remove(self.outfolder+"BlessSet.txt")
@@ -191,10 +194,6 @@ class Word2Vec:
         blessFile.close()
 
     def cross_verification_EVAL(self):
-        """
-        Optional method
-        To verify how many EVAL dataset elements are mapped with model pairs 
-        """
 
         #Remove the file if it already exists
         try:
@@ -298,20 +297,25 @@ class Word2Vec:
             print("\n Average Epoch Loss: ", epochLoss/batch_count)
             
             self.skip_gram_model.save_embedding(self.id2pair, output_file_name, self.use_cuda)    
-            self.skip_gram_model.save_embedding(self.Bless_id2pair, Bless_output_file_name, self.use_cuda)    
+            #self.skip_gram_model.save_embedding(self.Bless_id2pair, Bless_output_file_name, self.use_cuda)    
                 
             
 if __name__ == '__main__':
-    
-    """
-       Input : Folder containing Datasets
-       Output : Folder containing Trained relation embeddings
-    """
+
+    print("\n Enter arguements: input folder, output folder, highest EMB dimesion, iterations")
+
     w2v = Word2Vec(ifolder=sys.argv[1], ofolder=sys.argv[2])
     
+    emb_dimension = int(sys.argv[3])
+
     if w2v.pair_emb_size > 0 :
         w2v.read_pairs("Triplesets_positive","Triplesets_negative")
-        w2v.train()
+        
+        while emb_dimension > 0:
+            w2v.emb_dimension = emb_dimension
+            w2v.create_model(emb_dimension)
+            w2v.train()
+            emb_dimension -= 100
         pass
     else:
          print("Unable to train, doesn't have enough pair count")

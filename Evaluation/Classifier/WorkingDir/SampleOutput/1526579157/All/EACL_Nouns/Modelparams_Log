@@ -1,0 +1,3 @@
+
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & 0.005, for files EACL_Nouns and Epoch_0_EMB_All.txtWith batchSize 8
+ L2 factors and Learning rate : [0.1, 0.08, 0.1] & 0.05, for files EACL_Nouns and Epoch_0_EMB_All.txtWith batchSize 8
