@@ -1,0 +1,137 @@
+3		meeting	oct.		1		of:1	19:1	
+3		cp	meeting		1		Funicular:1	Sub-group:1	
+3		adam	gorm		1		cairn:1	watson:1	
+3		member	cairn		1		watson:1	adam:1	
+3		oct.	member		1		by:1	95:1	
+4		sub-group	oct.		1		of:1	19:1	meeting:1	
+4		member	gorm		1		cairn:1	watson:1	adam:1	
+4		notes	cp		1		for:1	produced:1	the:1	
+4		pot	altitudes		1		,:1	at:1	all:1	
+4		oct.	adam		1		by:1	member:1	95:1	
+4		soils	visitor		1		for:1	a:1	human:1	
+4		gorm	soils		1		unsuitable:1	inherently:1	has:1	
+5		oct.	watson		1		by:1	member:1	adam:1	95:1	
+5		soils	honey		1		for:1	a:1	human:1	visitor:1	
+5		funicular	oct.		1		of:1	19:1	meeting:1	sub-group:1	
+5		honey	altitudes		1		,:1	at:1	pot:1	all:1	
+5		altitudes	woodland		1		down:1	the:1	upper:1	to:1	
+5		notes	funicular		1		CP:1	for:1	produced:1	the:1	
+5		cairn	soils		1		unsuitable:1	inherently:1	has:1	gorm:1	
+6		altitudes	line		1		down:1	the:1	woodland:1	upper:1	to:1	
+6		soils	pot		1		for:1	a:1	honey:1	human:1	visitor:1	
+6		oct.	cairn		1		by:1	member:1	adam:1	watson:1	95:1	
+6		watson	soils		1		unsuitable:1	inherently:1	cairn:1	has:1	gorm:1	
+6		cp	oct.		1		of:1	19:1	funicular:1	meeting:1	sub-group:1	
+6		visitor	altitudes		1		,:1	at:1	pot:1	honey:1	all:1	
+6		meeting	member		1		by:1	of:1	19:1	oct.:1	95:1	
+6		notes	sub-group		1		CP:1	for:1	produced:1	Funicular:1	the:1	
+7		adam	soils		1		cairn:1	unsuitable:1	watson:1	inherently:1	has:1	gorm:1	
+7		notes	meeting		1		for:1	CP:1	Funicular:1	the:1	produced:1	Sub-group:1	
+7		oct.	gorm		1		cairn:1	95:1	by:1	member:1	watson:1	adam:1	
+7		meeting	adam		1		of:1	19:1	95:1	by:1	member:1	oct.:1	
+7		sub-group	member		1		of:1	19:1	95:1	by:1	meeting:1	oct.:1	
+8		funicular	member		1		of:1	19:1	Oct.:1	95:1	by:1	meeting:1	Sub-group:1	
+8		sub-group	adam		1		of:1	19:1	95:1	by:1	member:1	meeting:1	oct.:1	
+8		meeting	watson		1		of:1	19:1	95:1	by:1	member:1	oct.:1	adam:1	
+8		member	soils		1		cairn:1	unsuitable:1	watson:1	inherently:1	adam:1	has:1	gorm:1	
+8		gorm	visitor		1		for:1	human:1	soils:1	has:1	inherently:1	a:1	unsuitable:1	
+9		sub-group	watson		1		of:1	19:1	95:1	by:1	member:1	meeting:1	oct.:1	adam:1	
+9		gorm	honey		1		for:1	human:1	soils:1	visitor:1	has:1	inherently:1	a:1	unsuitable:1	
+9		cp	member		1		Funicular:1	19:1	Oct.:1	of:1	by:1	meeting:1	Sub-group:1	95:1	
+9		meeting	cairn		1		of:1	19:1	95:1	by:1	member:1	watson:1	oct.:1	adam:1	
+9		funicular	adam		1		of:1	19:1	95:1	by:1	member:1	meeting:1	oct.:1	sub-group:1	
+9		pot	woodland		1		,:1	down:1	upper:1	all:1	the:1	at:1	altitudes:1	to:1	
+9		cairn	visitor		1		for:1	human:1	soils:1	has:1	inherently:1	a:1	unsuitable:1	gorm:1	
+10		cp	adam		1		of:1	19:1	funicular:1	95:1	by:1	member:1	meeting:1	oct.:1	sub-group:1	
+10		sub-group	cairn		1		of:1	19:1	95:1	by:1	member:1	meeting:1	watson:1	oct.:1	adam:1	
+10		meeting	gorm		1		of:1	19:1	cairn:1	95:1	by:1	member:1	watson:1	oct.:1	adam:1	
+10		gorm	pot		1		for:1	human:1	soils:1	honey:1	visitor:1	has:1	inherently:1	a:1	unsuitable:1	
+10		soils	altitudes		1		,:1	for:1	all:1	human:1	pot:1	honey:1	visitor:1	at:1	a:1	
+10		cairn	honey		1		for:1	human:1	soils:1	visitor:1	has:1	inherently:1	a:1	unsuitable:1	gorm:1	
+10		honey	woodland		1		,:1	all:1	down:1	upper:1	pot:1	the:1	at:1	altitudes:1	to:1	
+10		funicular	watson		1		of:1	19:1	95:1	by:1	member:1	meeting:1	oct.:1	sub-group:1	adam:1	
+10		notes	oct.		1		for:1	19:1	CP:1	meeting:1	Funicular:1	the:1	produced:1	Sub-group:1	of:1	
+10		pot	line		1		,:1	down:1	upper:1	all:1	the:1	at:1	altitudes:1	woodland:1	to:1	
+10		watson	visitor		1		for:1	cairn:1	soils:1	human:1	has:1	inherently:1	a:1	unsuitable:1	gorm:1	
+11		sub-group	gorm		1		of:1	19:1	cairn:1	95:1	by:1	member:1	meeting:1	watson:1	oct.:1	adam:1	
+11		honey	line		1		,:1	all:1	down:1	upper:1	pot:1	the:1	at:1	altitudes:1	woodland:1	to:1	
+11		cp	watson		1		Funicular:1	19:1	Oct.:1	of:1	by:1	member:1	Adam:1	meeting:1	Sub-group:1	95:1	
+11		adam	visitor		1		for:1	cairn:1	soils:1	human:1	unsuitable:1	watson:1	inherently:1	a:1	has:1	gorm:1	
+11		oct.	soils		1		cairn:1	95:1	by:1	member:1	inherently:1	gorm:1	watson:1	unsuitable:1	has:1	adam:1	
+11		cairn	pot		1		for:1	human:1	soils:1	honey:1	visitor:1	has:1	inherently:1	a:1	unsuitable:1	gorm:1	
+11		funicular	cairn		1		of:1	19:1	95:1	by:1	member:1	meeting:1	watson:1	oct.:1	sub-group:1	adam:1	
+11		watson	honey		1		for:1	cairn:1	soils:1	human:1	visitor:1	has:1	inherently:1	a:1	unsuitable:1	gorm:1	
+11		visitor	woodland		1		,:1	all:1	down:1	upper:1	pot:1	honey:1	the:1	at:1	altitudes:1	to:1	
+12		funicular	gorm		1		of:1	19:1	cairn:1	95:1	by:1	member:1	meeting:1	watson:1	oct.:1	sub-group:1	adam:1	
+12		adam	honey		1		for:1	cairn:1	soils:1	human:1	visitor:1	unsuitable:1	watson:1	inherently:1	a:1	has:1	gorm:1	
+12		cp	cairn		1		Funicular:1	19:1	Oct.:1	of:1	by:1	member:1	Adam:1	meeting:1	Watson:1	Sub-group:1	95:1	
+12		watson	pot		1		for:1	cairn:1	soils:1	human:1	visitor:1	has:1	inherently:1	a:1	unsuitable:1	honey:1	gorm:1	
+12		visitor	line		1		,:1	all:1	down:1	upper:1	pot:1	honey:1	the:1	at:1	altitudes:1	woodland:1	to:1	
+12		member	visitor		1		a:1	for:1	cairn:1	soils:1	human:1	unsuitable:1	watson:1	inherently:1	adam:1	has:1	gorm:1	
+13		adam	pot		1		for:1	soils:1	human:1	visitor:1	watson:1	inherently:1	unsuitable:1	honey:1	cairn:1	a:1	has:1	gorm:1	
+13		cp	gorm		1		of:1	19:1	member:1	watson:1	oct.:1	sub-group:1	funicular:1	cairn:1	95:1	by:1	meeting:1	adam:1	
+13		notes	member		1		for:1	19:1	CP:1	Oct.:1	of:1	Funicular:1	produced:1	95:1	by:1	the:1	meeting:1	Sub-group:1	
+13		member	honey		1		for:1	soils:1	human:1	visitor:1	watson:1	inherently:1	unsuitable:1	cairn:1	gorm:1	a:1	has:1	adam:1	
+14		meeting	soils		1		of:1	19:1	unsuitable:1	member:1	inherently:1	watson:1	oct.:1	cairn:1	95:1	by:1	adam:1	has:1	gorm:1	
+14		member	pot		1		for:1	soils:1	human:1	visitor:1	watson:1	inherently:1	unsuitable:1	honey:1	cairn:1	gorm:1	a:1	has:1	adam:1	
+14		notes	adam		1		for:1	19:1	CP:1	Oct.:1	of:1	member:1	Funicular:1	produced:1	95:1	by:1	the:1	meeting:1	Sub-group:1	
+14		gorm	altitudes		1		for:1	soils:1	honey:1	visitor:1	all:1	inherently:1	unsuitable:1	,:1	human:1	pot:1	at:1	a:1	has:1	
+15		sub-group	soils		1		of:1	19:1	unsuitable:1	member:1	inherently:1	watson:1	oct.:1	adam:1	cairn:1	95:1	by:1	meeting:1	has:1	gorm:1	
+15		notes	watson		1		for:1	19:1	CP:1	Oct.:1	of:1	member:1	Adam:1	Funicular:1	produced:1	95:1	by:1	the:1	meeting:1	Sub-group:1	
+15		soils	woodland		1		for:1	down:1	upper:1	honey:1	visitor:1	all:1	altitudes:1	,:1	human:1	pot:1	at:1	the:1	a:1	to:1	
+15		oct.	visitor		1		for:1	a:1	soils:1	human:1	unsuitable:1	member:1	inherently:1	watson:1	cairn:1	95:1	by:1	adam:1	has:1	gorm:1	
+15		cairn	altitudes		1		for:1	soils:1	honey:1	visitor:1	all:1	inherently:1	unsuitable:1	,:1	human:1	pot:1	at:1	a:1	has:1	gorm:1	
+16		watson	altitudes		1		for:1	soils:1	human:1	visitor:1	all:1	inherently:1	unsuitable:1	,:1	cairn:1	gorm:1	pot:1	at:1	a:1	has:1	honey:1	
+16		oct.	honey		1		for:1	a:1	soils:1	human:1	visitor:1	unsuitable:1	member:1	inherently:1	watson:1	cairn:1	95:1	by:1	adam:1	has:1	gorm:1	
+16		funicular	soils		1		of:1	19:1	unsuitable:1	member:1	inherently:1	watson:1	oct.:1	sub-group:1	cairn:1	gorm:1	95:1	by:1	meeting:1	has:1	adam:1	
+16		notes	cairn		1		for:1	19:1	CP:1	Oct.:1	of:1	member:1	Adam:1	Funicular:1	produced:1	95:1	by:1	the:1	meeting:1	Watson:1	Sub-group:1	
+16		soils	line		1		for:1	down:1	upper:1	honey:1	visitor:1	all:1	altitudes:1	woodland:1	,:1	human:1	pot:1	at:1	the:1	a:1	to:1	
+17		notes	gorm		1		for:1	19:1	CP:1	Oct.:1	of:1	member:1	Adam:1	Cairn:1	Funicular:1	produced:1	95:1	by:1	the:1	meeting:1	Watson:1	Sub-group:1	
+17		adam	altitudes		1		for:1	soils:1	human:1	visitor:1	all:1	watson:1	inherently:1	unsuitable:1	honey:1	,:1	cairn:1	pot:1	at:1	a:1	has:1	gorm:1	
+17		cp	soils		1		of:1	19:1	unsuitable:1	member:1	inherently:1	watson:1	oct.:1	sub-group:1	funicular:1	cairn:1	95:1	by:1	gorm:1	meeting:1	has:1	adam:1	
+17		oct.	pot		1		for:1	a:1	soils:1	human:1	visitor:1	unsuitable:1	member:1	inherently:1	watson:1	honey:1	cairn:1	95:1	by:1	adam:1	has:1	gorm:1	
+18		meeting	visitor		1		of:1	19:1	Oct.:1	for:1	unsuitable:1	member:1	Adam:1	Cairn:1	human:1	Gorm:1	95:1	by:1	a:1	Watson:1	inherently:1	has:1	soils:1	
+18		member	altitudes		1		for:1	soils:1	human:1	visitor:1	all:1	watson:1	inherently:1	unsuitable:1	honey:1	,:1	cairn:1	gorm:1	pot:1	at:1	a:1	has:1	adam:1	
+19		sub-group	visitor		1		a:1	of:1	19:1	inherently:1	Oct.:1	for:1	unsuitable:1	member:1	Adam:1	Cairn:1	human:1	95:1	by:1	meeting:1	Watson:1	has:1	Gorm:1	soils:1	
+19		gorm	woodland		1		for:1	down:1	upper:1	soils:1	honey:1	visitor:1	all:1	altitudes:1	inherently:1	unsuitable:1	,:1	human:1	pot:1	at:1	the:1	a:1	has:1	to:1	
+19		meeting	honey		1		of:1	19:1	a:1	soils:1	human:1	for:1	unsuitable:1	member:1	inherently:1	visitor:1	watson:1	oct.:1	cairn:1	95:1	by:1	adam:1	has:1	gorm:1	
+20		funicular	visitor		1		a:1	of:1	19:1	inherently:1	Oct.:1	for:1	unsuitable:1	member:1	Adam:1	Cairn:1	has:1	human:1	95:1	by:1	meeting:1	Watson:1	Sub-group:1	Gorm:1	soils:1	
+20		meeting	pot		1		honey:1	of:1	19:1	a:1	soils:1	human:1	for:1	unsuitable:1	member:1	inherently:1	visitor:1	watson:1	oct.:1	cairn:1	95:1	by:1	adam:1	has:1	gorm:1	
+20		gorm	line		1		for:1	down:1	upper:1	soils:1	honey:1	visitor:1	all:1	altitudes:1	inherently:1	unsuitable:1	woodland:1	,:1	human:1	pot:1	at:1	the:1	a:1	has:1	to:1	
+20		sub-group	honey		1		of:1	19:1	a:1	soils:1	human:1	for:1	unsuitable:1	member:1	inherently:1	visitor:1	watson:1	oct.:1	adam:1	cairn:1	95:1	by:1	meeting:1	has:1	gorm:1	
+20		cairn	woodland		1		for:1	down:1	upper:1	soils:1	honey:1	visitor:1	all:1	altitudes:1	inherently:1	unsuitable:1	,:1	human:1	pot:1	to:1	at:1	the:1	a:1	has:1	gorm:1	
+21		cairn	line		1		for:1	down:1	upper:1	soils:1	honey:1	visitor:1	all:1	altitudes:1	inherently:1	unsuitable:1	woodland:1	,:1	human:1	pot:1	to:1	at:1	the:1	a:1	has:1	gorm:1	
+21		notes	soils		1		has:1	for:1	19:1	CP:1	Oct.:1	of:1	unsuitable:1	member:1	Adam:1	Cairn:1	inherently:1	Funicular:1	produced:1	95:1	by:1	the:1	meeting:1	Watson:1	Sub-group:1	Gorm:1	
+21		sub-group	pot		1		honey:1	of:1	19:1	a:1	soils:1	human:1	for:1	unsuitable:1	member:1	inherently:1	visitor:1	watson:1	oct.:1	adam:1	cairn:1	95:1	by:1	meeting:1	has:1	gorm:1	
+21		watson	woodland		1		for:1	down:1	upper:1	soils:1	human:1	visitor:1	all:1	altitudes:1	inherently:1	unsuitable:1	,:1	cairn:1	gorm:1	pot:1	to:1	at:1	the:1	a:1	has:1	honey:1	
+21		cp	visitor		1		of:1	19:1	a:1	soils:1	human:1	for:1	unsuitable:1	member:1	inherently:1	watson:1	oct.:1	sub-group:1	funicular:1	cairn:1	95:1	by:1	gorm:1	meeting:1	has:1	adam:1	
+21		funicular	honey		1		of:1	19:1	a:1	soils:1	human:1	for:1	unsuitable:1	member:1	inherently:1	visitor:1	watson:1	oct.:1	sub-group:1	cairn:1	gorm:1	95:1	by:1	meeting:1	has:1	adam:1	
+21		oct.	altitudes		1		for:1	a:1	soils:1	human:1	visitor:1	unsuitable:1	member:1	inherently:1	watson:1	honey:1	,:1	at:1	all:1	cairn:1	pot:1	95:1	by:1	adam:1	has:1	gorm:1	
+22		cp	honey		1		has:1	of:1	19:1	inherently:1	Oct.:1	for:1	unsuitable:1	member:1	Adam:1	visitor:1	Cairn:1	Funicular:1	human:1	95:1	by:1	a:1	meeting:1	Watson:1	Sub-group:1	Gorm:1	soils:1	
+22		funicular	pot		1		honey:1	of:1	19:1	a:1	soils:1	human:1	for:1	unsuitable:1	member:1	inherently:1	visitor:1	watson:1	oct.:1	sub-group:1	cairn:1	gorm:1	95:1	by:1	meeting:1	has:1	adam:1	
+22		adam	woodland		1		for:1	down:1	upper:1	soils:1	human:1	visitor:1	all:1	watson:1	inherently:1	unsuitable:1	honey:1	,:1	cairn:1	pot:1	altitudes:1	at:1	the:1	to:1	a:1	has:1	gorm:1	
+22		watson	line		1		for:1	down:1	upper:1	soils:1	human:1	visitor:1	all:1	altitudes:1	inherently:1	unsuitable:1	woodland:1	,:1	cairn:1	gorm:1	pot:1	to:1	at:1	the:1	a:1	has:1	honey:1	
+23		member	woodland		1		for:1	upper:1	visitor:1	unsuitable:1	watson:1	down:1	human:1	pot:1	a:1	has:1	adam:1	,:1	soils:1	honey:1	all:1	inherently:1	cairn:1	altitudes:1	at:1	the:1	to:1	gorm:1	
+23		cp	pot		1		for:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	human:1	by:1	a:1	has:1	Sub-group:1	Gorm:1	soils:1	of:1	19:1	Oct.:1	honey:1	member:1	inherently:1	Funicular:1	Watson:1	95:1	meeting:1	
+23		adam	line		1		for:1	upper:1	visitor:1	unsuitable:1	watson:1	down:1	human:1	pot:1	a:1	has:1	,:1	soils:1	honey:1	all:1	inherently:1	woodland:1	cairn:1	altitudes:1	at:1	the:1	gorm:1	to:1	
+24		member	line		1		for:1	upper:1	visitor:1	unsuitable:1	watson:1	down:1	human:1	pot:1	a:1	has:1	adam:1	,:1	soils:1	honey:1	all:1	inherently:1	woodland:1	cairn:1	altitudes:1	at:1	the:1	to:1	gorm:1	
+24		meeting	altitudes		1		for:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	,:1	human:1	pot:1	by:1	a:1	Watson:1	has:1	Gorm:1	soils:1	of:1	19:1	Oct.:1	honey:1	all:1	member:1	inherently:1	95:1	at:1	
+25		sub-group	altitudes		1		for:1	visitor:1	watson:1	unsuitable:1	,:1	human:1	pot:1	by:1	a:1	has:1	adam:1	of:1	19:1	soils:1	honey:1	all:1	member:1	inherently:1	oct.:1	cairn:1	95:1	at:1	meeting:1	gorm:1	
+25		notes	visitor		1		for:1	CP:1	Cairn:1	Adam:1	unsuitable:1	human:1	by:1	produced:1	has:1	Sub-group:1	Gorm:1	soils:1	of:1	19:1	a:1	Oct.:1	member:1	inherently:1	Funicular:1	Watson:1	95:1	the:1	meeting:1	
+26		notes	honey		1		for:1	CP:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	human:1	by:1	produced:1	has:1	Sub-group:1	Gorm:1	soils:1	of:1	19:1	a:1	Oct.:1	member:1	inherently:1	Funicular:1	Watson:1	95:1	the:1	meeting:1	
+26		funicular	altitudes		1		for:1	visitor:1	watson:1	unsuitable:1	sub-group:1	,:1	human:1	pot:1	by:1	a:1	has:1	adam:1	of:1	19:1	soils:1	honey:1	all:1	member:1	inherently:1	oct.:1	cairn:1	95:1	at:1	meeting:1	gorm:1	
+26		oct.	woodland		1		for:1	upper:1	altitudes:1	visitor:1	watson:1	unsuitable:1	,:1	human:1	pot:1	by:1	a:1	has:1	adam:1	down:1	soils:1	honey:1	all:1	member:1	inherently:1	cairn:1	95:1	at:1	the:1	to:1	gorm:1	
+27		oct.	line		1		for:1	upper:1	altitudes:1	visitor:1	watson:1	unsuitable:1	,:1	human:1	pot:1	by:1	a:1	has:1	adam:1	down:1	soils:1	honey:1	all:1	member:1	inherently:1	woodland:1	cairn:1	95:1	at:1	the:1	to:1	gorm:1	
+27		cp	altitudes		1		for:1	visitor:1	watson:1	unsuitable:1	sub-group:1	,:1	human:1	cairn:1	by:1	a:1	has:1	adam:1	of:1	19:1	soils:1	honey:1	all:1	member:1	inherently:1	oct.:1	funicular:1	pot:1	95:1	at:1	meeting:1	gorm:1	
+27		notes	pot		1		for:1	CP:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	human:1	by:1	produced:1	has:1	Sub-group:1	Gorm:1	soils:1	of:1	19:1	a:1	Oct.:1	honey:1	member:1	inherently:1	Funicular:1	Watson:1	95:1	the:1	meeting:1	
+29		meeting	woodland		1		for:1	down:1	upper:1	altitudes:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	,:1	human:1	pot:1	by:1	a:1	Watson:1	has:1	Gorm:1	soils:1	of:1	19:1	Oct.:1	honey:1	all:1	member:1	inherently:1	95:1	at:1	the:1	to:1	
+30		sub-group	woodland		1		for:1	down:1	upper:1	altitudes:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	,:1	human:1	pot:1	by:1	a:1	Watson:1	has:1	soils:1	of:1	19:1	Oct.:1	honey:1	all:1	member:1	inherently:1	Gorm:1	95:1	at:1	the:1	meeting:1	to:1	
+30		meeting	line		1		for:1	down:1	upper:1	altitudes:1	visitor:1	watson:1	unsuitable:1	,:1	human:1	pot:1	by:1	a:1	has:1	adam:1	of:1	19:1	soils:1	honey:1	all:1	member:1	inherently:1	oct.:1	woodland:1	cairn:1	95:1	at:1	the:1	to:1	gorm:1	
+31		sub-group	line		1		for:1	down:1	upper:1	altitudes:1	visitor:1	watson:1	unsuitable:1	,:1	human:1	pot:1	to:1	by:1	a:1	has:1	adam:1	of:1	19:1	soils:1	honey:1	all:1	member:1	inherently:1	oct.:1	woodland:1	cairn:1	95:1	at:1	the:1	meeting:1	gorm:1	
+31		notes	altitudes		1		for:1	CP:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	,:1	human:1	pot:1	by:1	produced:1	has:1	Sub-group:1	Gorm:1	soils:1	of:1	19:1	a:1	Oct.:1	honey:1	all:1	member:1	inherently:1	Funicular:1	Watson:1	95:1	at:1	the:1	meeting:1	
+31		funicular	woodland		1		for:1	down:1	upper:1	altitudes:1	visitor:1	watson:1	unsuitable:1	sub-group:1	,:1	human:1	pot:1	to:1	by:1	a:1	has:1	adam:1	of:1	19:1	soils:1	honey:1	all:1	member:1	inherently:1	oct.:1	cairn:1	95:1	at:1	the:1	meeting:1	gorm:1	
+32		funicular	line		1		for:1	down:1	upper:1	altitudes:1	visitor:1	watson:1	unsuitable:1	sub-group:1	,:1	human:1	pot:1	to:1	by:1	a:1	has:1	adam:1	of:1	19:1	soils:1	honey:1	all:1	member:1	inherently:1	oct.:1	woodland:1	cairn:1	95:1	at:1	the:1	meeting:1	gorm:1	
+32		cp	woodland		1		for:1	down:1	upper:1	altitudes:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	,:1	human:1	pot:1	by:1	a:1	has:1	Sub-group:1	Gorm:1	soils:1	of:1	19:1	Oct.:1	honey:1	all:1	member:1	inherently:1	Funicular:1	Watson:1	95:1	at:1	the:1	meeting:1	to:1	
+33		cp	line		1		for:1	down:1	upper:1	altitudes:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	,:1	human:1	pot:1	by:1	a:1	has:1	Sub-group:1	Gorm:1	soils:1	of:1	19:1	Oct.:1	honey:1	all:1	member:1	inherently:1	woodland:1	Funicular:1	Watson:1	95:1	at:1	the:1	meeting:1	to:1	
+36		notes	woodland		1		for:1	down:1	CP:1	upper:1	altitudes:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	,:1	human:1	pot:1	by:1	produced:1	has:1	Sub-group:1	Gorm:1	soils:1	of:1	19:1	a:1	Oct.:1	honey:1	all:1	member:1	inherently:1	Funicular:1	Watson:1	95:1	at:1	the:1	meeting:1	to:1	
+37		notes	line		1		for:1	down:1	CP:1	upper:1	altitudes:1	visitor:1	Cairn:1	Adam:1	unsuitable:1	,:1	human:1	pot:1	by:1	produced:1	has:1	Sub-group:1	Gorm:1	soils:1	of:1	19:1	a:1	Oct.:1	honey:1	all:1	member:1	inherently:1	woodland:1	Funicular:1	Watson:1	95:1	at:1	the:1	meeting:1	to:1	
