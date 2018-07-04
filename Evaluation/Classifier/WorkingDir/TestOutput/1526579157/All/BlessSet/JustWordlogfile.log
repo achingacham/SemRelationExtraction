@@ -1,0 +1,43 @@
+
+
+Training : at 	1528005327.9957283
+ Epoch :0, 	Average cost:3.326707356854489
+
+ Dev Accuracy : 44.0
+ Average Dev Cost : 
+ 1.8614
+[torch.cuda.FloatTensor of size 1 (GPU 0)]
+
+ Test Accuracy :51.82724252491694
+ Epoch :1, 	Average cost:3.1480601524051868
+
+ Dev Accuracy : 45.0
+ Average Dev Cost : 
+ 1.7427
+[torch.cuda.FloatTensor of size 1 (GPU 0)]
+
+ Test Accuracy :53.48837209302325
+ Epoch :2, 	Average cost:3.0451125659440694
+
+ Dev Accuracy : 49.0
+ Average Dev Cost : 
+ 1.6670
+[torch.cuda.FloatTensor of size 1 (GPU 0)]
+
+ Test Accuracy :55.14950166112956
+ Epoch :3, 	Average cost:2.9578519871360376
+
+ Dev Accuracy : 51.0
+ Average Dev Cost : 
+ 1.6021
+[torch.cuda.FloatTensor of size 1 (GPU 0)]
+
+ Test Accuracy :56.47840531561462
+ Epoch :4, 	Average cost:2.8869647854252865
+
+ Dev Accuracy : 54.0
+ Average Dev Cost : 
+ 1.5488
+[torch.cuda.FloatTensor of size 1 (GPU 0)]
+
+ Test Accuracy :57.475083056478404
