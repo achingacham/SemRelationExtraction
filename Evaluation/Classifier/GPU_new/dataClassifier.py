@@ -7,33 +7,46 @@ import ipdb
 
 class modelData:
     
-    def __init__(self, blessFile):
-
+    def __init__(self, blessFile, embeddingFile):
+        
+        self.PairsList = []
+        with open(embeddingFile) as inputFile:
+    
+            for Vectors in inputFile:
+                vec = Vectors.split()
+                self.PairsList.append(vec[0])
+        
+       
         with open(blessFile) as inputFile:
                 
-                content = []
-                self.validationList = []
+            content = []
+            self.validationList = []
 
-                for line in inputFile:
-                    line = line.strip('\n')
-                    tempList = line.split()
+            for line in inputFile:
+                line = line.strip('\n')
+                tempList = line.split()
+                key = tempList[0]+':::'+tempList[1]
+                if key in self.PairsList:
                     self.validationList.append(tempList[0]+':::'+tempList[1])
                     content.append(line)
-                     
-                    
-                totalData = len(content)
-                random.shuffle(content)
-                #60% train, 10% dev, 30% test
-                self.trainData  = content[:int(totalData*.6)]
-                self.devData    = content[int(totalData*.6):int(totalData*.7)]
-                self.testData   = content[int(totalData*.7):]
-                
+
+
+        totalData = len(content)
+        random.shuffle(content)
+        #60% train, 10% dev, 30% test
+        self.trainData  = content[:int(totalData*.6)]
+        self.devData    = content[int(totalData*.6):int(totalData*.7)]
+        self.testData   = content[int(totalData*.7):]
+
         
         inputFile.close()
         #self.tag = tag
         self.devCount = len(self.devData)
         self.trainCount = len(self.trainData)
         self.testCount = len(self.testData)
+        
+        print(len(self.PairsList))
+        print(len(self.validationList))
         
         print(" Dataset size: \n Train: ",self.trainCount,"\n Test: ", self.testCount, " \n Validation :", self.devCount)
        
@@ -70,16 +83,23 @@ class modelData:
                 vec = Vectors.split()
                 try:
                     vec[2]
+                    
                     if vec[0] in self.validationList:
-                        self.dictRelVectors[vec[0]] = vec[1:]
-
-                    
+                        ###
+                        relVector = [float(value) for value in vec[1:]]
+                        #norm1 = np.linalg.norm(relVector,1)
+                        #relVector = relVector/norm1
+                        ###
+                        #print(relVector[10])
+                        self.dictRelVectors[vec[0]] = relVector
                 except:
+                    pass
                     
-                    input_dim = int(vec[1])
-                    
+                
                 input_dim = len(vec[1:])
 
+        print("lenght of dictRel ",len(self.dictRelVectors))
+        
         inputFile.close()
         return input_dim
     
@@ -89,6 +109,7 @@ class modelData:
         
         with open(preTrainedVectors) as inputFile:
             
+          
             for Vectors in inputFile:
                
                 vec = Vectors.split()
@@ -110,6 +131,7 @@ class modelData:
             if re.search("JustRel",tag):
                 key = target+':::'+relata
                 relation_vector = [float(value) for value in self.dictRelVectors[key]]
+                
                 
             elif re.search("JustWord",tag):
                 word1 = target.lower()
@@ -136,8 +158,8 @@ class modelData:
                 
 
                 key = target+':::'+relata
-                relation_vector = [float(value) for value in self.dictRelVectors[key]]
                 
+                relation_vector = [float(value) for value in self.dictRelVectors[key]]
                 relation_vector.extend((vector_1-vector_2).tolist())
                 
                 #relation_vector += vector_1 - vector_2
@@ -163,7 +185,9 @@ class modelData:
         
         if re.search("JustRel",tag):
             key = target+':::'+relata
+            #relation_vector = [float(value) for value in self.dictRelVectors[key]]
             relation_vector = [float(value) for value in self.dictRelVectors[key]]
+                
 
         elif re.search("JustWord",tag):
             word1 = target.lower()
@@ -189,10 +213,10 @@ class modelData:
             vector_2 = np.ndarray.astype(vector_2,float)
 
             key = target+':::'+relata
+            
             relation_vector = [float(value) for value in self.dictRelVectors[key]]
             relation_vector.extend((vector_1-vector_2).tolist())
-            #relation_vector += vector_1 - vector_2
-
+            
         else:
             pass
 

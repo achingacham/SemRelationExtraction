@@ -238,8 +238,8 @@ class Word2Vec:
             
             print("\n Epoch :", epoch)
             
-            output_file_name = self.outfolder+"Epoch_"+str(epoch)+"_EMB_All.txt"
-            Bless_output_file_name = self.outfolder+"Epoch_"+str(epoch)+"_EMB_Bless.txt"
+            output_file_name = self.outfolder+"Epoch_"+str(epoch)+"_EMB_"+str(self.emb_dimension)+"_All.txt"
+            Bless_output_file_name = self.outfolder+"Epoch_"+str(epoch)+"_EMB_"+str(self.emb_dimension)+"_Bless.txt"
         
             epochLoss = 0
             
