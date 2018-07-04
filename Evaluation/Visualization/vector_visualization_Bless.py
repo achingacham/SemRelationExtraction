@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE 
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -45,9 +46,9 @@ def drawPlot(finalDf, y, nearestNeighbors, title, col1, col2):
     fig = plt.figure(figsize = (20,20))
     ax = fig.add_subplot(1,1,1)
 
-    ax.set_xlabel('Principal Component 1', fontsize = 20)
-    ax.set_ylabel('Principal Component 2', fontsize = 20)
-    ax.set_title('2 component PCA', fontsize = 35)
+    ax.set_xlabel(' Component 1', fontsize = 20)
+    ax.set_ylabel(' Component 2', fontsize = 20)
+    ax.set_title('Vector visualization '+title, fontsize = 35)
 
     targets = y
 
@@ -65,6 +66,7 @@ def drawPlot(finalDf, y, nearestNeighbors, title, col1, col2):
 
         target = targets[r]
         pair = target[0]
+        
         indicesToKeep = finalDf['0'] == pair
         
         ax.scatter(finalDf.loc[indicesToKeep, col1]
@@ -73,10 +75,10 @@ def drawPlot(finalDf, y, nearestNeighbors, title, col1, col2):
                , s = 50)
 
 
-        ax.annotate( pair, (finalDf.loc[indicesToKeep, col1]
-               , finalDf.loc[indicesToKeep, col2]))
+        #ax.annotate( pair, (finalDf.loc[indicesToKeep, col1], finalDf.loc[indicesToKeep, col2]))
 
-
+    
+    
     for items in nearestNeighbors:
 
         pair = items[1]
@@ -89,10 +91,9 @@ def drawPlot(finalDf, y, nearestNeighbors, title, col1, col2):
                , marker = 'x'  
                , s = 50)
 
-        ax.annotate( pair, (finalDf.loc[indicesToKeep, col1]
-               , finalDf.loc[indicesToKeep, col2]))
+        #ax.annotate( pair, (finalDf.loc[indicesToKeep, col1], finalDf.loc[indicesToKeep, col2]))
 
-
+    
 
     recs = []
     for i in range(0,len(colors)):
@@ -114,7 +115,7 @@ if __name__ == '__main__':
     outfolder = ofolder+ifolder.rsplit('/',2)[1]+'/Visualization/'
 
     try:
-        os.mkdir(outfolder)
+        os.makedirs(outfolder)
     except:
         print(outfolder+ " folder exists. Will be overwritten")
 
@@ -136,8 +137,18 @@ if __name__ == '__main__':
     
     # Standardizing the features
     x = StandardScaler().fit_transform(x)
+    
+    #First TSNE then PCA
+    
+     #First TSNE then PCA
+    tsne = TSNE(n_components=5, perplexity=5, n_iter=5000, method='exact')
+    tsneComponents = tsne.fit_transform(x)
+    
+    
     pca = PCA(n_components=2)
-    principalComponents = pca.fit_transform(x)
+    principalComponents = pca.fit_transform(tsneComponents)
+    
+    
     principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
     finalDf = pd.concat([principalDf, file[['0']]], axis=1)
     
@@ -161,8 +172,14 @@ if __name__ == '__main__':
     
     # Standardizing the features
     x = StandardScaler().fit_transform(x)
+    
+    #First TSNE then PCA
+    tsne = TSNE(n_components=5, perplexity=5, n_iter=5000, method='exact')
+    tsneComponents = tsne.fit_transform(x)
+    
+    
     pca = PCA(n_components=2)
-    principalComponents = pca.fit_transform(x)
+    principalComponents = pca.fit_transform(tsneComponents)
     
     principalDf = pd.DataFrame(data = principalComponents, columns = ['new principal component 1','new principal component 2'])
     finalDfDiff = pd.concat([finalDf, principalDf], axis=1)

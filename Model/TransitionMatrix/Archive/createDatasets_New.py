@@ -8,16 +8,6 @@ import time
 
 class Datasets:
     
-    """
-    Combine all small chunk files and create the training smaples
-    
-    inputfolder: Folder containing splitfiles
-    outfolder:  Folder to store output files
-    minWordCount: threshold values for word count
-    minPairCount: threshold values for pair count
-    
-    """
-    
     def __init__(self, inputfolder, outfolder, minWordCount, minPairCount):
         
         listfiles = os.listdir(inputfolder)
@@ -56,6 +46,7 @@ class Datasets:
             
         totalWords = self.words2Indices(minWordCount)
         
+        
         self.init_sample_table()
         
         self.combinePairsFrequencies(pairfiles)
@@ -68,10 +59,7 @@ class Datasets:
         
         
     def combineWordsFrequencies(self, wfile):
-      
-        """
-            Create word_frequency dictionary for Vocabulary
-        """
+
         with open(wfile) as inputFile:
 
             for lines in inputFile:
@@ -87,9 +75,6 @@ class Datasets:
         
     def combinePairsFrequencies(self, pairfiles):
         
-        """
-        Track pair frequency by comnbining all split files for pair 
-        """
         ###
         self.initial_data_sets_file = self.outputfolder+'/InitialDatasets'
         try:
@@ -161,7 +146,19 @@ class Datasets:
                         for _ in range(in_wordCount):
                             self.iDSFile.write(str(wid1)+':'+str(wid2)+':'+str(in_wid)+"\n")
 
-                        
+                        ###
+                        '''
+                        if (wid1,wid2,in_wid) in self.initial_data_sets:
+                            self.initial_data_sets[(wid1,wid2,in_wid)] += in_wordCount   
+                        else:
+                            ###
+                            #if self.dictIndex < self.pairsTotal:
+                            #    self.initial_data_sets.pop(self.dictIndex,'None')
+                            #    self.dictIndex += 1
+                            ###
+                            self.initial_data_sets[(wid1,wid2,in_wid)] = in_wordCount 
+                        '''
+                        ###
             inputFile.close()
             ###
             print("\n",i," : ",pfile," Done . Count of ",testCount)
@@ -319,9 +316,9 @@ if __name__ ==  '__main__':
     
     inputfolder = sys.argv[1]
     outputfolder = sys.argv[2]
-    minWordCount = int(sys.argv[3]) #eg: 700 thresholds value for word count
-    minPairCount = int(sys.argv[4]) #eg: 200 thresholds value for pair count
-    k = 5 #k values for negative sampling
+    minWordCount = int(sys.argv[3]) #700
+    minPairCount = int(sys.argv[4]) #200
+    k = 5
 
     data = Datasets(inputfolder, outputfolder, minWordCount, minPairCount)
     #print(cProfile.runctx('data.makeTriplesets(k)',globals(),locals()))

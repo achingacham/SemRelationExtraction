@@ -13,9 +13,7 @@ import ipdb
 import numpy as np
 
 class Word2Vec:
-    """ Word2Vec class module for extracting triples and training.
     
-    """
     def __init__(self, ifolder, ofolder, 
                  emb_dimension=400,
                  batch_size=32,
@@ -31,6 +29,8 @@ class Word2Vec:
             print(self.outfolder+ " folder exists. Will be overwritten")
         
         self.emb_dimension = emb_dimension
+        self.pair_emb_dimension = emb_dimension
+            
         self.initial_lr = initial_lr
         self.iteration = iteration
         self.batch_size = batch_size
@@ -38,6 +38,7 @@ class Word2Vec:
         self.fneg = 0
         
         self.id2word = dict()
+        self.word2id = dict()
         self.id2pair = dict()
         self.pair2id = dict()
         
@@ -45,9 +46,11 @@ class Word2Vec:
         self.read_pair_dict(ifolder+"Pair2Id")
         
         self.pair_count = self.evaluate_pair_count()
+        #self.positive_pairs = [[3242323, 13213121]] * self.pair_count
         self.positive_pairs = np.zeros((self.pair_count, 2), dtype=int)
        
         # Dummy values to ensure size does not change
+        #self.negative_pairs = [[3242323,3242323,3242323,3242323,3242323]] * self.pair_count
         self.negative_pairs = np.zeros((self.pair_count, 5), dtype=int)
         
         print(" Size of :", sys.getsizeof(self.positive_pairs))
@@ -58,7 +61,7 @@ class Word2Vec:
         self.pair_emb_size = len(self.id2pair)
         
         
-        self.skip_gram_model = SkipGramModel(self.pair_emb_size,self.emb_size, self.emb_dimension)
+        self.skip_gram_model = SkipGramModel(self.emb_size, self.emb_dimension, self.pair_emb_dimension)
         self.use_cuda = torch.cuda.is_available()
         
         if self.use_cuda:
@@ -74,6 +77,7 @@ class Word2Vec:
             for item in inputFile:
                 word,wid = item.split()
                 self.id2word[int(wid)] = word
+                self.word2id[word] = int(wid)
                           
         print("\n Completed reading word dictionary.")
     def read_pair_dict(self, pdictfile ):
@@ -82,15 +86,18 @@ class Word2Vec:
             
             for item in inputFile:
                 word1,word2,pid = item.split()
-               
-                self.id2pair[int(pid)] = word1+':::'+word2
-                self.pair2id[(word1,word2)] = int(pid)
-                #print(self.id2pair[int(pid)],word1+':::'+word2)
                 
+                wid1 = self.word2id[word1]
+                wid2 = self.word2id[word2] 
+                
+                self.id2pair[int(pid)] = (wid1,wid2)
+                self.pair2id[(wid1,wid2)] = int(pid)
+                
+                #print(self.id2pair[int(pid)],word1+':::'+word2)
         print("\n Completed reading pair dictionary.")
         
-        self.cross_verification_BLESS()
-        self.cross_verification_EVAL()
+        #self.cross_verification_BLESS()
+        #self.cross_verification_EVAL()
         
         
     def evaluate_pair_count(self):
@@ -109,10 +116,7 @@ class Word2Vec:
         return int(i)
     
     def read_pairs(self, posFile, negFile):
-        """
-        Read triples from file and update self.positive_pairs & self.negative_pairs
         
-        """
         posDsfile = self.ifolder+posFile
         
         index = 0
@@ -120,7 +124,8 @@ class Word2Vec:
         with open(posDsfile) as inputFile:
             
             for line in inputFile:
-                
+                #pid = line.split(',')[0].strip('( )\n')
+                #wid = line.split(',')[1].strip('( )\n')
                 pid, wid = line.strip('( )\n').split(',')
                 #self.positive_pairs.append([int(pid),int(wid)])
                 self.positive_pairs[index] = [int(pid),int(wid)]
@@ -148,10 +153,7 @@ class Word2Vec:
         
     
     def cross_verification_BLESS(self):
-        """
-        Optional method
-        To verify how many BLESS dataset elements are mapped with model pairs 
-        """
+
         #Remove the file if it already exists
         try:
             os.remove(self.outfolder+"BlessSet.txt")
@@ -191,10 +193,6 @@ class Word2Vec:
         blessFile.close()
 
     def cross_verification_EVAL(self):
-        """
-        Optional method
-        To verify how many EVAL dataset elements are mapped with model pairs 
-        """
 
         #Remove the file if it already exists
         try:
@@ -249,7 +247,7 @@ class Word2Vec:
             print("\n Epoch :", epoch)
             
             output_file_name = self.outfolder+"Epoch_"+str(epoch)+"_EMB_"+str(self.emb_dimension)+"_All.txt"
-            Bless_output_file_name = self.outfolder+"Epoch_"+str(epoch)+"_EMB_"+str(self.emb_dimension)+"_Bless.txt"
+            #Bless_output_file_name = self.outfolder+"Epoch_"+str(epoch)+"_EMB_"+str(self.emb_dimension)+"_Bless.txt"
         
             epochLoss = 0
             
@@ -262,25 +260,28 @@ class Word2Vec:
                 
                 
                 pos_u = np.array([pair[0] for pair in pos_pairs])   #index to the pair of Nouns
+                
+                pos_u_wid = np.array([self.id2pair[pid] for pid in pos_u])
+                
                 pos_v = np.array([pair[1] for pair in pos_pairs])   #a context word (for instance, inbetween word)
                 
                 
                 
                 #pos_u = Variable(torch.LongTensor(pos_u))
-                pos_u = Variable(torch.LongTensor(pos_u))
+                pos_u_wid = Variable(torch.LongTensor(pos_u_wid))
                 pos_v = Variable(torch.LongTensor(pos_v))
                 neg_v = Variable(torch.LongTensor(neg_v)) #a negative context word from unigram distribution
                 
                       
                 if self.use_cuda:
-                    pos_u = pos_u.cuda()
+                    pos_u_wid = pos_u_wid.cuda()
                     pos_v = pos_v.cuda()
                     neg_v = neg_v.cuda()
 
                 
-                
+              
                 self.optimizer.zero_grad()
-                loss = self.skip_gram_model.forward(pos_u, pos_v, neg_v)
+                loss = self.skip_gram_model.forward(pos_u_wid, pos_v, neg_v)
                 
                 loss.backward()
                 self.optimizer.step()
@@ -297,16 +298,11 @@ class Word2Vec:
 
             print("\n Average Epoch Loss: ", epochLoss/batch_count)
             
-            self.skip_gram_model.save_embedding(self.id2pair, output_file_name, self.use_cuda)    
-            self.skip_gram_model.save_embedding(self.Bless_id2pair, Bless_output_file_name, self.use_cuda)    
+            self.skip_gram_model.save_embedding(self.id2word, output_file_name, self.use_cuda)    
+            #self.skip_gram_model.save_embedding(self.Bless_id2pair, Bless_output_file_name, self.use_cuda)    
                 
             
 if __name__ == '__main__':
-    
-    """
-       Input : Folder containing Datasets
-       Output : Folder containing Trained relation embeddings
-    """
     w2v = Word2Vec(ifolder=sys.argv[1], ofolder=sys.argv[2])
     
     if w2v.pair_emb_size > 0 :
