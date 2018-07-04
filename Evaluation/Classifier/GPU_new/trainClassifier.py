@@ -8,6 +8,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as matpy
 import ipdb
+import re
+from lr import LearningRate
 
 class modelTrain:
     
@@ -36,6 +38,10 @@ class modelTrain:
         self.logs = open(outfolder+self.tag+logfile,"a")
     
         self.logs.write("\n\nTraining : at \t" + str(time.time()))
+        
+        self.logs.write("\nEpoch No:\tAverage train Cost\t DevAccuracy\tDevCost\tTestAccuracy\tTestCost")
+
+
     
     def plot_results(self, epoch_train, epoch_dev, epoch_test ,xlabel, ylabel, plotFile):
     
@@ -48,11 +54,10 @@ class modelTrain:
         matpy.savefig(plotFile)
         matpy.close()
     
-    def train(self, batchSize, epochs):
+    def train(self, batchSize, epochs, l2_factor, initial_lr):
         
-        currentDevCost = 0
-        previousDevCost = 0
-        l2_factor = 0.1
+        
+        print("\n\n ", self.tag)
         
         for epoch in range(epochs):
             #SPlit dataset to avoid lexical memorization
@@ -63,6 +68,9 @@ class modelTrain:
             
             Train_Error_cost = []
             Average_cost = 0
+            
+            if epoch != 0:
+                lr_object = LearningRate(self.epochCostDev[epoch-1], initial_lr)
 
             for i in range(batchCount):
 
@@ -92,17 +100,18 @@ class modelTrain:
                         
                     ###
                     
+                
+                    
                 batch_input_vector = autograd.Variable(self.inputData.make_batch_input_vector(batch_concept,batch_relata, self.tag), requires_grad = True)
                 batch_target_label = autograd.Variable(self.inputData.make_batch_target_vector(batch_relation))
 
                 self.model.zero_grad()
                 
+                
                 batch_log_prob = self.model(batch_input_vector)
                 batch_cost = self.loss(batch_log_prob,batch_target_label)
                 
-                '''
-                ipdb.set_trace()
-                '''
+               
                 
                 ### Regularize before back propogation
                 
@@ -113,7 +122,8 @@ class modelTrain:
                         l2_reg = params.norm(2)
                     else:
                         l2_reg = l2_reg + params.norm(2)
-                    
+                
+                #if epoch > 1:
                 batch_cost += l2_factor * l2_reg
                 ###
                 
@@ -123,37 +133,89 @@ class modelTrain:
                 Train_Error_cost.append(batch_cost.data.tolist())
                 Average_cost += batch_cost.data.tolist().pop()
 
-                #print(batch_cost.data, Train_Error_cost, Average_cost)
+                ### Update learning rate after every minibatch
+                #for param_group in self.optimizer.param_groups:
+                #    param_group['lr'] = initial_lr*(1-((i+1)/(batchCount+1)))
+                #    #print(epoch, initial_lr, initial_lr*(1-((i+1)/(batchCount+1))))
+                ###
+            
             
             temp = Average_cost/batchCount
-
-            print("Epoch :", epoch)
-
-            self.logs.write("\n Epoch :"+str(epoch)+", \tAverage cost:"+str(temp)+"\n")
-
+            
             self.epochCostTrain.append(temp)
 
-            currentDevCost = self.validate()
+            self.validate()
             
-            if previousDevCost < currentDevCost:
+            Count,Prediction  = self.test()
+            
+            #### Update learning rate after every Epoch by cross validation
+            if epoch != 0:
+                lr_object.update_learning_rate(self.epochCostDev[epoch])
+                for param_group in self.optimizer.param_groups:
+                    param_group['lr'] = lr_object.learning_rate
+                    
+            ####
+            
+            if epoch == 0:
                 
-                temp = currentDevCost -  previousDevCost 
-                #l2_factor = l2_factor * (temp) 
-                #for param_group in self.optimizer.param_groups:
-                    #lr = param_group['lr']
-                    #lr = lr/10
-                    #param_group['lr'] = lr
-            
-            previousDevCost = currentDevCost
-            
-            self.test()
+                bestTestAccuracy = self.accuracyTest[epoch]
+                bestTestEpoch = epoch
+                
+                bestDevEpoch = epoch
+                bestDevCost = self.epochCostDev[epoch]
+                bestDevCost = self.epochCostDev[epoch]
+                
+                classCount = Count
+                classPrediction = Prediction
+            else:
+                
+                if bestTestAccuracy < self.accuracyTest[epoch]:
 
+                    classCount = Count
+                    classPrediction = Prediction
+                    bestTestEpoch = epoch
+                    bestTestAccuracy = self.accuracyTest[epoch]
             
-        print("Per-class Train samples", testClassDist)
+                if bestDevCost > self.epochCostDev[epoch]:
+
+
+                    bestDevEpoch = epoch
+                    bestDevCost = self.epochCostDev[epoch]
+                
+                
+            
+                
+            self.logs.write("\n"+str(epoch)+":\t"+str(temp)+"\t")
+            self.logs.write(str(self.accuracyDev[epoch])+"\t"+str(self.epochCostDev[epoch])+"\t")
+            self.logs.write(str(self.accuracyTest[epoch])+"\t"+str(self.epochCostTest[epoch]))
+            
+            print("\n",epoch,":\t",temp,"\t")
+            print("Dev : ",self.accuracyDev[epoch],"\t",self.epochCostDev[epoch],"\t")
+            print("Test: ",self.accuracyTest[epoch],"\t",self.epochCostTest[epoch])      
+
+        # create plot
+        fig, ax = matpy.subplots()
+        bar_width = 0.75
+        opacity = 0.8    
+        index = np.arange(self.model.label_size)
+        rect1 = matpy.bar(index, classCount, bar_width, alpha=opacity, color='b', label='per Class Targets')
+        rect2 = matpy.bar(index, classPrediction, bar_width, alpha=opacity, color='g', label='per Class Correct Predictions')
+        matpy.xlabel('Relation types')
+        matpy.ylabel('Counts')
+        matpy.title('Best Per class predictions and total counts : '+ self.tag +" at epoch "+ str(bestTestEpoch))
+        matpy.xticks(index, self.inputData.indexToLabels.values(), rotation=20, visible=True)
+        matpy.legend()
+        matpy.savefig(self.outfolder+self.tag+"PerClass_testSet.png")
+        fig.clear()
+            
+        print("\n\nPer-class Train samples :", testClassDist)
+        
+        print("Best Train accuracy at Epoch ",bestDevEpoch," of minimum dev cost :", self.accuracyTest[bestDevEpoch])
+        
+        self.logs.write("\n\nPer-class Train samples"+str(testClassDist))
+        self.logs.write("\nBest Train accuracy at Epoch "+str(bestDevEpoch)+"of minimum dev cost :"+ str(self.accuracyTest[bestDevEpoch]))
         self.logs.close()    
         
-        #self.plot_results(self.epochCostTrain, self.epochCostDev, self.epochCostTest,  "Epochs"," Average Cost",self.outfolder+"Cost_"+self.tag +"Vectors.png")
-        #self.plot_results(self.accuracyTrain, self.accuracyDev, self.accuracyTest,  "Epochs", "Accuracy ",self.outfolder+"Accuracy_"+self.tag +"Vectors.png")
         
         return ([[self.epochCostTrain, self.epochCostDev, self.epochCostTest,  "Epochs"," Average Cost",self.tag], [self.accuracyTrain, self.accuracyDev, self.accuracyTest,  "Epochs", "Accuracy ",self.tag]])
         
@@ -185,24 +247,22 @@ class modelTrain:
             dev_cost = self.loss(log_prob,target_label)
             epochCost += dev_cost.data
 
-            if(str(predict_label.data) == str(target_label.data)):     
+            
+            if(predict_label.data[0] == target_label.data[0]):     
                 count += 1
 
+            
             prediction = self.inputData.indexToLabels[int(predict_label.data)]
             #self.logs.write("\n"+tempConcept+":"+tempRelata+"\t\t\t"+prediction+"\t"+tempRelation)
 
         accuracyT = (count/self.inputData.devCount)*100
         devAvgCost = epochCost/self.inputData.devCount
         
-        print("Dev Accuracy :",accuracyT ,"\t")
-        
-        self.logs.write("\n Dev Accuracy : "+str(accuracyT))
-        self.logs.write("\n Average Dev Cost : "+str(devAvgCost))
         
         self.epochCostDev.append(devAvgCost[0])
         self.accuracyDev.append(accuracyT)
 
-        return devAvgCost[0]
+        
      
     def test(self):
 
@@ -217,8 +277,7 @@ class modelTrain:
         confusionMatrix = np.zeros((length,length))
         #print(confusionMatrix)
         ###
-        self.logs.write("\n\n Testing : \n Input \t\t\t Prediction \t Actual")
-
+        
 
         for data in self.inputData.testData:
 
@@ -242,46 +301,28 @@ class modelTrain:
             test_cost = self.loss(log_prob,target_label)
             epochCost += test_cost.data
             
-
+            
             ###
             confusionMatrix[predict_label.data[0]][target_label.data[0]] += 1
-            
             perClassCount[tempIndex] += 1
 
-            if(str(predict_label.data) == str(target_label.data)):  
+            
+            if(predict_label.data[0] == target_label.data[0]):  
                 perClassPrediction[tempIndex] += 1
 
             ###
 
             prediction = self.inputData.indexToLabels[int(predict_label.data)]
-            self.logs.write("\n"+tempConcept+":"+tempRelata+"\t\t\t"+prediction+"\t"+tempRelation)
-
+            
         ###
         
         
         classCount = np.fromiter(perClassCount.values(), dtype=int)
         classPrediction = np.fromiter(perClassPrediction.values(), dtype=int)
 
-        # create plot
-        fig, ax = matpy.subplots()
-        bar_width = 0.75
-        opacity = 0.8    
-        index = np.arange(self.model.label_size)
-        rect1 = matpy.bar(index, classCount, bar_width, alpha=opacity, color='b', label='per Class Targets')
-        rect2 = matpy.bar(index, classPrediction, bar_width, alpha=opacity, color='g', label='per Class Correct Predictions')
-        matpy.xlabel('Relation types')
-        matpy.ylabel('Counts')
-        matpy.title('Per class predictions and total counts')
-        matpy.xticks(index, self.inputData.indexToLabels.values())
-        matpy.legend()
-        matpy.savefig(self.outfolder+self.tag+"PerClass_testSet.png")
-        fig.clear()
+        
         
         accuracyT = np.sum(classPrediction)/np.sum(classCount)*100
-        print("\t Test Accuracy", accuracyT)
-        self.logs.write("\n Test Accuracy :"+str(accuracyT))
-        #self.logs.close()
-
         testAvgCost = epochCost/self.inputData.testCount
         
         self.accuracyTest.append(accuracyT)
@@ -290,6 +331,7 @@ class modelTrain:
         #print(self.inputData.indexToLabels)
         #print(confusionMatrix)
 
+        return (classCount, classPrediction)
 
             
 

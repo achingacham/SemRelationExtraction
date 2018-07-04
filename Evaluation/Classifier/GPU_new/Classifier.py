@@ -3,8 +3,10 @@ import os
 import sys
 import torch
 import torch.nn as nn
+import numpy as np
 from modelClassifier import RelationClassifier 
-from dataClassifier import modelData
+#from dataClassifier import modelData
+from EACLdataClassifier import modelData
 from trainClassifier import modelTrain
 import ipdb
 import matplotlib
@@ -68,54 +70,70 @@ if __name__ == '__main__':
         validatedRelationEmbedding = ifolder+epochFile
         
         #DATA
-        inputData = modelData(validatedBlessSet)
-        inputDim = inputData.create_dictRelVectors(validatedRelationEmbedding)
-        inputData.create_dictWordVectors(preTrainedWordEmbedding, inputDim)
+        inputData = modelData(validatedBlessSet, validatedRelationEmbedding)
+        inputData.create_dictWordVectors(preTrainedWordEmbedding)
 
+        
         
     else:
         print("\n Tag not acceptable")
     
    
     
+    
     #MODEL
-    INPUT_DIM = inputDim
-    HIDDEN_UNIT = inputDim 
+    INPUT_DIM = inputData.input_dim
+    HIDDEN_UNIT = inputData.input_dim
     OUTPUT_LABEL = inputData.create_labelsToIndex()
 
     
+    
+    lr = [0.05, 0.05, 0.05]
+    l2_factor = [0.1, 0.07, 0.1]
+    
+    with open(outfolder+"Modelparams_Log","a") as paramFile:
+        
+        paramFile.write("\n L2 factors and Learning rate : "+str(l2_factor)+" & "+str(lr)+", for files "+ str(validationfile)+ " and "+str( epochFile) +"With batchSize "+ str(batchSize))
+        
+   
     model = RelationClassifier(INPUT_DIM, HIDDEN_UNIT, OUTPUT_LABEL)
     loss = nn.NLLLoss()
-    optimizer = torch.optim.SGD(model.parameters(),lr=0.050)
+    optimizer = torch.optim.SGD(model.parameters(),lr=lr[0])
     
     if torch.cuda.is_available():
         model.cuda()
     
+    if re.search("SVD", epochFile):
+        mTrain = modelTrain(inputData, model, loss, optimizer,outfolder,'logfile.log', "SVDRel")
+    else:
+        mTrain = modelTrain(inputData, model, loss, optimizer,outfolder,'logfile.log', "SkipRel")
+        
+    results[0] = mTrain.train(batchSize, epochTrain, l2_factor[0], lr[0])
     
-    mTrain = modelTrain(inputData, model, loss, optimizer,outfolder,'logfile.log', "JustRel")
-    results[0] = mTrain.train(batchSize, epochTrain)
-
     
-    model = RelationClassifier(INPUT_DIM, HIDDEN_UNIT, OUTPUT_LABEL)
+    
+    model = RelationClassifier(400, 400, OUTPUT_LABEL)
     loss = nn.NLLLoss()
-    optimizer = torch.optim.SGD(model.parameters(),lr=0.050)
+    optimizer = torch.optim.SGD(model.parameters(),lr=lr[1])
     
     if torch.cuda.is_available():
         model.cuda()
     
     mTrain = modelTrain(inputData, model, loss, optimizer, outfolder, "logfile.log", "JustWord")
-    results[1] = mTrain.train(batchSize, epochTrain)
+    results[1] = mTrain.train(batchSize, epochTrain, l2_factor[1], lr[1])
     
-    
-    model = RelationClassifier(INPUT_DIM*2, HIDDEN_UNIT*2, OUTPUT_LABEL)
+    model = RelationClassifier(INPUT_DIM + 400, HIDDEN_UNIT + 400, OUTPUT_LABEL)
     loss = nn.NLLLoss()
-    optimizer = torch.optim.SGD(model.parameters(),lr=0.050)
-     
+    optimizer = torch.optim.SGD(model.parameters(),lr=lr[2])
+    
+    
     if torch.cuda.is_available():
         model.cuda()
     
     mTrain = modelTrain(inputData, model, loss, optimizer, outfolder, "logfile.log", "RelWord")
-    results[2] = mTrain.train(batchSize, epochTrain)
+    results[2] = mTrain.train(batchSize, epochTrain, l2_factor[2], lr[2])
     
     
     plot_results(results)
+   
+    

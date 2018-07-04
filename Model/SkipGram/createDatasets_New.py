@@ -38,12 +38,14 @@ class Datasets:
 
         for wfile in wordfiles:
             self.combineWordsFrequencies(wfile)
-            
+        
+        
         self.word2id = dict()
         self.id2word = dict()
         self.wid_frequency = dict()
             
         totalWords = self.words2Indices(minWordCount)
+        
         
         self.init_sample_table()
         
@@ -55,12 +57,13 @@ class Datasets:
         self.pairs2Indices(minPairCount)
         
         
+        
     def combineWordsFrequencies(self, wfile):
 
         with open(wfile) as inputFile:
 
             for lines in inputFile:
-                item = lines.lower().strip().split('>>>>')
+                item = lines.lower().strip().split()
                 
                 if item[0] in self.word_frequency:
                     self.word_frequency[item[0]] += int(item[1]) 

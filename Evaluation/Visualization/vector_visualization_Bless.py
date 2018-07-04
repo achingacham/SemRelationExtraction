@@ -177,7 +177,7 @@ if __name__ == '__main__':
     random = list_label.index('phone:::computer')
     top = 10
     nearestNeighbors = findNearestNeighbor(random,top,numberPairs)
-    print("\n Top ",top, " Nearest neighbors of ",label[random])
+    print("\n Top ",top, " Nearest neighbors of ",label[random] , " with JustRel vectors")
     for items in nearestNeighbors:
         print(items)
 
@@ -192,7 +192,7 @@ if __name__ == '__main__':
     random = list_label.index('phone:::computer')
     top = 10
     nearestNeighbors = findNearestNeighbor(random,top,numberPairs)
-    print("\n Top ",top, " Nearest neighbors of ",label[random])
+    print("\n Top ",top, " Nearest neighbors of ",label[random], " with JustWord vectors")
     for items in nearestNeighbors:
         print(items)
 

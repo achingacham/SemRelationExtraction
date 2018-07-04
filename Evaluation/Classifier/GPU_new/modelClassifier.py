@@ -20,7 +20,7 @@ class RelationClassifier(nn.Module):
        
        
         hidden_layer = self.linear_input(batch_input_vector)
-        hidden_units = F.tanh(hidden_layer)
+        hidden_units = F.relu(hidden_layer)
         batch_output = self.linear_hidden(hidden_units)
         #batch_output = F.tanh(batch_output)  ### is the activation function correct? is it required here?
         #print(" Size")

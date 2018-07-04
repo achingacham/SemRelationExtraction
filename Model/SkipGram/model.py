@@ -31,8 +31,9 @@ class SkipGramModel(nn.Module):
         self.emb_size = emb_size
         self.pair_emb_size = pair_emb_size
         self.emb_dimension = emb_dimension
-        self.u_embeddings = nn.Embedding(self.pair_emb_size, self.emb_dimension, sparse=True)
-        self.v_embeddings = nn.Embedding(self.emb_size, self.emb_dimension, sparse=True)
+        self.u_embeddings = nn.Embedding(self.pair_emb_size, self.emb_dimension, sparse=True) # |P| x d
+        
+        self.v_embeddings = nn.Embedding(self.emb_size, self.emb_dimension, sparse=True)      # |V| x d
         
         self.init_emb()
         
