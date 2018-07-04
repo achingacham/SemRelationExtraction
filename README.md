@@ -1,5 +1,7 @@
 # SemRelationExtraction
 
+A Skip-gram based model for semantic relation extraction and classification
+
 ## Steps: ##
 
 
