@@ -13,6 +13,22 @@ from lr import LearningRate
 
 class modelTrain:
     
+    """
+    Module for model training, validation and testing
+    
+    Inputs:
+    
+    inputData : object consisitng all model data
+    model: object containing model itslef
+    loss: loss function utilized
+    optimizer : optimizer utilized
+    outfolder: Final results folder
+    logfile: LOGs stored
+    tag : tracking the eval file
+    
+    
+    """
+    
     def __init__(self, inputData, model, loss, optimizer, outfolder,logfile, tag):
        
         self.epochCostTrain = []
@@ -55,7 +71,13 @@ class modelTrain:
         matpy.close()
     
     def train(self, batchSize, epochs, l2_factor, initial_lr):
+        """
+        Model training module
         
+        l2_factor : L2 regularization factor
+        initial_lr : initial learning rate
+        
+        """
         
         print("\n\n ", self.tag)
         
@@ -72,6 +94,8 @@ class modelTrain:
             if epoch != 0:
                 lr_object = LearningRate(self.epochCostDev[epoch-1], initial_lr)
 
+            #For every batch, the tensors are created with repect to model type
+            
             for i in range(batchCount):
 
                 batch_entry = self.inputData.trainData[i*batchSize:i*batchSize+batchSize]
@@ -193,7 +217,8 @@ class modelTrain:
             print("Dev : ",self.accuracyDev[epoch],"\t",self.epochCostDev[epoch],"\t")
             print("Test: ",self.accuracyTest[epoch],"\t",self.epochCostTest[epoch])      
 
-        # create plot
+        # create plot for representing Per class predictions 
+        
         fig, ax = matpy.subplots()
         bar_width = 0.75
         opacity = 0.8    

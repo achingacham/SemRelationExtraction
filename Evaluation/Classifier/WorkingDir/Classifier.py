@@ -6,7 +6,7 @@ import torch.nn as nn
 import numpy as np
 from modelClassifier import RelationClassifier 
 #from dataClassifier import modelData
-from EACLdataClassifier import modelData
+from dataClassifier import modelData
 from trainClassifier import modelTrain
 import ipdb
 import matplotlib
@@ -43,6 +43,21 @@ def plot_results(results):
             
 
 if __name__ == '__main__':
+    
+    """
+    Arguements required:
+    
+    Input folder : Folder containg relation embeddings
+    Output folder : Folder to store results
+    Validation file : BLESS / EVAL/ EACL
+    Tag : for tracking the files considered(enter 'All')
+    epochFile : Relation embedding file at a certain epoch
+    batchSize: batch size
+    epochTrain : number of epochs to be trained for classifier
+    preTrainedWordEmbedding : Pre trained word vectord for offset method
+    
+    
+    """
     
     ifolder = sys.argv[1]
     ofolder = sys.argv[2]
