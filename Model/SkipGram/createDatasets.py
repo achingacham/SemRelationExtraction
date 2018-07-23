@@ -5,6 +5,7 @@ import numpy
 #import ipdb
 #import cProfile
 import time
+import ipdb
 
 class Datasets:
     
@@ -18,11 +19,12 @@ class Datasets:
     
     """
     
-    def __init__(self, inputfolder, outfolder, minWordCount, minPairCount):
+    def __init__(self, inputfolder, outfolder, windowSize, minWordCount, minPairCount):
         
         listfiles = os.listdir(inputfolder)
         self.outputfolder = outfolder+str(int(time.time()))
         os.mkdir(self.outputfolder)
+        self.windowSize = windowSize
         
         self.posfile = self.outputfolder+'/Triplesets_positive'
         self.negfile = self.outputfolder+'/Triplesets_negative'
@@ -99,21 +101,27 @@ class Datasets:
         
         self.iDSFile = open(self.initial_data_sets_file,"a")
         
-        testCount = 0
         ###
         for i,pfile in enumerate(pairfiles):
-            
+        
+            testCount = 0
+        
             with open(pfile) as inputFile:
 
                 for lines in inputFile:
-                    item = lines.lower().strip().split('>>>>')
+                    item = lines.lower().strip().split('\t\t')
 
-                    if len(item) != 3:
+                    if len(item) != 4:
                         print("Ëxceptional items!", item)
                         continue
 
-                    pair = item[0].split('[}')
-
+                    distance = int(item[0])
+                    #Check if the entry within window size, else break from further reading
+                    if distance > self.windowSize:
+                        break
+                    
+                    pair = item[1].split('\t')
+                    
                     if len(pair) != 2:
                         print("Exceptional pairs",item[0])
                         continue
@@ -134,37 +142,36 @@ class Datasets:
                     else:
                         continue
 
-                    pairCount = int(item[1])
+                    pairCount = int(item[2])
 
                     if (wid1,wid2) in self.pair_frequency:
                         self.pair_frequency[(wid1,wid2)] += pairCount
+                        
                     else:
                         self.pair_frequency[(wid1,wid2)] = pairCount
 
 
-                    words = item[2].strip().split('{]')
-
-                    for elements in words[:-1]:
-                        elements = elements.strip().split('[}')
-
-                        in_word = elements[0]
-
-                        if in_word in self.word2id:
-                            in_wid = self.word2id[in_word]
+                    words = item[3].split('\t')
+                    
+                    
+                    
+                    for w, wCount in zip(words[0::2], words[1::2]):
+                        
+                        if w in self.word2id:
+                            in_wid = self.word2id[w]
+                            
                         else:
                             continue
                             #in between word is too less in frequency, hence ignored from dataset.
-
-                        in_wordCount = int(elements[1])
-                        testCount += in_wordCount
-
-                        for _ in range(in_wordCount):
+                            
+                        testCount += 1
+                        
+                        for _ in range(int(wCount)):
                             self.iDSFile.write(str(wid1)+':'+str(wid2)+':'+str(in_wid)+"\n")
-
                         
             inputFile.close()
             ###
-            print("\n",i," : ",pfile," Done . Count of ",testCount)
+            #print("\n",i+1," : ",pfile," Done . entries count of ",testCount)
             ###
 
         self.iDSFile.close()
@@ -186,7 +193,6 @@ class Datasets:
                 self.id2word[wid] = word
                 self.wid_frequency[wid] = self.word_frequency[word]
                 
-                #with open(self.wdictfile,"a") as outputFile: 
                 outputFile.write(word+"\t"+str(wid)+"\n")
                 wid += 1
         
@@ -195,6 +201,7 @@ class Datasets:
         self.word_frequency = dict()
         outputFile.close()
         temp = len(self.word2id)
+        print("\n #With word frequency :", wordCount)
         print( "\n # Words : ", temp)
         return temp
         
@@ -226,6 +233,7 @@ class Datasets:
         
         pid = 0
         outputFile = open(self.pdictfile,"a")
+        
         for pair in self.pair_frequency:
             if self.pair_frequency[pair] >= pairCount:
                 self.pair2id[pair] = pid
@@ -235,8 +243,7 @@ class Datasets:
                 wid2 = pair[1]
                 w1 = self.id2word[wid1]
                 w2 = self.id2word[wid2]
-                #word_pair = w1+"\t"+w2
-                #with open(self.pdictfile,"a") as outputFile: 
+                
                 outputFile.write(w1+"\t"+w2+"\t"+str(pid)+"\n")
                 
                 pid += 1
@@ -244,6 +251,7 @@ class Datasets:
         #Release memory
         self.pair_frequency.clear()
         outputFile.close()
+        print("\n #With pair frequency : ",pairCount)
         print( "\n # Pairs : ", len(self.pair2id))  
         
         
@@ -252,6 +260,10 @@ class Datasets:
     #generate 'k'negative samples for every positive sample        
     def get_neg_v_neg_sampling(self, count):
         neg_v = numpy.random.choice(self.sample_table, size=(count)).tolist()
+        
+        #convert list to string with tab separator
+        temp = neg_v
+        neg_v = "\t".join([str(t) for t in temp])
         return neg_v
    
 
@@ -294,13 +306,13 @@ class Datasets:
             
                 if pair in self.pair2id:
                     pid = self.pair2id[pair]
-                    #for every positive sample, create 'k' negative samples
-                    neg_v = self.get_neg_v_neg_sampling(k)
-                    #with open(self.posfile,"a") as outputFile:
-                    output = str((pid,iwid))
+                    
+                    output = str(pid)+"\t"+str(iwid)
                     posOutputFile.write(output+"\n")
 
-                    #with open(self.negfile,"a") as outputFile:
+                    #for every positive sample, create 'k' negative samples from unigram noise ditribution
+                    neg_v = self.get_neg_v_neg_sampling(k)
+                    
                     output = neg_v
                     negOutputFile.write(str(output)+"\n")
 
@@ -319,11 +331,12 @@ if __name__ ==  '__main__':
     
     inputfolder = sys.argv[1]
     outputfolder = sys.argv[2]
-    minWordCount = int(sys.argv[3]) #eg: 700 thresholds value for word count
-    minPairCount = int(sys.argv[4]) #eg: 200 thresholds value for pair count
+    windowSize = int(sys.argv[3])
+    minWordCount = int(sys.argv[4]) #eg: 700 thresholds value for word count
+    minPairCount = int(sys.argv[5]) #eg: 200 thresholds value for pair count
     k = 5 #k values for negative sampling
 
-    data = Datasets(inputfolder, outputfolder, minWordCount, minPairCount)
+    data = Datasets(inputfolder, outputfolder, windowSize, minWordCount, minPairCount)
     #print(cProfile.runctx('data.makeTriplesets(k)',globals(),locals()))
     ###
     data.makeTriplesetsFromFile(k)

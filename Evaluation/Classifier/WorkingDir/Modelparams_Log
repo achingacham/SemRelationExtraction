@@ -1,0 +1,132 @@
+
+ L2 factors and Learning rate : [0.1, 0.07, 0.1] & [0.05, 0.05, 0.05], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.08, 0.1] & [0.05, 0.05, 0.05], for files EACL and Epoch_0_EMB_All.txtWith batchSize 8
+ L2 factors and Learning rate : [0.1, 0.07, 0.1] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.09, 0.1] & [0.005, 0.005, 0.005], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.09, 0.1] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.09, 0.1] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.07, 0.08, 0.5], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files EvalSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2 factors and Learning rate : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.5], for files BlessSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2_factor $ Lr : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_All.txtWith batchSize 16
+ L2_factor & Lr : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_All.txt with batchSize 16
+ L2_factor & Lr : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_All.txt with batchSize 16 for 100 epochs
+ L2_factor & Lr : [0.1, 0.1, 0.1] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_All.txt with batchSize 16 for 100 epochs - Worked for all
+ L2_factor & Lr : [0.1, 0.07, 0.1] & [0.05, 0.05, 0.05], for files EvalSet and Epoch_0_EMB_All.txt with batchSize 16 for 100 epochs 
+ L2_factor & Lr : [0.1, 0.08, 0.1] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs
+ L2_factor & Lr : [0.1, 0.08, 0.1] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs
+ L2_factor & Lr : [0.5, 0.08, 0.1] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs
+ L2_factor & Lr : [0.2, 0.08, 0.1] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs
+ L2_factor & Lr : [0, 0, 0] & [0.01, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs
+ L2_factor & Lr : [0, 0, 0] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.2, 0.5, 0.7] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.7, 0.3, 0.2] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.5, 0.5, 0.5] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [1, 1, 1] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0, 0, 0] & [0.1, 0.1, 0.1], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [1, 1, 1] & [0.1, 0.1, 0.1], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.5, 0.5, 0.5] & [0.1, 0.1, 0.1], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.5, 0.5, 0.5] & [0.1, 0.1, 0.1], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.3, 0.3, 0.3] & [0.1, 0.1, 0.1], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.1, 0.1, 0.1] & [0.1, 0.1, 0.1], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.2, 0.2, 0.2] & [0.1, 0.1, 0.1], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.15, 0.15, 0.15] & [0.1, 0.1, 0.1], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.175, 0.175, 0.175] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.175, 0.175, 0.175] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.075, 0.075, 0.075] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 30 epochs
+ L2_factor & Lr : [0.075, 0.05, 0.075] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 30 epochs
+ L2_factor & Lr : [0.075, 0.06, 0.075] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.075, 0.075, 0.075] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs - Worked for SkipRel
+ L2_factor & Lr : [0.075, 0.095, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs - Worked for RelWord
+ L2_factor & Lr : [0.075, 0.085, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs
+ L2_factor & Lr : [0.075, 0.085, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs
+ L2_factor & Lr : [0.075, 0.085, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 8 for 100 epochs
+ L2_factor & Lr : [0.075, 0.0075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.075, 0.0075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.075, 0.0375, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.075, 0.0525, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.075, 0.0525, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.075, 0.0525, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.075, 0.0675, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.075, 0.0675, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.075, 0.0675, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.005, 0.005, 0.005], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs - Worked for all
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs - Just Word didn't learn 
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs 
+ L2_factor & Lr : [0.075, 0.05, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs - Just Word overfit
+ 
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.075, 0.085, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_Ant and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs - Worked for all
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.07, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs - Except SkipRel, it worked.
+ L2_factor & Lr : [0.085, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.01, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.075, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.75, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.375, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.15, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.0375, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.045, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 50 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet_Syn_IsA and Epoch_0_EMB_All.txt with batchSize 4 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 16 for 5 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 16 for 5 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 16 for 5 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 16 for 100 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EvalSet and Epoch_0_EMB_EvalSet.txt with batchSize 16 for 10 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 16 for 10 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_5_EMB_EVALSet.txt with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_9_EMB_EVALSet.txt with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_9_EMB_BlessSet.txt with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 8 for 20 epochs
+ L2_factor & Lr : [0.01, 0.08, 0.01] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 8 for 20 epochs
+ L2_factor & Lr : [0.01, 0.08, 0.01] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 16 for 20 epochs
+ L2_factor & Lr : [0.01, 0.05, 0.01] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 16 for 20 epochs
+ L2_factor & Lr : [0.01, 0.005, 0.05] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 16 for 20 epochs
+ L2_factor & Lr : [0.01, 0.025, 0.03] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 16 for 20 epochs
+ L2_factor & Lr : [0.01, 0.025, 0.03] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.01, 0.025, 0.03] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.035] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.035] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.04, 0.0375] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.04, 0.0375] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_5_EACL_Nouns.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.04, 0.0375] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_5_EMB_EACL_Nouns.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.05, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.01, 0.01, 0.01], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.01, 0.01, 0.01], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.01, 0.01, 0.01], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.01, 0.01, 0.01], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
