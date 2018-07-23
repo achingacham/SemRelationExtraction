@@ -121,7 +121,7 @@ class Word2Vec:
             
             for line in inputFile:
                 
-                pid, wid = line.strip('( )\n').split(',')
+                pid, wid = line.split()
                 #self.positive_pairs.append([int(pid),int(wid)])
                 self.positive_pairs[index] = [int(pid),int(wid)]
                 index += 1
@@ -132,7 +132,7 @@ class Word2Vec:
         index = 0
         with open(negDsfile) as inputFile:
             for line in inputFile:
-                temp = [int(i) for i in line.strip('[ ] \n').split(',')]
+                temp = [int(i) for i in line.split()]
                 self.negative_pairs[index] = temp
                 index += 1
         print(" Size of :", sys.getsizeof(self.negative_pairs))
@@ -298,7 +298,7 @@ class Word2Vec:
             print("\n Average Epoch Loss: ", epochLoss/batch_count)
             
             self.skip_gram_model.save_embedding(self.id2pair, output_file_name, self.use_cuda)    
-            self.skip_gram_model.save_embedding(self.Bless_id2pair, Bless_output_file_name, self.use_cuda)    
+            #self.skip_gram_model.save_embedding(self.Bless_id2pair, Bless_output_file_name, self.use_cuda)    
                 
             
 if __name__ == '__main__':

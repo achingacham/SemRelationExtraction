@@ -29,13 +29,16 @@ class modelData:
                 key = tempList[0]+':::'+tempList[1]
                 self.validationList[key] = line
                 
+                
         
         inputFile.close()
         
         self.create_dictRelVectors(embeddingFile)
         
         totalData = len(self.content)
+        
         random.shuffle(self.content)
+        
         #60% train, 10% dev, 30% test
         self.trainData  = self.content[:int(totalData*.6)]
         self.devData    = self.content[int(totalData*.6):int(totalData*.7)]
@@ -85,6 +88,8 @@ class modelData:
         self.dictRelVectors = dict()
         self.content = []
         
+        classesDict = dict()
+        
         with open(embeddingFile) as inputFile:
     
             print("Reading input embedding file....\t")
@@ -104,14 +109,25 @@ class modelData:
                         self.dictRelVectors[vec[0]] = relVector
                         self.content.append(self.validationList[vec[0]])
                         
+                        ## Split datasets to different classes (Stratified classification in progress) 
+                        line = self.validationList[vec[0]]
+                        keys = line.split()
+                        
+                        if keys[2] in classesDict:
+                            classesDict[keys[2]].extend([line])
+                        
+                        else:
+                            classesDict[keys[2]] = [line]
+                        
                 except:
                     pass
                 
                 self.input_dim = len(vec[1:])
 
-        
+                
         inputFile.close()
         
+                
     
     def create_dictWordVectors(self, preTrainedVectors):
         
