@@ -181,7 +181,7 @@ class modelTrain:
             Count,Prediction  = self.test(epoch+1)
             
             
-            #### Update learning rate after every Epoch by cross validation
+            #### Update learning rate after every Epoch based on validation cost
             if epoch != 0:
                 lr_object.update_learning_rate(self.epochCostDev[epoch])
                 for param_group in self.optimizer.param_groups:

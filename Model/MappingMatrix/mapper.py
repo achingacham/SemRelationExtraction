@@ -30,7 +30,7 @@ def plot_results(epoch_train ,xlabel, ylabel, plotFile):
         matpy.close()
 
 ##Testing
-def createValidationVectors(epoch):
+def createValidationVectors(epoch, validationFile):
     
     print("Testing model")
     
@@ -38,20 +38,20 @@ def createValidationVectors(epoch):
     #dictValidationVectors = dict()
     
     try:
-        os.remove(ifolder+"Epoch_"+str(epoch)+"_EMB_"+validationFile)
+        os.remove(validationFile)
     
     except:
         pass
     
-    outputFile = open(ifolder+"Epoch_"+str(epoch)+"_EMB_"+validationFile,"a")
+    outputFile = open(validationFile,"a")
     
     count = 0
     
-    for items in inputData.validationList:
+    for items in inputData.validationList[validationFile]:
         word1 = items[0].lower()
         word2 = items[1].lower()
         
-        relationType = inputData.validationList[items]
+        relationType = inputData.validationList[validationFile][items]
     
         if word1 in inputData.dictWordVectors and word2 in inputData.dictWordVectors:
             
@@ -102,11 +102,12 @@ if __name__ == '__main__':
     ofolder = sys.argv[2]
     epochFile = sys.argv[3]
     preTrainedWordEmbedding = sys.argv[4]
-    validationFile = sys.argv[5]
+    validationFilesList = sys.argv[5]
     
-    epochCount = 10
+    epochCount = 3
     batchSize = 32
-    lr = 0.5
+    lr = 0.05
+    l2_factor = 0.001
     
     outfolder = ofolder+ifolder.rsplit('/',2)[1]+'/'
     
@@ -118,7 +119,13 @@ if __name__ == '__main__':
     
     
     relationEmbedding = ifolder+epochFile
-    inputData = modelData(preTrainedWordEmbedding, relationEmbedding, ifolder+validationFile)
+    inputData = modelData(preTrainedWordEmbedding, relationEmbedding)
+    
+    with open(validationFilesList) as listFile:
+        
+        for file in listFile:
+            
+            inputData.createValidationSet(file.strip('\n'))
     
     pairCount = len(inputData.dictRelVectors)
     allPairs = [pair for pair in inputData.dictRelVectors.keys()]
@@ -161,6 +168,20 @@ if __name__ == '__main__':
             #Mean square error between predicted and relation vector
             cost = F.mse_loss(batchPredictVector , batchTargetVector)
             
+            
+            ### Regularize before back propogation
+                
+            l2_reg = None
+            for params in model.parameters():
+                if l2_reg is None:
+                    l2_reg = params.norm(2)
+                else:
+                    l2_reg = l2_reg + params.norm(2)
+
+            #if epoch > 1:
+            cost += l2_factor * l2_reg
+            ###
+            
             cost.backward()
             optimizer.step()
             batchCost += cost
@@ -170,7 +191,11 @@ if __name__ == '__main__':
             
         epochCost.append(batchCost/batchCount)
         
-        createValidationVectors(currentEpoch)
+        with open(validationFilesList) as listFile:
+        
+            for validationFile in listFile:
+        
+                createValidationVectors(currentEpoch, validationFile.strip('\n'))
         
     print(epochCost)
     

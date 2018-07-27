@@ -68,8 +68,14 @@ if __name__ == '__main__':
     epochTrain = int(sys.argv[7])
     preTrainedWordEmbedding = sys.argv[8]
     
-    lr = [0.05, 0.05, 0.05]
-    l2_factor = [0.01, 0.005*7, 0.01*3.75]
+    l2_factor_arg = sys.argv[9] # eg: '0.01,0.035,0.375'
+    lr_argv = sys.argv[10]      # eg: '0.1,0.01,0.01'
+    
+    l2_factor = [float(i) for i in l2_factor_arg.split(',')]
+    lr = [float(i) for i in lr_argv.split(',')]
+    
+    #l2_factor = [0.01, 0.035, 0.0375]
+    #lr = [0.1, 0.01, 0.01]
     
     with open("Modelparams_Log","a") as paramFile:
         
@@ -90,7 +96,7 @@ if __name__ == '__main__':
     
     if re.search("All", tag):
    
-        validatedBlessSet = ifolder+validationfile+'.txt'
+        validatedBlessSet = ifolder+validationfile
         validatedRelationEmbedding = ifolder+epochFile
         
         
@@ -126,6 +132,7 @@ if __name__ == '__main__':
     results[0] = mTrain.train(batchSize, epochTrain, l2_factor[0], lr[0])
     
     
+    
     model = RelationClassifier(400, 400, OUTPUT_LABEL)
     loss = nn.NLLLoss()
     optimizer = torch.optim.SGD(model.parameters(),lr=lr[1])
@@ -151,4 +158,5 @@ if __name__ == '__main__':
    
     plot_results(results)
    
+    
     
