@@ -6,7 +6,7 @@
 
 * Pickup the noun pairs & triples in preprocess splitfiles to create positive triples with varied windows [ Go to /PreprocessSplitfiles]
 * Create training samples including negative samples[execute createDatasets.py]
-=======
+
 # Model Training
 
 ## Steps:
