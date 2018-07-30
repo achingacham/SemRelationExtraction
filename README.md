@@ -1,6 +1,6 @@
 # SemRelationExtraction
 
-A Skip-gram based model for learning semantic relation embeddings and realtion classification
+A simple model to learn relation embedding between words using an unlabelled corpora(ukWaC) and evaluate them with 3 labelled datasets (BLESS, EVALuation1.0, EACL dataset for antonym and synonym distinction)
 
 ## Steps: ##
 
