@@ -1,5 +1,14 @@
 
-# Steps for preprocessing:
+# Preprocess
+
+Data cleaning and preprocessing on copora data for model execution.
+
+## Prerequisite:
+
+Download corpora content and save it in an accessible location with additional storge space.(~ 30 GB)
+
+
+## Steps for preprocessing:
 
 
 *  gzip  -k -d ukwac_dep_parsed_.gz
@@ -15,4 +24,3 @@
 * Remove </text> ..... lines ans blank lines
    	* sed 's/<\/text>//g' ukwac_file_
 	* sed '/^ *$/d' ukwac_file_	
-	
