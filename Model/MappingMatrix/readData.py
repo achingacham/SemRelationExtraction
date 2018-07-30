@@ -7,27 +7,28 @@ import time
 
 class modelData:
     
-    def __init__(self, wordEmbeddingFile, relEmbeddingFile, validationFile):
+    def __init__(self, wordEmbeddingFile, relEmbeddingFile):
         
         self.createWordDictionary(wordEmbeddingFile)
         
         self.createRelDictionary(relEmbeddingFile)
         
-        self.createValidationSet(validationFile)
+        #self.createValidationSet(validationFile)
         
+        self.validationList = dict()
     
     def createValidationSet(self, validationFile):
+        
+        self.validationList[validationFile] = dict()
         
         with open(validationFile) as inputFile:
                
             print("\nReading evalution dataset....\t")
             
-            self.validationList = dict()
-
             for line in inputFile:
                 line = line.strip('\n')
                 tempList = line.split()
-                self.validationList[(tempList[0],tempList[1])] = tempList[2]
+                self.validationList[validationFile][(tempList[0],tempList[1])] = tempList[2]
                 
         
     def createRelDictionary(self, iFile):
