@@ -1,3 +1,4 @@
+
 # Model 
 
 * This module is dedicated to generate relation embedding for every naoun pair which is above threshold count.
