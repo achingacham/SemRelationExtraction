@@ -16,4 +16,4 @@ A simple model to learn relation embedding between words using an unlabelled cor
 
        * How We BLESSed Distributional Semantic Evaluation [Baroni, Marco and Lenci, Alessandro]
        * EVALution 1.0: an Evolving Semantic Dataset for Training and Evaluation of Distributional Semantic Models [Santus, Enrico; Yung, Frances;  Lenci, Alessandro and Huang, Chu-Ren ]
-       * 
+       
