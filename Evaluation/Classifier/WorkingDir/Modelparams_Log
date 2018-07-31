@@ -106,7 +106,7 @@
  L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 16 for 10 epochs
  L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 16 for 50 epochs
  L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_5_EMB_EVALSet.txt with batchSize 16 for 50 epochs
- L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_9_EMB_EVALSet.txt with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_9_EMB_EVALSet.txt with batchSize 16 for 50 epochs - Worked for all EVALSet
  L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 8 for 50 epochs
  L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_9_EMB_BlessSet.txt with batchSize 16 for 50 epochs
  L2_factor & Lr : [0.06, 0.075, 0.095] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 8 for 20 epochs
@@ -130,3 +130,46 @@
  L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 50 epochs
  L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EACL_Nouns and Epoch_0_EMB_EACL_Nouns.txt with batchSize 32 for 100 epochs
  L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_4_EMB_BlessSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_4_EMB_BlessSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.1, 0.01, 0.1] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.05, 0.05, 0.05] & [0.05, 0.035, 0.0375], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.05, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.01, 0.01, 0.01], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.1, 0.01, 0.01], for files BlessSet and Epoch_0_EMB_BlessSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.375] & [0.1, 0.01, 0.01], for files BlessSet and Epoch_4_EMB_BlessSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.375] & [0.1, 0.01, 0.01], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.375] & [0.5, 0.01, 0.01], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.05, 0.035, 0.375] & [0.5, 0.01, 0.01], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.02, 0.035, 0.375] & [0.5, 0.01, 0.01], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.02, 0.035, 0.375] & [0.01, 0.01, 0.01], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 50 epochs
+ L2_factor & Lr : [0.02, 0.035, 0.375] & [0.05, 0.01, 0.01], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.02, 0.035, 0.375] & [0.08, 0.01, 0.01], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.0175, 0.035, 0.375] & [0.08, 0.01, 0.01], for files EVALSet and Epoch_0_EMB_EVALSet.txt with batchSize 32 for 20 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc.txt with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 16 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.001, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.001, 0.035, 0.0375] & [0.01, 0.01, 0.01], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.01, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.009, 0.035, 0.0375] & [0.01, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.0, 0.035, 0.0375] & [0.1, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 8 for 50 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EVALSet.txt and Epoch_0_EMB_EVALSet_nonlinear.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.05, 0.05, 0.05], for files EVALSet.txt and Epoch_0_EMB_EVALSet_nonlinear.txt with batchSize 32 for 100 epochs
+ L2_factor & Lr : [0.01, 0.035, 0.0375] & [0.01, 0.05, 0.05], for files AnalogTest_ccc and Epoch_0_EMB_AnalogTest_ccc with batchSize 8 for 100 epochs

@@ -26,12 +26,13 @@ class modelData:
             for line in inputFile:
                 line = line.strip('\n')
                 tempList = line.split()
-                key = tempList[0]+':::'+tempList[1]
-                self.validationList[key] = line
-                
+                key = tempList[0].lower()+':::'+tempList[1].lower() #Lower case all entries
+                self.validationList[key] = line.lower()             #Lower case all entries
+                #print(key)
                 
         
         inputFile.close()
+        
         
         self.create_dictRelVectors(embeddingFile)
         
@@ -39,16 +40,17 @@ class modelData:
         
         random.shuffle(self.content)
         
-        #60% train, 10% dev, 30% test
+        #60% train, 20% dev, 20% test # changed for comparision test
         self.trainData  = self.content[:int(totalData*.6)]
-        self.devData    = self.content[int(totalData*.6):int(totalData*.7)]
-        self.testData   = self.content[int(totalData*.7):]
+        self.devData    = self.content[int(totalData*.6):int(totalData*.8)]
+        self.testData   = self.content[int(totalData*.8):]
 
         
         #self.tag = tag
         self.devCount = len(self.devData)
         self.trainCount = len(self.trainData)
         self.testCount = len(self.testData)
+        
         
         print("Total Noun pairs", len(self.validationList))
         
@@ -100,6 +102,7 @@ class modelData:
                     vec[2]
                     if vec[0] in self.validationList:
                         
+                        #print("In ",vec[0])
                         relVector = [float(value) for value in vec[1:]]
                         ###
                         #norm1 = np.linalg.norm(relVector,1)
@@ -118,7 +121,10 @@ class modelData:
                         
                         else:
                             classesDict[keys[2]] = [line]
-                        
+                   
+                    else:
+                        #print("Not in", vec[0])
+                        pass
                 except:
                     pass
                 

@@ -1,0 +1,14 @@
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_capital-common-countries
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_capital-world
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_city-in-state
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_currency
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_family
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_gram1-adjective-to-adverb
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_gram2-opposite
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_gram3-comparative
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_gram4-superlative
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_gram5-present-participle
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_gram6-nationality-adjective
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_gram7-past-tense
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_gram8-plural
+/data/achingacham_1534334/ModelInputOutput/training/ReRun_I/1526579157/AnalogTest_gram9-plural-verbs
