@@ -320,6 +320,9 @@ class modelTrain:
     def plot_confusion_matrix(self, rel_true, rel_pred, filename="_ConfusionMatrix.png", cmap=plt.cm.Blues):
         confusion =  confusion_matrix(rel_true, rel_pred)
         
+        uniqRel = np.unique(rel_true)
+        uniqRel = np.unique(np.extend(uniqRel,rel_pred))
+        
         fig = plt.figure(figsize=(8,8))
         ax = fig.add_subplot(111)
         
@@ -329,11 +332,11 @@ class modelTrain:
         
         ax.set_xlabel("Predicted")
         ax.set_xticks(tick_marks)
-        ax.set_xticklabels(np.unique(rel_true))
+        ax.set_xticklabels(uniqRel)
     
         ax.set_ylabel("Actual")
         ax.set_yticks(tick_marks)
-        ax.set_yticklabels(np.unique(rel_true))
+        ax.set_yticklabels(uniqRel)
 
         plt.setp(ax.xaxis.get_majorticklabels(), rotation=45)
         plt.savefig(self.outfolder+self.tag+filename, bbox_inches='tight')
